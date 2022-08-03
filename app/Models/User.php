@@ -41,4 +41,30 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function isAdmin()
+    {
+        return (bool)$this->roles()->where('name', 'admin')->count();
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    public static function dataTable($query)
+    {
+        return DataTables::of($query)
+            ->addColumn('name', function ($model) {
+                return $model->name;
+            })
+            ->editColumn('created_at', function ($model) {
+                return $model->created_at->format(env('ADMIN_DATETIME_FORMAT'));
+            })
+            ->addColumn('action', function ($model) {
+                return view('admin.users.actions-list', compact('model'))->render();
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
 }
