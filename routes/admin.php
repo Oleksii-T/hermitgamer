@@ -3,12 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\GameController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\Admin\AuthorController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\AttachmentController;
 
 /*
  *
@@ -24,11 +27,13 @@ Route::middleware('is-admin')->group(function () {
 
     Route::resource('users', UserController::class)->except('show');
 
-    Route::resource('settings', CategoryController::class)->only('index');
+    Route::resource('categories', CategoryController::class)->except('show');
 
     Route::resource('tags', TagController::class)->except('show');
 
     Route::resource('games', GameController::class)->except('show');
+
+    Route::resource('authors', AuthorController::class)->except('show');
 
     Route::resource('posts', PostController::class)->except('show');
 
@@ -39,4 +44,9 @@ Route::middleware('is-admin')->group(function () {
     Route::get('pages/{page}/edit-blocks', [PageController::class, 'editBlocks'])->name('pages.edit-blocks');
     Route::put('pages/{page}/update-blocks', [PageController::class, 'updateBlocks'])->name('pages.update-blocks');
     Route::resource('pages', PageController::class)->except('show');
+
+    Route::prefix('attachments')->name('attachments.')->group(function () {
+        Route::get('{attachment}/download', [AttachmentController::class, 'download'])->name('download');
+		Route::delete('{attachment}', [AttachmentController::class, 'destroy'])->name('destroy');
+	});
 });

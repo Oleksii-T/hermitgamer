@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('game_id')->constrained()->onDelete('cascade');
+            $table->foreignId('game_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
-            $table->boolean('is_active');
-            $table->string('css');
-            $table->string('js');
+            $table->foreignId('author_id')->nullable()->constrained()->onDelete('set null');
+            $table->boolean('is_active')->default(false);
+            $table->unsignedInteger('views')->default(0);
             $table->timestamps();
         });
     }

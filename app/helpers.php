@@ -52,7 +52,7 @@ if (!function_exists('readableCase')) {
 }
 
 // print some message to separate log file
-if (!function_exists('devLog')) {
+if (!function_exists('dlog')) {
     function devLog(string $text, array $array=[]) {
         return \Log::channel('dev')->info($text, $array);
     }

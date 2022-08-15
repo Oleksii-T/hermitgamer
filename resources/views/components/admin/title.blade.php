@@ -1,9 +1,3 @@
-{{--
-    Title section of a page in admin panel.
-    Contains breadcrumbs rendering using diglactic/laravel-breadcrumbs package.
-    The breadcrumbs part may be skipped so that this file can be ommited at all.
---}}
-
 <div class="container-fluid">
     <div class="row mb-2">
         <div class="col-sm-6">

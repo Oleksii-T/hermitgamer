@@ -16,10 +16,15 @@ class Setting extends Model
     ];
 
     const EDATABLE_SETTINGS = [
-        'stripe_secret_key',
-        'stripe_product',
-        'currency',
-        'currency_sign',
+        [
+            'name' => 'General',
+            'settings' => [
+                'stripe_secret_key',
+                'stripe_product',
+                'currency',
+                'currency_sign',
+            ]
+        ],
     ];
 
     public static function get($key, $onlyValue = true)

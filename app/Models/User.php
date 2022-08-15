@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Yajra\DataTables\DataTables;
 
 class User extends Authenticatable
 {
@@ -62,7 +63,10 @@ class User extends Authenticatable
                 return $model->created_at->format(env('ADMIN_DATETIME_FORMAT'));
             })
             ->addColumn('action', function ($model) {
-                return view('admin.users.actions-list', compact('model'))->render();
+                return view('components.admin.actions', [
+                    'model' => $model,
+                    'name' => 'users'
+                ])->render();
             })
             ->rawColumns(['action'])
             ->make(true);

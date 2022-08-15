@@ -17,14 +17,11 @@ class SettingController extends Controller
     public function update(Request $request)
     {
         $settings = $request->s;
-        $editableSettings = Setting::EDATABLE_SETTINGS;
 
         foreach ($request->s as $key => $value) {
-            if (in_array($key, $editableSettings)) {
-                Setting::set($key, $value);
-            }
+            Setting::set($key, $value);
         }
 
-        return $this->jsonSuccess(null, 'Settings udpated successfully');
+        return $this->jsonSuccess('Settings udpated successfully');
     }
 }

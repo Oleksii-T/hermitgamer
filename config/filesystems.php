@@ -36,6 +36,41 @@ return [
             'throw' => false,
         ],
 
+        'authors' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/authors'),
+            'url' => env('APP_URL').'/storage/authors',
+            'visibility' => 'public',
+        ],
+
+        'aimages' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/attachments/images'),
+            'url' => env('APP_URL').'/storage/attachments/images',
+            'visibility' => 'public',
+        ],
+
+        'adocuments' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/attachments/documents'),
+            'url' => env('APP_URL').'/storage/attachments/documents',
+            'visibility' => 'public',
+        ],
+
+        'avideos' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/attachments/videos'),
+            'url' => env('APP_URL').'/storage/attachments/videos',
+            'visibility' => 'public',
+        ],
+
+        'attachments' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/attachments'),
+            'url' => env('APP_URL').'/storage/attachments',
+            'visibility' => 'public',
+        ],
+
         'pages' => [
             'driver' => 'local',
             'root' => storage_path('app/public/pages'),

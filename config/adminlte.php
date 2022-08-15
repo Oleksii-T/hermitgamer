@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'usermenu_enabled' => true,
+    'usermenu_enabled' => false,
     'usermenu_header' => false,
     'usermenu_header_class' => 'bg-primary',
     'usermenu_image' => false,
@@ -226,9 +226,49 @@ return [
 
     'menu' => [
         [
-            'text' => 'Link',
-            'url'  => 'admin/link',
-            'icon' => 'fas fa-fw fa-lock',
+            'text' => 'Dashboard',
+            'route'  => 'admin.index',
+            'icon' => 'fas fa-fw fa-home',
+        ],
+        [
+            'text' => 'Users',
+            'route'  => 'admin.users.index',
+            'icon' => 'fas fa-fw fa-users',
+        ],
+        [
+            'text' => 'Games',
+            'route'  => 'admin.games.index',
+            'icon' => 'fas fa-fw fa-gamepad',
+        ],
+        [
+            'text' => 'Categories',
+            'route'  => 'admin.categories.index',
+            'icon' => 'fas fa-fw fa-sitemap',
+        ],
+        [
+            'text' => 'Tags',
+            'route'  => 'admin.tags.index',
+            'icon' => 'fas fa-fw fa-tags',
+        ],
+        [
+            'text' => 'Authors',
+            'route'  => 'admin.authors.index',
+            'icon' => 'fas fa-fw fa-copyright',
+        ],
+        [
+            'text' => 'Posts',
+            'route'  => 'admin.posts.index',
+            'icon' => 'fas fa-fw fa-paragraph',
+        ],
+        [
+            'text' => 'Comments',
+            'route'  => 'admin.comments.index',
+            'icon' => 'fas fa-fw fa-comments',
+        ],
+        [
+            'text' => 'Settings',
+            'route'  => 'admin.settings.index',
+            'icon' => 'fas fa-fw fa-cogs',
         ],
     ],
 

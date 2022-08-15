@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
+            $table->boolean('in_menu')->default(false);
+            $table->unsignedInteger('order');
             $table->timestamps();
         });
     }
