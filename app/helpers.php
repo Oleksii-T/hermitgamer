@@ -34,8 +34,8 @@ if (!function_exists('userAvatar')) {
 }
 
 // transform snake\kebab\camel case to user friendly string
-if (!function_exists('readableCase')) {
-    function readableCase(string $s, $upperCaseEach=false) {
+if (!function_exists('readable')) {
+    function readable(string $s, $upperCaseEach=false) {
         if (strpos('-', $s) !== false) {
             // kebab case
             $s = str_replace('-', $s);

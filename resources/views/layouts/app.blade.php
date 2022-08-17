@@ -14,7 +14,7 @@
             <meta name="og:description" content="{{$page->seo_description}}">
             <title>{{$page->seo_title}}</title>
         @else
-            <title>TradingSim</title>
+            <title>Gamer news</title>
         @endif
         <link rel="stylesheet" href="{{asset('fonts/stylesheet.css')}}">
         <link rel="stylesheet" href="{{asset('css/reset.css')}}">
@@ -43,9 +43,7 @@
         <script src="{{asset('js/main-alpha.js')}}"></script>
         <script src="{{asset('js/main-bravo.js')}}"></script>
         <script src="{{asset('js/main-charlie.js')}}"></script>
-        <script src="{{asset('js/auth.js')}}"></script>
-        <script src="{{asset('js/profile.js')}}"></script>
-        <script src="{{asset('js/pricing.js')}}"></script>
+        <script src="{{asset('js/custom.js')}}"></script>
         @stack('scripts')
     </body>
 </html>

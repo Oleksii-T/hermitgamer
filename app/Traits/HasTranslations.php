@@ -27,9 +27,9 @@ trait HasTranslations
         return $result;
     }
 
-    public function getLocalizedRouteKey($locale)
+    public function getLocalizedRouteKey($locale=null)
     {
-        return $this->localed('slug');
+        return $this->translated('slug', $locale);
     }
 
     public function saveTranslations($fieldsTranslations)
@@ -59,5 +59,14 @@ trait HasTranslations
     public function purgeTranslations()
     {
         $this->translations()->delete();
+    }
+
+    public static function getBySlug($slug, $locale=null)
+    {
+        return Translation::where('field', 'slug')
+            ->where('translatable_type', self::class)
+            ->where('locale', $locale??LaravelLocalization::getCurrentLocale())
+            ->where('value', $slug)
+            ->first()->translatable ?? null;
     }
 }

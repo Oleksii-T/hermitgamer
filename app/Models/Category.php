@@ -3,17 +3,23 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Mcamara\LaravelLocalization\Interfaces\LocalizedUrlRoutable;
 use App\Traits\HasTranslations;
 use Yajra\DataTables\DataTables;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
-class Category extends Model
+class Category extends Model implements LocalizedUrlRoutable
 {
     use HasTranslations;
 
     protected $fillable = [
         'in_menu',
-        'order'
+        'order',
+        'key'
+    ];
+
+    protected $hidden = [
+        'translations'
     ];
 
     protected $appends = self::TRANSLATABLES + [
@@ -37,6 +43,11 @@ class Category extends Model
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function resolveRouteBinding($slug, $field = null)
+    {
+        return self::getBySlug($slug)?? abort(404);
     }
 
     public function name(): Attribute

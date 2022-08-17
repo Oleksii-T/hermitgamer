@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             GameSeeder::class,
             TagSeeder::class,
             AuthorSeeder::class,
+            BlockSeeder::class,
             PostSeeder::class,
         ]);
     }

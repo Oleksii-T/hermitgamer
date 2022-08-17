@@ -26,6 +26,13 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
+                            <label>Key</label>
+                            <input type="text" class="form-control" name="key">
+                            <span data-input="order" class="input-error"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <label>Order</label>
                             <input type="number" class="form-control" name="order">
                             <span data-input="order" class="input-error"></span>

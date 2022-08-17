@@ -25,7 +25,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="text" class="form-control" name="email" value="{{$author->name}}">
+                            <input type="text" class="form-control" name="email" value="{{$author->email}}">
                             <span data-input="email" class="input-error"></span>
                         </div>
                     </div>

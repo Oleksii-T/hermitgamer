@@ -18,6 +18,7 @@ class CategorySeeder extends Seeder
         $schemas = [
             [
                 'model' => [
+                    'key' => 'news',
                     'in_menu' => true,
                     'order' => 1
                 ],
@@ -34,6 +35,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'model' => [
+                    'key' => 'reviews',
                     'in_menu' => true,
                     'order' => 2
                 ],
@@ -50,6 +52,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'model' => [
+                    'key' => 'guides',
                     'in_menu' => true,
                     'order' => 3
                 ],
@@ -66,6 +69,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'model' => [
+                    'key' => 'entertainment',
                     'in_menu' => true,
                     'order' => 4
                 ],
@@ -82,6 +86,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'model' => [
+                    'key' => 'features',
                     'in_menu' => true,
                     'order' => 5
                 ],
@@ -98,6 +103,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'model' => [
+                    'key' => 'tech',
                     'in_menu' => false,
                     'order' => 6
                 ],
@@ -114,6 +120,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'model' => [
+                    'key' => 'video',
                     'in_menu' => false,
                     'order' => 7
                 ],
@@ -130,6 +137,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'model' => [
+                    'key' => 'quizzes',
                     'in_menu' => false,
                     'order' => 8
                 ],

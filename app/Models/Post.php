@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Mcamara\LaravelLocalization\Interfaces\LocalizedUrlRoutable;
 use App\Traits\HasTranslations;
 use App\Traits\HasAttachments;
 use Yajra\DataTables\DataTables;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
-class Post extends Model
+class Post extends Model implements LocalizedUrlRoutable
 {
-    use HasTranslations, HasAttachments;
+    use HasFactory, HasTranslations, HasAttachments;
 
     protected $fillable = [
         'game_id',
@@ -89,9 +91,28 @@ class Post extends Model
         return $this->belongsToMany(Tag::class);
     }
 
+    public function blocks()
+    {
+        return $this->hasMany(Block::class);
+    }
+
+    public function resolveRouteBinding($slug, $field = null)
+    {
+        return self::getBySlug($slug)?? abort(404);
+    }
+
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    public function scopeCategory($query, $key, $get=false)
+    {
+        $res = $query->whereHas('category', function($q) use ($key){
+            $q->where('key', $key);
+        });
+
+        return $get ? $res->get() : $res;
     }
 
     public function slug(): Attribute

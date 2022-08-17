@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\BlockItem;
 use App\Http\Requests\Admin\PostRequest;
 use Illuminate\Http\Request;
 
@@ -32,10 +33,12 @@ class PostController extends Controller
 
     public function create()
     {
-        return view('admin.posts.create');
+        $itemTypes = BlockItem::TYPES;
+
+        return view('admin.posts.create', compact('itemTypes'));
     }
 
-    public function store(PostRequest $request)
+    public function store(Request $request)
     {
         $input = $request->validated();
         $post = Post::create($input);

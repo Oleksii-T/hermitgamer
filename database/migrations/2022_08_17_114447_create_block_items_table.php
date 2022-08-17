@@ -13,10 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('block_items', function (Blueprint $table) {
             $table->id();
-            $table->string('key')->unique();
-            $table->boolean('in_menu')->default(false);
+            $table->foreignId('block_id')->constrained('post_blocks')->onDelete('cascade');
             $table->unsignedInteger('order');
             $table->timestamps();
         });
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('block_items');
     }
 };

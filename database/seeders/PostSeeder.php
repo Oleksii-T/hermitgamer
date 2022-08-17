@@ -10,6 +10,8 @@ use App\Models\Game;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Models\Attachment;
+use App\Models\Translation;
+use Illuminate\Support\Str;
 
 class PostSeeder extends Seeder
 {
@@ -101,6 +103,73 @@ class PostSeeder extends Seeder
                     ]);
                 }
             }
+        }
+
+        $posts = Post::factory()
+            ->for($this->categories->random())
+            ->for($this->authors->random())
+            ->for($this->games->random())
+            ->has(
+                Attachment::factory()->group('thumbnail')->state(
+                    function (array $attributes, Post $post) {
+                        return [
+                            'attachmentable_id' => $post->id,
+                            'attachmentable_type' => Post::class
+                        ];
+                    }
+                ),
+                'thumbnail'
+            )
+            ->has(
+                Translation::factory()->locale('en')->field('title')->text(30)->state(
+                    function (array $attributes, Post $post) {
+                        return [
+                            'translatable_id' => $post->id,
+                            'translatable_type' => Post::class,
+                        ];
+                    }
+                )
+            )
+            ->has(
+                Translation::factory()->locale('en')->field('content')->text(1000)->state(
+                    function (array $attributes, Post $post) {
+                        return [
+                            'translatable_id' => $post->id,
+                            'translatable_type' => Post::class,
+                        ];
+                    }
+                )
+            )
+            ->count(300)
+            ->create();
+
+        $tagsCount = $this->tags->count();
+
+        foreach ($posts as $post) {
+            $translations = [
+                'slug' => [
+                    'en' => Str::slug($post->title),
+                    'es' => 'es-' . Str::slug($post->title)
+                ],
+                'title' => [
+                    'en' => $post->title,
+                    'es' => "ES | $post->title"
+                ],
+                'content' => [
+                    'en' => $post->content,
+                    'es' => "ES | $post->content"
+                ],
+            ];
+            $post->update([
+                'category_id' => $this->categories->random()->id,
+                'game_id' => $this->games->random()->id,
+                'author_id' => $this->authors->random()->id,
+                'views' => rand(0, 500)
+            ]);
+            $post->created_at = now()->subDays(rand(0, 360));
+            $post->save();
+            $post->tags()->sync($this->tags->pluck('id')->shuffle()->take(rand(0, $tagsCount)));
+            $post->saveTranslations($translations);
         }
     }
 

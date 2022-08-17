@@ -46,7 +46,6 @@ $(document).ready(function () {
         e.preventDefault();
         let el = $(this).closest('.image-input');
         let url = $(this).data('url');
-        console.log(url);
         if (!url) {
             el.remove();
             return;
@@ -69,5 +68,52 @@ $(document).ready(function () {
             }
         });
 
+    })
+
+    $('.add-block').click(function(e) {
+        e.preventDefault();
+        console.log('add block');
+        let wapper = $('.post-block-wrapper');
+        wapper.find('.post-block.clone')
+            .clone()
+            .appendTo(wapper)
+            .removeClass('d-none')
+            .removeClass('clone');
+    })
+
+    $(document).on('click', '.remove-block', function (e) {
+        e.preventDefault();
+        console.log('remove block');
+        $(this).closest('.post-block').remove();
+    })
+
+    $(document).on('click', '.add-item', function (e) {
+        e.preventDefault();
+        console.log('add item');
+        let wapper = $(this).closest('.post-block').find('.block-item-wrapper');
+        console.log(wapper.find('.block-item.clone'));
+        wapper.find('.block-item.clone')
+            .clone()
+            .appendTo(wapper)
+            .removeClass('d-none')
+            .removeClass('clone');
+    })
+
+    $(document).on('click', '.remove-item', function (e) {
+        e.preventDefault();
+        console.log('remove item');
+        $(this).closest('.block-item').remove();
+    })
+
+    $(document).on('change', '.item-type-select', function (e) {
+        e.preventDefault();
+        console.log('change item type');
+        let type = '.' + $(this).val();
+        $(this).closest('.block-item')
+            .find('.item-input')
+            .empty()
+            .append(
+                $('.item-inputs').find(type).clone()
+            );
     })
 });

@@ -7,62 +7,21 @@
             </a>
             <nav class="header__menu menu">
                 <ul class="menu__list">
-                    <li>
-                        <a href="#">
-                            Features
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            About Us
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            How It Works
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            FAQ
-                        </a>
-                    </li>
-                    @auth
-                    <li>
-                        <a href="#">
-                            Subscriptions
-                        </a>
-                    </li>
-                    @else
-                    <li>
-                        <a href="#">
-                            Sign Up
-                        </a>
-                    </li>
-                    @endauth
-                    <li>
-                        <a href="#">
-                            Contact Us
-                        </a>
-                    </li>
+                    @foreach ($headerCategories as $cat)
+                        <li>
+                            <a href="{{route('categories.show', $cat->getLocalizedRouteKey())}}">
+                                {{$cat->name}}
+                            </a>
+                        </li>
+                    @endforeach
                 </ul>
             </nav>
             <div class="buttons-group">
-                @auth
-                    <a href="#" class="btn btn-sm btn-white">
-                        Account
+                @foreach(LaravelLocalization::getLocalesOrder() as $localeCode => $properties)
+                    <a rel="alternate" hreflang="{{$localeCode}}" href="{{LaravelLocalization::getLocalizedURL($localeCode, null, [], true)}}" class="btn btn-sm btn-white">
+                        {{$properties['name']}}
                     </a>
-                    <form action="#" method="post" id="logout-form">
-                        @csrf
-                        <button type="submit" class="btn btn-sm btn-blue">
-                            Logout
-                        </button>
-                    </form>
-                @else
-                    <a href="#" class="btn btn-sm btn-white">
-                        Log In
-                    </a>
-                @endauth
+                @endforeach
             </div>
             <div class="header__burger">
                 <span></span>

@@ -27,6 +27,13 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
+                            <label>Key</label>
+                            <input type="text" class="form-control" value="{{$category->key}}" disabled>
+                            <span data-input="order" class="input-error"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
                             <label>Order</label>
                             <input type="number" class="form-control" name="order" value="{{$category->order}}">
                             <span data-input="order" class="input-error"></span>

@@ -170,7 +170,9 @@
                                     <td>{{$user->email}}</td>
                                     <td>{{$user->name}}</td>
                                     <td>{{$user->created_at->format(env('ADMIN_DATETIME_FORMAT'))}}</td>
-                                    <td>@include('admin.users.actions-list', ['model' => $user])</td>
+                                    <td>
+                                        {{-- @include('admin.users.actions-list', ['model' => $user]) --}}
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
