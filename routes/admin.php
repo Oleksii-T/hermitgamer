@@ -39,6 +39,7 @@ Route::middleware('is-admin')->group(function () {
 
     Route::resource('comments', CommentController::class)->except('show');
 
+
     Route::resource('settings', SettingController::class)->except('show');
 
     Route::get('pages/{page}/edit-blocks', [PageController::class, 'editBlocks'])->name('pages.edit-blocks');
@@ -47,6 +48,6 @@ Route::middleware('is-admin')->group(function () {
 
     Route::prefix('attachments')->name('attachments.')->group(function () {
         Route::get('{attachment}/download', [AttachmentController::class, 'download'])->name('download');
-		Route::delete('{attachment}', [AttachmentController::class, 'destroy'])->name('destroy');
-	});
+    });
+    Route::resource('attachments', AttachmentController::class)->except('create', 'store', 'show');
 });

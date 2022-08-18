@@ -29,4 +29,31 @@ $(document).ready(function () {
             }
         });
     })
+
+    $('.make-like').click(function(e) {
+        e.preventDefault();
+        let btn = $(this);
+        if (btn.hasClass('cursor-wait')) {
+            return;
+        }
+        btn.addClass('cursor-wait');
+        let url = btn.data('url');
+
+        $.ajax({
+            url: url,
+            type: 'post',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name=csrf-token]').attr('content')
+            },
+            success: (response)=>{
+                btn.removeClass('cursor-wait');
+                let was = parseInt($('likes-label').text());
+                $('.likes-label').text(was++);
+            },
+            error: function(response) {
+                btn.removeClass('cursor-wait');
+                swal.fire("Oops!", 'Something goes wrong, please try again later', 'error');
+            }
+        });
+    })
 });

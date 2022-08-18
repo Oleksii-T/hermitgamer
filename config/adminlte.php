@@ -188,7 +188,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => '/admin',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => null,
@@ -264,6 +264,16 @@ return [
             'text' => 'Comments',
             'route'  => 'admin.comments.index',
             'icon' => 'fas fa-fw fa-comments',
+        ],
+        [
+            'text' => 'Attachments',
+            'route'  => 'admin.attachments.index',
+            'icon' => 'fas fa-fw fa-folder-open',
+        ],
+        [
+            'text' => 'Return to Site',
+            'url'  => '/',
+            'icon' => 'fas fa-fw fa-reply',
         ],
         [
             'text' => 'Settings',

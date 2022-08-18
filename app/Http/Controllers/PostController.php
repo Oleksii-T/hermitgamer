@@ -34,4 +34,9 @@ class PostController extends Controller
             'isLast' => $isLast
         ]);
     }
+
+    public function like(Request $request, Post $post)
+    {
+        // TODO
+    }
 }
