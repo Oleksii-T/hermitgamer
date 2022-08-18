@@ -3,9 +3,18 @@
 @section('title', 'Edit post')
 
 @section('content_header')
-    <x-admin.title
-        text="Edit Post"
-    />
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <div class="float-left">
+                    <h1 class="m-0">Edit Post General Info</h1>
+                </div>
+                <div class="float-left pl-3">
+                    <a href="{{route('admin.posts.edit-content', $post)}}" class="btn btn-primary">Edit Content</a>
+                </div>
+            </div>
+        </div>
+    </div>
 @stop
 
 @section('content')
@@ -97,13 +106,6 @@
                             <span data-input="tags" class="input-error"></span>
                         </div>
                     </div>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label>Content</label>
-                            <x-admin.multi-lang-input name="content" :model="$post" editor="1" />
-                            <span data-input="content" class="input-error"></span>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -133,48 +135,6 @@
                             <span data-input="js" class="input-error"></span>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header">
-                <h5 class="m-0">
-                    Images
-                    <button type="button" class="btn btn-success add-image-input">Add</button>
-                </h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-4 image-input d-none clone">
-                        <div class="form-group show-uploaded-file-preview show-uploaded-file-name">
-                            <div class="input-group">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="images" name="images[]">
-                                    <label class="custom-file-label" for="images">Choose file</label>
-                                </div>
-                                <div class="input-group-append">
-                                    <span class="input-group-text delete-image-input">Remove</span>
-                                </div>
-                            </div>
-                            <img src="" class="custom-file-preview" alt="">
-                        </div>
-                    </div>
-                    @foreach ($post->images as $image)
-                        <div class="col-md-4 image-input">
-                            <div class="form-group show-uploaded-file-preview show-uploaded-file-name">
-                                <div class="input-group">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="images" name="images[]">
-                                        <label class="custom-file-label" for="images">{{$image->original_name}}</label>
-                                    </div>
-                                    <div class="input-group-append">
-                                        <button type="button" class="input-group-text delete-image-input" data-url="{{route('admin.attachments.destroy', $image)}}">Remove</button>
-                                    </div>
-                                </div>
-                                <img src="{{$image->url}}" class="custom-file-preview" alt="">
-                            </div>
-                        </div>
-                    @endforeach
                 </div>
             </div>
         </div>

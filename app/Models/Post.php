@@ -34,7 +34,6 @@ class Post extends Model implements LocalizedUrlRoutable
 
     const ATTACHMENTS = [
         'thumbnail',
-        'images',
         'js',
         'css'
     ];
@@ -54,11 +53,6 @@ class Post extends Model implements LocalizedUrlRoutable
     public function thumbnail()
     {
         return $this->morphOne(Attachment::class, 'attachmentable')->where('group', 'thumbnail');
-    }
-
-    public function images()
-    {
-        return $this->morphMany(Attachment::class, 'attachmentable')->where('group', 'images');
     }
 
     public function js()
@@ -93,17 +87,14 @@ class Post extends Model implements LocalizedUrlRoutable
 
     public function blocks()
     {
-        return $this->hasMany(Block::class);
-    }
-
-    public function resolveRouteBinding($slug, $field = null)
-    {
-        return self::getBySlug($slug)?? abort(404);
+        return $this->hasMany(PostBlock::class);
     }
 
     public function scopeActive($query)
     {
-        return $query->where('is_active', true);
+        return $query
+            // ->has('blocks')
+            ->where('is_active', true);
     }
 
     public function scopeCategory($query, $key, $get=false)

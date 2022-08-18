@@ -35,10 +35,13 @@ Route::middleware('is-admin')->group(function () {
 
     Route::resource('authors', AuthorController::class)->except('show');
 
+    Route::prefix('posts')->name('posts.')->group(function () {
+        Route::get('{post}/edit-content', [PostController::class, 'editContent'])->name('edit-content');
+        Route::put('{post}/update-content', [PostController::class, 'updateContent'])->name('update-content');
+    });
     Route::resource('posts', PostController::class)->except('show');
 
     Route::resource('comments', CommentController::class)->except('show');
-
 
     Route::resource('settings', SettingController::class)->except('show');
 

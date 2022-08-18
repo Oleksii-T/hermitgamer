@@ -39,13 +39,8 @@ class PostRequest extends FormRequest
             'author_id' => ['required', 'exists:authors,id'],
             'tags' => ['nullable', 'array'],
             'tags.*' => ['nullable', 'exists:tags,id'],
-            'content' => ['required', 'array'],
-            'content.en' => ['required', 'string', 'max:255'],
-            'content.*' => ['nullable', 'string', 'max:10000'],
             'css' => ['nullable', 'file', 'max:10000'],
             'js' => ['nullable', 'file', 'max:10000'],
-            'images' => ['nullable', 'array'],
-            'images.*' => ['nullable', 'file', 'max:5000'],
         ];
     }
 }

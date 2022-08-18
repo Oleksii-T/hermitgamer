@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('post_blocks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('post_id')->constrained()->onDelete('cascade');
-            $table->string('id');
+            $table->string('ident');
             $table->unsignedInteger('order');
             $table->timestamps();
         });

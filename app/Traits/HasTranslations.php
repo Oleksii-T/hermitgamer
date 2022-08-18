@@ -61,12 +61,18 @@ trait HasTranslations
         $this->translations()->delete();
     }
 
-    public static function getBySlug($slug, $locale=null)
+    public function resolveRouteBinding($slug, $field = null)
     {
-        return Translation::where('field', 'slug')
-            ->where('translatable_type', self::class)
-            ->where('locale', $locale??LaravelLocalization::getCurrentLocale())
-            ->where('value', $slug)
-            ->first()->translatable ?? null;
+        if (request()->segment(1) === 'admin' || !in_array('slug', self::TRANSLATABLES)) {
+            $res = self::find($slug);
+        } else {
+            $res = Translation::where('field', 'slug')
+                ->where('translatable_type', self::class)
+                ->where('locale', LaravelLocalization::getCurrentLocale())
+                ->where('value', $slug)
+                ->first()->translatable ?? null;
+        }
+
+        return $res ?? abort(404);
     }
 }

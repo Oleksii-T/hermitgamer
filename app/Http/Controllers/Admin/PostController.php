@@ -33,12 +33,10 @@ class PostController extends Controller
 
     public function create()
     {
-        $itemTypes = BlockItem::TYPES;
-
-        return view('admin.posts.create', compact('itemTypes'));
+        return view('admin.posts.create');
     }
 
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
         $input = $request->validated();
         $post = Post::create($input);
@@ -46,11 +44,17 @@ class PostController extends Controller
         $post->addAttachment($input['thumbnail']??null, 'thumbnail');
         $post->addAttachment($input['css']??null, 'css');
         $post->addAttachment($input['js']??null, 'js');
-        $post->addAttachment($input['images']??[], 'images');
 
         return $this->jsonSuccess('Post created successfully', [
-            'redirect' => route('admin.posts.index')
+            'redirect' => route('admin.posts.edit-content', $post)
         ]);
+    }
+
+    public function editContent(Post $post)
+    {
+        $itemTypes = BlockItem::TYPES;
+
+        return view('admin.posts.edit-content', compact('itemTypes', 'post'));
     }
 
     public function edit(Post $post)

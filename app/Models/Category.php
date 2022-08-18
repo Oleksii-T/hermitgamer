@@ -45,11 +45,6 @@ class Category extends Model implements LocalizedUrlRoutable
         return $this->hasMany(Post::class);
     }
 
-    public function resolveRouteBinding($slug, $field = null)
-    {
-        return self::getBySlug($slug)?? abort(404);
-    }
-
     public function name(): Attribute
     {
         return new Attribute(
