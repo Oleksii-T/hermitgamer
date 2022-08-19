@@ -37,7 +37,7 @@ Route::middleware('is-admin')->group(function () {
 
     Route::prefix('posts')->name('posts.')->group(function () {
         Route::get('{post}/edit-content', [PostController::class, 'editContent'])->name('edit-content');
-        Route::put('{post}/update-content', [PostController::class, 'updateContent'])->name('update-content');
+        Route::post('{post}/update-content', [PostController::class, 'updateContent'])->name('update-content');
     });
     Route::resource('posts', PostController::class)->except('show');
 

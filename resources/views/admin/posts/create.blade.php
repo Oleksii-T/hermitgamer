@@ -9,7 +9,7 @@
 @stop
 
 @section('content')
-    <form action="{{ route('admin.posts.store') }}" method="POST" class="general-ajax-submit@">
+    <form action="{{ route('admin.posts.store') }}" method="POST" class="general-ajax-submit">
         @csrf
         <div class="card">
             <div class="card-header">

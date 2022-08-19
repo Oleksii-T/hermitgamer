@@ -53,7 +53,7 @@ if (!function_exists('readable')) {
 
 // print some message to separate log file
 if (!function_exists('dlog')) {
-    function devLog(string $text, array $array=[]) {
+    function dlog(string $text, array $array=[]) {
         return \Log::channel('dev')->info($text, $array);
     }
 }

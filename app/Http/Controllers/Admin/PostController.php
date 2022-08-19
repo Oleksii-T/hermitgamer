@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\BlockItem;
 use App\Http\Requests\Admin\PostRequest;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 
 class PostController extends Controller
 {
@@ -52,9 +53,69 @@ class PostController extends Controller
 
     public function editContent(Post $post)
     {
-        $itemTypes = BlockItem::TYPES;
+        $appData = json_encode([
+            'locales' => \LaravelLocalization::getLocalesOrder(),
+            'itemTypes' => BlockItem::TYPES,
+            'post' => [
+                'id' => $post->id,
+                'blocks' => $post->blocks()->with('items')->get()
+            ]
+        ]);
 
-        return view('admin.posts.edit-content', compact('itemTypes', 'post'));
+        return view('admin.posts.edit-content', compact('appData', 'post'));
+    }
+
+    public function updateContent(Request $request, Post $post)
+    {
+        $request->validate([
+            'blocks' => ['required', 'array'],
+            'blocks.*.items' => ['required', 'array'],
+            'blocks.*.items.*' => ['required', 'array'],
+        ]);
+
+        foreach ($request->blocks as $b) {
+            $block = $post->blocks()->updateOrcreate(
+                [
+                    'id' => $b['id']??null
+                ],
+                [
+                    'ident' => $b['ident'],
+                    'order' => $b['order']
+                ]
+            );
+            foreach ($b['items'] as $i) {
+                $item = $block->items()->updateOrCreate(
+                    [
+                        'id' => $i['id']??null
+                    ],
+                    [
+                        'type' => $i['type'],
+                        'order' => $i['order']
+                    ]
+                );
+                if ($item['type'] == 'title') {
+                    $item->saveTranslation($i['value'], 'title');
+                } elseif ($item['type'] == 'text') {
+                    $item->saveTranslation($i['value'], 'text');
+                } elseif ($item['type'] == 'image') {
+                    if ($i['value'] instanceof UploadedFile) {
+                        $item->addAttachment($i['value']);
+                    }
+                } elseif ($item['type'] == 'video') {
+                    if ($i['value'] instanceof UploadedFile) {
+                        $item->addAttachment($i['value']);
+                    }
+                } elseif ($item['type'] == 'slider') {
+                    foreach ($i['value'] as $sliderImage) {
+                        if ($sliderImage instanceof UploadedFile) {
+                            $item->addAttachment($sliderImage);
+                        }
+                    }
+                }
+            }
+        }
+
+        return $this->jsonSuccess('Post content saved successfully', $post);
     }
 
     public function edit(Post $post)

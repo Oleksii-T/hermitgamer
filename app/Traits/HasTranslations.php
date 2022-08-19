@@ -39,21 +39,35 @@ trait HasTranslations
             if (!in_array($field, $translatables)) {
                 continue;
             }
-            foreach ($translations as $locale => $value) {
-                $value ??= '';
-                $this->translations()->updateOrCreate(
-                    [
-                        'field' => $field,
-                        'locale' => $locale
-                    ],
-                    [
-                        'field' => $field,
-                        'locale' => $locale,
-                        'value' => $value
-                    ]
-                );
-            }
+            $this->saveTranslation($translations, $field);
         }
+    }
+
+    public function saveTranslation($translations, $field)
+    {
+        foreach ($translations as $locale => $value) {
+            $value ??= '';
+            $this->translations()->updateOrCreate(
+                [
+                    'field' => $field,
+                    'locale' => $locale
+                ],
+                [
+                    'field' => $field,
+                    'locale' => $locale,
+                    'value' => $value
+                ]
+            );
+        }
+    }
+
+    public function compileTranslation($field)
+    {
+        $translations = $this->translations->where('field', $field);
+        foreach ($translations as $translation) {
+            $res[$translation->locale] = $translation->value;
+        }
+        return $res;
     }
 
     public function purgeTranslations()

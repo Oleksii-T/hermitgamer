@@ -7,11 +7,13 @@ use App\Models\Attachment;
 
 trait HasAttachments
 {
-    public function addAttachment($attachment, string $group='')
+    public function addAttachment($attachment, string $group=null)
     {
         if (!$attachment) {
             return;
         }
+
+        $group ??= 'files';
 
         if(is_array($attachment)) {
             $attachments = $attachment;
