@@ -2,12 +2,10 @@
     <div>
         <div class="card">
             <div class="card-header row">
-                <h5 class="m-0 col">
-                    Content
-                    <button type="button" class="btn btn-info" @click="check()">check</button>
-                </h5>
+                <h5 class="m-0 col">Content</h5>
                 <div class="col">
                     <button type="button" class="btn btn-success d-block float-right" @click="addBlock()">Add Block</button>
+                    <button type="button" class="btn btn-info d-block float-right mr-2" @click="addPreset()">Add Preset</button>
                 </div>
             </div>
             <div class="card-body">
@@ -16,12 +14,37 @@
                         <div class="card-header">
                             <div class=" row">
                                 <div class="col">
-                                    <h5 class="m-0 d-inline">id=</h5>
-                                    "<input type="text" class="form-control d-inline w-auto" v-model="block.ident">"
+                                    <ul class="nav nav-tabs" style="display: flex;">
+                                        <li v-for="(localeParams, locale) in dataprops.locales" :key="locale" class="nav-item">
+                                            <a
+                                                :href="`#test${locale}`"
+                                                class="nav-link"
+                                                :class="{ active: (block.langTab??'en')==locale }"
+                                                @click="block.langTab = locale"
+                                            >
+                                                Name {{locale}}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div v-for="(localeParams, locale) in dataprops.locales" :key="locale" class="tab-pane" :class="{ active: (block.langTab??'en')==locale }">
+                                            <input v-model="block.name[locale]" class="form-control" type="text">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col">
-                                    <button type="button" class="btn btn-warning d-block float-right" @click="removeBlock(bi)">Remove</button>
+                                    <ul class="nav nav-tabs" style="display: flex;">
+                                        <li class="nav-item">
+                                            <a class="nav-link">
+                                               Id
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <input type="text" class="form-control" v-model="block.ident">
+                                </div>
+                                <div class="col">
                                     <button type="button" class="btn btn-success d-block mr-2 float-right" @click="addItem(bi)">Add Item</button>
+                                    <button v-if="blocks.length != 1" type="button" class="btn btn-warning mr-2 d-block float-right" @click="removeBlock(bi)">Remove</button>
                                     <button v-if="bi != 0" type="button" class="btn btn-info d-block mr-2 float-right" @click="move(blocks, bi, 'up')">^</button>
                                     <button v-if="blocks.length != 1 && blocks.length-1 != bi" type="button" class="btn btn-info d-block mr-2 float-right" @click="move(blocks, bi, 'down')">v</button>
                                 </div>
@@ -33,9 +56,9 @@
                                     <div class="form-group">
                                         <div class="mb-2">
                                             <select v-model="item.type" class="form-control w-auto d-inline item-type-select">
-                                                <option v-for="(iType, iti) in dataprops.itemTypes" :key="iti" :value="iType">{{iType}}</option>
+                                                <option v-for="(iType, iti) in dataprops.itemTypes" :key="iti" :value="iType">{{readable(iType)}}</option>
                                             </select>
-                                            <button type="button" class="btn btn-warning remove-item float-right" @click="removeItem(bi, ii)">Remove</button>
+                                            <button v-if="block.items.length != 1" type="button" class="btn btn-warning remove-item float-right" @click="removeItem(bi, ii)">Remove</button>
                                             <button v-if="ii != 0" type="button" class="btn btn-info d-block mr-2 float-right" @click="move(block.items, ii, 'up')">^</button>
                                             <button v-if="block.items.length != 1 && block.items.length-1 != ii" type="button" class="btn btn-info d-block mr-2 float-right" @click="move(block.items, ii, 'down')">v</button>
                                         </div>
@@ -55,7 +78,10 @@
                                             <div class="tab-content">
                                                 <div v-for="(localeParams, locale) in dataprops.locales" :key="locale" class="tab-pane" :class="{ active: (item.langTab??'en')==locale }">
                                                     <input v-if="item.type == 'title'" v-model="item.value[locale]" class="form-control" type="text">
-                                                    <textarea v-if="item.type == 'text'" v-model="item.value[locale]" class="form-control summernote"></textarea>
+                                                    <SummernoteEditor
+                                                        v-if="item.type == 'text'"
+                                                        v-model="item.value[locale]"
+                                                    />
                                                 </div>
                                             </div>
                                         </template>
@@ -84,9 +110,13 @@
                     </div>
                 </div>
             </div>
+            <div class="card-footer">
+                <button type="button" class="btn btn-success d-block float-right" @click="addBlock()">Add Block</button>
+                <button type="button" class="btn btn-info d-block float-right mr-2" @click="addPreset()">Add Preset</button>
+            </div>
         </div>
         <button type="submit" class="btn btn-success min-w-100 mr-2" @click="save()">Save</button>
-        <a href="/admin/posts" class="btn btn-outline-secondary text-dark min-w-100">Cancel</a>
+        <a href="/admin/posts" class="btn btn-outline-secondary text-dark min-w-100 mr-2">Cancel</a>
     </div>
 </template>
 
@@ -96,7 +126,8 @@ export default {
         'dataprops'
     ],
     inject: [
-        'helpers'
+        'helpers',
+        'alert'
     ],
     components: {
 
@@ -110,6 +141,80 @@ export default {
     methods: {
         check() {
             console.log('blocks:', [...this.blocks]);
+        },
+        readable(value) {
+            return value.charAt(0).toUpperCase() + value.slice(1);
+        },
+        async addPreset() {
+            const { value: preset } = await this.alert.fire({
+                title: 'Select preset of blocks',
+                input: 'select',
+                inputOptions: {
+                    'preset-1': 'Preset 1'
+                },
+                inputPlaceholder: 'Select a preset',
+                showCancelButton: true,
+                confirmButtonText: 'Select'
+            });
+
+            if (!preset) {
+                return;
+            }
+
+            let maxOrder = this.blocks.length
+                ? Math.max(...this.blocks.map(o => o.order))
+                : 0;
+            if (preset == 'preset-1') {
+                this.blocks.push({
+                    ident: 'trailder',
+                    order: maxOrder+1,
+                    name: {
+                        en: 'Trailer'
+                    },
+                    items: [
+                        {
+                            type: 'title',
+                            order: 1,
+                            langTab: 'en',
+                            value: {
+                                en: 'Trailer'
+                            }
+                        },
+                        {
+                            type: 'video',
+                            order: 2,
+                            value: {}
+                        }
+                    ]
+                });
+                this.blocks.push({
+                    ident: 'gameplay',
+                    order: maxOrder+2,
+                    name: {
+                        en: 'Gameplay'
+                    },
+                    items: [
+                        {
+                            type: 'title',
+                            order: 1,
+                            langTab: 'en',
+                            value: {
+                                en: 'Gameplay'
+                            }
+                        },
+                        {
+                            type: 'image',
+                            order: 2,
+                            value: {}
+                        },
+                        {
+                            type: 'text',
+                            order: 3,
+                            value: {}
+                        }
+                    ]
+                });
+            }
         },
         fileUploaded(obj, event) {
             let file = event.target.files[0];
@@ -127,6 +232,7 @@ export default {
             let trgOrder = next.order;
             next.order = curr.order;
             curr.order = trgOrder;
+            // $('.summernote').summernote();
         },
         addBlock() {
             let maxOrder = this.blocks.length
@@ -134,7 +240,15 @@ export default {
                 : 0;
             this.blocks.push({
                 ident: '',
-                items: [],
+                name: {},
+                items: [
+                    {
+                        type: 'title',
+                        order: 1,
+                        langTab: 'en',
+                        value: {}
+                    }
+                ],
                 order: maxOrder+1
             });
         },
@@ -171,8 +285,6 @@ export default {
                 }
             )
             .then(response => {
-                console.log('response', response);
-
                 app.helpers.showNotif(response.data.message, '', response.data.success).then(res => {
                     window.location.reload();
                 });
@@ -187,11 +299,9 @@ export default {
         }
     },
     created() {
-        console.log('DATAPROPS:', this.dataprops); //!LOG
         this.blocks = this.dataprops.post.blocks;
-
-        for(let dataKey in this.blocks) {
-            console.log('dataKey', dataKey); //! LOG
+        if (!this.blocks.length) {
+            this.addBlock();
         }
     }
 }

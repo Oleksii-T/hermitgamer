@@ -14,3 +14,6 @@
 .custom-file-preview {
     max-width: 80px;
 }
+.note-editor .note-editable {
+    white-space: pre-line;
+}

@@ -53,12 +53,19 @@ class PostController extends Controller
 
     public function editContent(Post $post)
     {
+        //TODO: move logic to "Eloquent: API Resource"
+        $blocks = $post->blocks()->with('items')->get();
+        $blocksA = $blocks->toArray();
+        foreach ($blocksA as $i => $block) {
+            $blocksA[$i]['name'] = $blocks->where('id', $block['id'])->first()->translatedFull('name', true);
+        }
+
         $appData = json_encode([
             'locales' => \LaravelLocalization::getLocalesOrder(),
             'itemTypes' => BlockItem::TYPES,
             'post' => [
                 'id' => $post->id,
-                'blocks' => $post->blocks()->with('items')->get()
+                'blocks' => $blocksA
             ]
         ]);
 
@@ -69,6 +76,9 @@ class PostController extends Controller
     {
         $request->validate([
             'blocks' => ['required', 'array'],
+            'blocks.*.ident' => ['required', 'string', 'max:255'],
+            'blocks.*.name' => ['required', 'array'],
+            'blocks.*.name.en' => ['required', 'string', 'max:255'],
             'blocks.*.items' => ['required', 'array'],
             'blocks.*.items.*' => ['required', 'array'],
         ]);
@@ -83,6 +93,7 @@ class PostController extends Controller
                     'order' => $b['order']
                 ]
             );
+            $block->saveTranslations($b);
             foreach ($b['items'] as $i) {
                 $item = $block->items()->updateOrCreate(
                     [

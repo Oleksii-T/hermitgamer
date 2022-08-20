@@ -21,18 +21,39 @@
                         <div class="post-page__img">
                             <img src="{{ $post->thumbnail->url }}" alt="{{ $post->thumbnail->alt }}" title="{{ $post->thumbnail->title }}">
                         </div>
-                        <div class="text">
-                            <p style="white-space: pre-line">{!! $post->content !!}<br></p>
-                        </div>
-
-                        Images:
-                        <div class="row">
-                            @foreach ($post->images as $image)
-                            <div class="col-4" style="overflow: hidden">
-                                <img style="width: 100%;" src="{{ $image->url }}" alt="">
-                            </div>
+                        <div class="post-menu">
+                            @foreach ($post->blocks as $block)
+                                <a href="#{{$block->ident}}">{{$block->name}}</a>
                             @endforeach
                         </div>
+                        <div class="post-content">
+                            @foreach ($post->blocks as $block)
+                                <div id="{{$block->ident}}">
+                                    @foreach ($block->items as $item)
+                                        @switch($item->type)
+                                            @case('title')
+                                                <h2>{{$item->translated('title')}}</h2>
+                                                @break
+                                            @case('text')
+                                                <p>{!!$item->translated('text')!!}</p>
+                                                @break
+                                            @case('image')
+                                                <img src="{{$item->file()->url}}" alt="{{$item->file()->alt}}" title="{{$item->file()->title}}">
+                                                @break
+                                            @case('video')
+                                                <video src="{{$item->file()->url}}"></video>
+                                                @break
+                                            @case('slider')
+                                                TODO
+                                                @break
+                                        @endswitch
+                                    @endforeach
+                                </div>
+                            @endforeach
+                        </div>
+                        {{-- <div class="text">
+                            <p style="white-space: pre-line">{!! $post->content !!}<br></p>
+                        </div> --}}
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3">

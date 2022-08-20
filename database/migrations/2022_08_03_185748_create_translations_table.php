@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('translatable_type');
             $table->string('locale');
             $table->string('field');
-            $table->text('value');
+            $table->longText('value');
             $table->timestamps();
         });
     }

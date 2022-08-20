@@ -27,6 +27,18 @@ trait HasTranslations
         return $result;
     }
 
+    public function translatedFull($field, $compile=false)
+    {
+        $translations = $this->translations->where('field', $field);
+        if (!$compile) {
+            return $translations;
+        }
+        foreach ($translations as $translation) {
+            $res[$translation->locale] = $translation->value;
+        }
+        return $res;
+    }
+
     public function getLocalizedRouteKey($locale=null)
     {
         return $this->translated('slug', $locale);

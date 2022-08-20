@@ -61,7 +61,7 @@ class BlockItem extends Model
         return new Attribute(
             get: function () {
                 if (in_array($this->type, ['title', 'text'])) {
-                    return $this->compileTranslation($this->type);
+                    return $this->translatedFull($this->type, true);
                 }
                 if (in_array($this->type, ['image', 'video'])) {
                     $file = $this->file();

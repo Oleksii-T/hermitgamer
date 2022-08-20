@@ -28,8 +28,7 @@ class Post extends Model implements LocalizedUrlRoutable
 
     const TRANSLATABLES = [
         'slug',
-        'title',
-        'content'
+        'title'
     ];
 
     const ATTACHMENTS = [
@@ -117,13 +116,6 @@ class Post extends Model implements LocalizedUrlRoutable
     {
         return new Attribute(
             get: fn () => $this->translated('title')
-        );
-    }
-
-    public function content(): Attribute
-    {
-        return new Attribute(
-            get: fn () => $this->translated('content')
         );
     }
 
