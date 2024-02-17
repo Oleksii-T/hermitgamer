@@ -3,53 +3,26 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\HasTranslations;
 use Yajra\DataTables\DataTables;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Tag extends Model
 {
-    use HasTranslations;
-
     protected $fillable = [
+        'name',
+        'slug',
         'updated_at' // fix for mass assignment
     ];
 
-    protected $appends = self::TRANSLATABLES + [
-
-    ];
-
-    const TRANSLATABLES = [
-        'name',
-        'slug'
-    ];
-
-    protected static function boot()
+    // overload laravel`s method for route key generation
+    public function getRouteKey()
     {
-        parent::boot();
-
-        static::deleting(function ($model) {
-            $model->purgeTranslations();
-        });
+        return $this->slug;
     }
 
     public function posts()
     {
         return $this->hasMany(Post::class);
-    }
-
-    public function name(): Attribute
-    {
-        return new Attribute(
-            get: fn () => $this->translated('name')
-        );
-    }
-
-    public function slug(): Attribute
-    {
-        return new Attribute(
-            get: fn () => $this->translated('slug')
-        );
     }
 
     public static function dataTable($query)

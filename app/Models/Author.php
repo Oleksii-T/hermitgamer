@@ -2,16 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Traits\HasTranslations;
-use Yajra\DataTables\DataTables;
 use App\Casts\File;
+use Yajra\DataTables\DataTables;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Author extends Model
 {
-    use HasTranslations;
-
     protected $fillable = [
         'name',
         'avatar',
@@ -19,11 +16,9 @@ class Author extends Model
         'instagram',
         'youtube',
         'email',
+        'slug',
+        'description',
         'steam'
-    ];
-
-    protected $appends = self::TRANSLATABLES + [
-
     ];
 
     protected $casts = [
@@ -32,37 +27,9 @@ class Author extends Model
 
     public $disk = 'authors';
 
-    const TRANSLATABLES = [
-        'slug',
-        'description',
-    ];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::deleting(function ($model) {
-            $model->purgeTranslations();
-        });
-    }
-
     public function posts()
     {
         return $this->hasMany(Post::class);
-    }
-
-    public function slug(): Attribute
-    {
-        return new Attribute(
-            get: fn () => $this->translated('slug')
-        );
-    }
-
-    public function description(): Attribute
-    {
-        return new Attribute(
-            get: fn () => $this->translated('description')
-        );
     }
 
     public static function dataTable($query)

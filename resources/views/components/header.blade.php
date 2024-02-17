@@ -9,7 +9,7 @@
                 <ul class="menu__list">
                     @foreach ($headerCategories as $cat)
                         <li>
-                            <a href="{{route('categories.show', $cat->getLocalizedRouteKey())}}">
+                            <a href="{{route('categories.show', $cat)}}">
                                 {{$cat->name}}
                             </a>
                         </li>
@@ -17,11 +17,7 @@
                 </ul>
             </nav>
             <div class="buttons-group">
-                @foreach(LaravelLocalization::getLocalesOrder() as $localeCode => $properties)
-                    <a rel="alternate" hreflang="{{$localeCode}}" href="{{LaravelLocalization::getLocalizedURL($localeCode, null, [], true)}}" class="btn btn-sm btn-white">
-                        {{$properties['name']}}
-                    </a>
-                @endforeach
+                
             </div>
             <div class="header__burger">
                 <span></span>

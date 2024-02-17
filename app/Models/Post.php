@@ -4,31 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Mcamara\LaravelLocalization\Interfaces\LocalizedUrlRoutable;
-use App\Traits\HasTranslations;
 use App\Traits\HasAttachments;
 use Yajra\DataTables\DataTables;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
-class Post extends Model implements LocalizedUrlRoutable
+class Post extends Model
 {
-    use HasFactory, HasTranslations, HasAttachments;
+    use HasFactory, HasAttachments;
 
     protected $fillable = [
         'game_id',
+        'slug',
+        'title',
         'category_id',
         'author_id',
         'is_active',
         'views',
-    ];
-
-    protected $appends = self::TRANSLATABLES + [
-
-    ];
-
-    const TRANSLATABLES = [
-        'slug',
-        'title'
     ];
 
     const ATTACHMENTS = [
@@ -45,8 +36,13 @@ class Post extends Model implements LocalizedUrlRoutable
             foreach (self::ATTACHMENTS as $group) {
                 $model->purgeFiles($group);
             }
-            $model->purgeTranslations();
         });
+    }
+
+    // overload laravel`s method for route key generation
+    public function getRouteKey()
+    {
+        return $this->slug;
     }
 
     public function thumbnail()
@@ -96,27 +92,11 @@ class Post extends Model implements LocalizedUrlRoutable
             ->where('is_active', true);
     }
 
-    public function scopeCategory($query, $key, $get=false)
+    public function scopeCategory($query, $slug, $get=false)
     {
-        $res = $query->whereHas('category', function($q) use ($key){
-            $q->where('key', $key);
-        });
+        $res = $query->whereRelation('category', 'slug', $slug);
 
         return $get ? $res->get() : $res;
-    }
-
-    public function slug(): Attribute
-    {
-        return new Attribute(
-            get: fn () => $this->translated('slug')
-        );
-    }
-
-    public function title(): Attribute
-    {
-        return new Attribute(
-            get: fn () => $this->translated('title')
-        );
     }
 
     public static function dataTable($query)

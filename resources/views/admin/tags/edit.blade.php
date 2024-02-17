@@ -18,14 +18,14 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Name</label>
-                            <x-admin.multi-lang-input name="name" :model="$tag" />
+                            <input type="text" class="form-control" name="name" value="{{$tag->name}}">
                             <span data-input="slug" class="input-error"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Slug</label>
-                            <x-admin.multi-lang-input name="slug" :model="$tag" />
+                            <input type="text" class="form-control" name="name" value="{{$tag->slug}}">
                             <span data-input="slug" class="input-error"></span>
                         </div>
                     </div>

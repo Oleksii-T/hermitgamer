@@ -41,14 +41,14 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Name</label>
-                            <x-admin.multi-lang-input name="name" />
-                            <span data-input="slug" class="input-error"></span>
+                            <input type="text" class="form-control" name="name">
+                            <span data-input="name" class="input-error"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Slug</label>
-                            <x-admin.multi-lang-input name="slug" />
+                            <input type="text" class="form-control" name="slug">
                             <span data-input="slug" class="input-error"></span>
                         </div>
                     </div>

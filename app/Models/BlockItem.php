@@ -4,12 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use App\Traits\HasTranslations;
 use App\Traits\HasAttachments;
 
 class BlockItem extends Model
 {
-    use HasTranslations, HasAttachments;
+    use HasAttachments;
 
     protected $fillable = [
         'block_id',

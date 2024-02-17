@@ -23,10 +23,18 @@ class PostController extends Controller
         $page = $request->page ?? 0;
         $isLast = false;
 
-        $posts = Post::active()->category($request->category)->latest()->offset($perPage * $page)->limit($perPage)->get();
+        $posts = Post::query()
+            ->active()
+            ->category($request->category)
+            ->latest()
+            ->offset($perPage * $page)
+            ->limit($perPage)
+            ->get();
+
         if ($posts->count() < $perPage) {
             $isLast = true;
         }
+
         //todo: check next page to prevent empty page load
 
         return $this->jsonSuccess('', [

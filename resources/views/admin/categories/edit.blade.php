@@ -25,13 +25,6 @@
                             <span data-input="in_menu" class="input-error"></span>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Key</label>
-                            <input type="text" class="form-control" value="{{$category->key}}" disabled>
-                            <span data-input="order" class="input-error"></span>
-                        </div>
-                    </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Order</label>
@@ -42,14 +35,14 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Name</label>
-                            <x-admin.multi-lang-input name="name" :model="$category" />
+                            <input type="text" class="form-control" name="name" value="{{$category->name}}">
                             <span data-input="slug" class="input-error"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Slug</label>
-                            <x-admin.multi-lang-input name="slug" :model="$category" />
+                            <input type="text" class="form-control" name="name" value="{{$category->slug}}">
                             <span data-input="slug" class="input-error"></span>
                         </div>
                     </div>

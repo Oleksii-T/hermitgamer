@@ -57,17 +57,6 @@ return [
             'ignore_exceptions' => false,
         ],
 
-        'commands' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/commands.log'),
-            'level' => env('LOG_LEVEL', 'debug'),
-        ],
-
-        'dev' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/dev.log'),
-        ],
-
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
@@ -79,6 +68,17 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => 14,
+        ],
+
+        'commands' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/commands.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
+
+        'dev' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/dev.log'),
         ],
 
         'slack' => [

@@ -18,21 +18,21 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Name</label>
-                            <x-admin.multi-lang-input name="name" :model="$game" />
+                            <input type="text" class="form-control" name="name" value="{{$game->name}}">
                             <span data-input="slug" class="input-error"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Slug</label>
-                            <x-admin.multi-lang-input name="slug" :model="$game" />
+                            <input type="text" class="form-control" name="name" value="{{$game->slug}}">
                             <span data-input="slug" class="input-error"></span>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Description</label>
-                            <x-admin.multi-lang-input name="description" :model="$game" editor='1' />
+                            <textarea name="description" class="form-control">{{$game->description}}</textarea>
                             <span data-input="description" class="input-error"></span>
                         </div>
                     </div>

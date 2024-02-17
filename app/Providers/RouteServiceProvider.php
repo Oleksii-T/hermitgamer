@@ -28,6 +28,18 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->configureRateLimiting();
 
+        Route::bind('game', function ($value) {
+            return \App\Models\Game::where('slug', $value)->first();
+        });
+
+        Route::bind('category', function ($value) {
+            return \App\Models\Category::where('slug', $value)->first();
+        });
+
+        Route::bind('tag', function ($value) {
+            return \App\Models\Tag::where('slug', $value)->first();
+        });
+
         $this->routes(function () {
             Route::middleware('api')
                 ->prefix('api')
@@ -40,11 +52,6 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('admin')
                 ->as('admin.')
                 ->group(base_path('routes/admin.php'));
-
-            Route::middleware(['web'])
-                ->prefix('dev')
-                ->as('dev.')
-                ->group(base_path('routes/dev.php'));
         });
     }
 

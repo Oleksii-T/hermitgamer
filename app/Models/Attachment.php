@@ -7,11 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Yajra\DataTables\DataTables;
-use App\Traits\HasTranslations;
 
 class Attachment extends Model
 {
-    use HasFactory, HasTranslations;
+    use HasFactory;
 
     /**
      * @var array
