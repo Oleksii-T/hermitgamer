@@ -42,14 +42,14 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Alt</label>
-                            <x-admin.multi-lang-input name="alt" :model="$attachment" />
+                            <input type="text" class="form-control" name="alt" value="{{$attachment->alt}}">
                             <span data-input="alt" class="input-error"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Title</label>
-                            <x-admin.multi-lang-input name="title" :model="$attachment" />
+                            <input type="text" class="form-control" name="title" value="{{$attachment->title}}">
                             <span data-input="title" class="input-error"></span>
                         </div>
                     </div>

@@ -32,6 +32,10 @@ class RouteServiceProvider extends ServiceProvider
             return \App\Models\Game::where('slug', $value)->first();
         });
 
+        Route::bind('post', function ($value) {
+            return \App\Models\Post::where('slug', $value)->first();
+        });
+
         Route::bind('category', function ($value) {
             return \App\Models\Category::where('slug', $value)->first();
         });

@@ -1,11 +1,10 @@
 @extends('layouts.admin.app')
 
-@section('title', 'Authors')
+@section('title', 'Attachments')
 
 @section('content_header')
     <x-admin.title
-        text="Authors"
-        :button="['+ Add Author', route('admin.authors.create')]"
+        text="Attachments"
     />
 @stop
 

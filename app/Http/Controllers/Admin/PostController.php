@@ -57,11 +57,11 @@ class PostController extends Controller
         $blocks = $post->blocks()->with('items')->get();
         $blocksA = $blocks->toArray();
         foreach ($blocksA as $i => $block) {
-            $blocksA[$i]['name'] = $blocks->where('id', $block['id'])->first()->translatedFull('name', true);
+            $blocksA[$i]['name'] = $blocks->where('id', $block['id'])->first()->name;
         }
 
         $appData = json_encode([
-            'locales' => \LaravelLocalization::getLocalesOrder(),
+            'locales' => ['en'=> []],
             'itemTypes' => BlockItem::TYPES,
             'post' => [
                 'id' => $post->id,

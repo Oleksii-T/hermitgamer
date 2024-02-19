@@ -42,14 +42,14 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Slug</label>
-                            <x-admin.multi-lang-input name="slug" />
+                            <input type="text" class="form-control" name="slug">
                             <span data-input="slug" class="input-error"></span>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Description</label>
-                            <x-admin.multi-lang-input name="description" editor="1" />
+                            <textarea class="form-control" name="description"></textarea>
                             <span data-input="description" class="input-error"></span>
                         </div>
                     </div>

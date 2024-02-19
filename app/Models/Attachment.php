@@ -17,6 +17,8 @@ class Attachment extends Model
      */
 	protected $fillable = [
         'name',
+        'alt',
+        'title',
         'group',
         'original_name',
         'type',
@@ -25,13 +27,8 @@ class Attachment extends Model
         'attachmentable_id_type'
     ];
 
-    protected $appends = self::TRANSLATABLES + [
+    protected $appends = [
         'url'
-    ];
-
-    const TRANSLATABLES = [
-        'alt',
-        'title'
     ];
 
     protected static function boot()
@@ -39,7 +36,6 @@ class Attachment extends Model
         parent::boot();
 
         static::deleting(function ($model) {
-            $model->purgeTranslations();
             $disk = self::disk($model->type);
             Storage::disk($disk)->delete($model->name);
         });
@@ -72,20 +68,6 @@ class Attachment extends Model
     {
         return new Attribute(
             get: fn ($value) => Storage::disk(self::disk($this->type))->url($this->name),
-        );
-    }
-
-    public function alt(): Attribute
-    {
-        return new Attribute(
-            get: fn () => $this->translated('alt')
-        );
-    }
-
-    public function title(): Attribute
-    {
-        return new Attribute(
-            get: fn () => $this->translated('title')
         );
     }
 

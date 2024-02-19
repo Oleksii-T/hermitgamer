@@ -69,18 +69,6 @@ class DevController extends Controller
     {
         $d = [];
 
-        $translations = \App\Models\Translation::query()
-            ->where('translatable_type', 'App\Models\Game')
-            ->where('locale', 'en')
-            ->get();
-
-        foreach ($translations as $translation) {
-            $game = \App\Models\Game::find($translation->translatable_id);
-            $game->update([
-                $translation->field => $translation->value
-            ]);
-        }
-
         dd($d);
     }
 

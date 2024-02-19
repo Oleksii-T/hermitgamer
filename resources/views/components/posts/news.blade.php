@@ -1,6 +1,6 @@
 @foreach ($news as $post)
     <article class="article-item preveiw">
-        <a href="{{route('posts.show', $post->getLocalizedRouteKey())}}">
+        <a href="{{route('posts.show', $post)}}">
             <div class="article-item__img">
                 <img src="{{$post->thumbnail->url}}" alt="{{ $post->thumbnail->alt }}" title="{{ $post->thumbnail->title }}">
             </div>

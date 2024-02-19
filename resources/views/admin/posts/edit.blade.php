@@ -30,14 +30,14 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Title</label>
-                            <x-admin.multi-lang-input name="title" :model="$post" />
+                            <input type="text" class="form-control" name="title" value="{{$post->title}}">
                             <span data-input="slug" class="input-error"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Slug</label>
-                            <x-admin.multi-lang-input name="slug" :model="$post" />
+                            <input type="text" class="form-control" name="slug" value="{{$post->slug}}">
                             <span data-input="slug" class="input-error"></span>
                         </div>
                     </div>

@@ -20,14 +20,14 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Title</label>
-                            <x-admin.multi-lang-input name="title" />
+                            <input type="text" class="form-control" name="title">
                             <span data-input="slug" class="input-error"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Slug</label>
-                            <x-admin.multi-lang-input name="slug" />
+                            <input type="text" class="form-control" name="slug">
                             <span data-input="slug" class="input-error"></span>
                         </div>
                     </div>
