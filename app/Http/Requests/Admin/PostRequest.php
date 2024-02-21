@@ -26,12 +26,8 @@ class PostRequest extends FormRequest
         $model = $this->route('post');
 
         return [
-            'title' => ['required', 'array'],
-            'title.en' => ['required', 'string', 'max:255'],
-            'title.*' => ['nullable', 'string', 'max:255'],
-            'slug' => ['required', 'array'],
-            'slug.en' => ['required', 'string', 'max:255'],
-            'slug.*' => ['nullable', 'string', 'max:255'],
+            'title' => ['required', 'string', 'max:255'],
+            'slug' => ['required', 'string', 'max:255'],
             'thumbnail' => [$model ? 'nullable' : 'required', 'image', 'max:5000'],
             'is_active' => ['nullable', 'boolean'],
             'category_id' => ['nullable', 'exists:categories,id'],

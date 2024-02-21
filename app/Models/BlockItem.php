@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\BlockItemType;
+use App\Traits\HasAttachments;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use App\Traits\HasAttachments;
 
 class BlockItem extends Model
 {
@@ -17,20 +18,12 @@ class BlockItem extends Model
         'value',
     ];
 
-    protected $appends = [
-        'value'
+    protected $casts = [
+        'type' => BlockItemType::class,
     ];
 
     protected $hidden = [
         'translations',
-    ];
-
-    const TYPES = [
-        'title',
-        'text',
-        'image',
-        'video',
-        'slider'
     ];
 
     protected static function boot()
@@ -47,7 +40,7 @@ class BlockItem extends Model
 
     public function files()
     {
-        return $this->morphOne(Attachment::class, 'attachmentable');
+        return $this->morphMany(Attachment::class, 'attachmentable');
     }
 
     public function file()
@@ -58,12 +51,38 @@ class BlockItem extends Model
     public function value(): Attribute
     {
         return new Attribute(
-            get: function () {
-                if (in_array($this->type, ['title', 'text'])) {
-                    return $this->type;
-                    return $this->translatedFull($this->type, true);
+            get: function ($value) {
+                $simpleValueTypes = BlockItemType::getSimpleTextTypes();
+                $simpleFileTypes = BlockItemType::getSimpleFileTypes();
+                $value = json_decode($value, true);
+
+                if ($this->type == BlockItemType::IMAGE_TITLE) {
+                    $file = $this->file();
+                    return [
+                        'title' => $value['title'],
+                        'image' => [
+                            'id' => $file->id,
+                            'original_name' => $file->original_name,
+                            'url' => $file->url
+                        ]
+                    ];
                 }
-                if (in_array($this->type, ['image', 'video'])) {
+
+                if ($this->type == BlockItemType::IMAGE_GALLERY) {
+                    $files = [];
+                    foreach ($this->files as $file) {
+                        $files[] = [
+                            'id' => $file->id,
+                            'original_name' => $file->original_name,
+                            'url' => $file->url
+                        ];
+                    }
+                    return [
+                        'images' => $files
+                    ];
+                }
+
+                if (in_array($this->type->value, $simpleFileTypes)) {
                     $file = $this->file();
                     return [
                         'id' => $file->id,
@@ -71,7 +90,9 @@ class BlockItem extends Model
                         'url' => $file->url
                     ];
                 }
-            }
+
+                return $value;
+            },
         );
     }
 }

@@ -28,11 +28,11 @@ Route::prefix('comments')->name('comments.')->group(function () {
 
 Route::get('/', [PageController::class, 'index'])->name('index');
 
-Route::get('posts.show', [PostController::class, 'show'])->name('posts.show');
+Route::get('posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
 Route::get('categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
 
-Route::get('tags.show', [TagController::class, 'show'])->name('tags.show');
+Route::get('tags/{tag}', [TagController::class, 'show'])->name('tags.show');
 
-Route::get('games.show', [GameController::class, 'show'])->name('games.show');
+Route::get('games/{game}', [GameController::class, 'show'])->name('games.show');
 

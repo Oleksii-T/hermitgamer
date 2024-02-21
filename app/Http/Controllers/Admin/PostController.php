@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\BlockItem;
-use App\Http\Requests\Admin\PostRequest;
+use App\Enums\BlockItemType;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\PostRequest;
 
 class PostController extends Controller
 {
@@ -41,7 +42,6 @@ class PostController extends Controller
     {
         $input = $request->validated();
         $post = Post::create($input);
-        $post->saveTranslations($input);
         $post->addAttachment($input['thumbnail']??null, 'thumbnail');
         $post->addAttachment($input['css']??null, 'css');
         $post->addAttachment($input['js']??null, 'js');
@@ -53,7 +53,6 @@ class PostController extends Controller
 
     public function editContent(Post $post)
     {
-        //TODO: move logic to "Eloquent: API Resource"
         $blocks = $post->blocks()->with('items')->get();
         $blocksA = $blocks->toArray();
         foreach ($blocksA as $i => $block) {
@@ -61,12 +60,12 @@ class PostController extends Controller
         }
 
         $appData = json_encode([
-            'locales' => ['en'=> []],
-            'itemTypes' => BlockItem::TYPES,
+            'itemTypes' => BlockItemType::all(),
             'post' => [
                 'id' => $post->id,
                 'blocks' => $blocksA
-            ]
+            ],
+            'submitUrl' => route('admin.posts.update-content', $post),
         ]);
 
         return view('admin.posts.edit-content', compact('appData', 'post'));
@@ -77,54 +76,96 @@ class PostController extends Controller
         $request->validate([
             'blocks' => ['required', 'array'],
             'blocks.*.ident' => ['required', 'string', 'max:255'],
-            'blocks.*.name' => ['required', 'array'],
-            'blocks.*.name.en' => ['required', 'string', 'max:255'],
+            'blocks.*.name' => ['required', 'string', 'max:255'],
             'blocks.*.items' => ['required', 'array'],
             'blocks.*.items.*' => ['required', 'array'],
         ]);
+        
+        \DB::transaction(function () use ($request, $post) {
+            $simpleValueTypes = BlockItemType::getSimpleTextTypes();
+            $simpleFileTypes = BlockItemType::getSimpleFileTypes();
 
-        foreach ($request->blocks as $b) {
-            $block = $post->blocks()->updateOrcreate(
-                [
-                    'id' => $b['id']??null
-                ],
-                [
-                    'ident' => $b['ident'],
-                    'order' => $b['order']
-                ]
-            );
-            $block->saveTranslations($b);
-            foreach ($b['items'] as $i) {
-                $item = $block->items()->updateOrCreate(
+            foreach ($request->blocks as $b) {
+                $block = $post->blocks()->updateOrcreate(
                     [
-                        'id' => $i['id']??null
+                        'id' => $b['id']??null
                     ],
                     [
-                        'type' => $i['type'],
-                        'order' => $i['order']
+                        'ident' => $b['ident'],
+                        'order' => $b['order'],
+                        'name' => $b['name'],
                     ]
                 );
-                if ($item['type'] == 'title') {
-                    $item->saveTranslation($i['value'], 'title');
-                } elseif ($item['type'] == 'text') {
-                    $item->saveTranslation($i['value'], 'text');
-                } elseif ($item['type'] == 'image') {
-                    if ($i['value'] instanceof UploadedFile) {
-                        $item->addAttachment($i['value']);
-                    }
-                } elseif ($item['type'] == 'video') {
-                    if ($i['value'] instanceof UploadedFile) {
-                        $item->addAttachment($i['value']);
-                    }
-                } elseif ($item['type'] == 'slider') {
-                    foreach ($i['value'] as $sliderImage) {
-                        if ($sliderImage instanceof UploadedFile) {
-                            $item->addAttachment($sliderImage);
+
+                foreach ($b['items'] as $i) {
+                    $t = $i['type'];
+                    $v = $i['value'];
+
+                    $item = $block->items()->updateOrCreate(
+                        [
+                            'id' => $i['id']??null
+                        ],
+                        [
+                            'type' => $t,
+                            'order' => $i['order']
+                        ]
+                    );
+
+                    if (in_array($t, $simpleValueTypes)) {
+                        $item->update([
+                            'value' => $v
+                        ]);
+                        continue;
+                    } 
+                    
+                    if (in_array($t, $simpleFileTypes)) {
+                        if ($v instanceof UploadedFile) {
+                            $item->addAttachment($v);
                         }
+                        continue;
                     }
+
+                    if ($t == BlockItemType::IMAGE_TITLE->value) {
+                        $item->update([
+                            'value' => [
+                                'title' => $v['title']
+                            ]
+                        ]);
+                        if ($v['image'] instanceof UploadedFile) {
+                            $item->addAttachment($v['image']);
+                        }
+                        continue;
+                    }
+
+                    if ($t == BlockItemType::IMAGE_TEXT->value) {
+                        $item->update([
+                            'value' => [
+                                'text' => $v['text']
+                            ]
+                        ]);
+                        if ($v['image'] instanceof UploadedFile) {
+                            $item->addAttachment($v['image']);
+                        }
+                        continue;
+                    }
+
+                    if ($t == BlockItemType::IMAGE_GALLERY->value) {
+                        $toAttach = [];
+                        foreach ($v['images'] as $sliderImage) {
+                            if ($sliderImage['value'] instanceof UploadedFile) {
+                                $toAttach[] = $sliderImage['value'];
+                            }
+                        }
+                        if ($toAttach) {
+                            $item->addAttachment($toAttach);
+                        }
+                        continue;
+                    }
+
+                    abort(404, 'type not found');
                 }
             }
-        }
+        });
 
         return $this->jsonSuccess('Post content saved successfully', $post);
     }

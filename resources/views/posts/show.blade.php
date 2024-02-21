@@ -32,10 +32,10 @@
                                     @foreach ($block->items as $item)
                                         @switch($item->type)
                                             @case('title')
-                                                <h2>{{$item->translated('title')}}</h2>
+                                                <h2>{{$item->title}}</h2>
                                                 @break
                                             @case('text')
-                                                <p>{!!$item->translated('text')!!}</p>
+                                                <p>{!!$item->text!!}</p>
                                                 @break
                                             @case('image')
                                                 <img src="{{$item->file()->url}}" alt="{{$item->file()->alt}}" title="{{$item->file()->title}}">

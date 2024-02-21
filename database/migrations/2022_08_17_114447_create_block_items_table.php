@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('block_id')->constrained('post_blocks')->onDelete('cascade');
             $table->unsignedInteger('order');
             $table->string('type');
+            $table->text('value')->nullable();
             $table->timestamps();
         });
     }

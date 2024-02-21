@@ -14,97 +14,92 @@
                         <div class="card-header">
                             <div class=" row">
                                 <div class="col">
-                                    <ul class="nav nav-tabs" style="display: flex;">
-                                        <li v-for="(localeParams, locale) in dataprops.locales" :key="locale" class="nav-item">
-                                            <a
-                                                :href="`#test${locale}`"
-                                                class="nav-link"
-                                                :class="{ active: (block.langTab??'en')==locale }"
-                                                @click="block.langTab = locale"
-                                            >
-                                                Name {{locale}}
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    <div class="tab-content">
-                                        <div v-for="(localeParams, locale) in dataprops.locales" :key="locale" class="tab-pane" :class="{ active: (block.langTab??'en')==locale }">
-                                            <input v-model="block.name[locale]" class="form-control" type="text">
-                                        </div>
+                                    <span style="font-size:1.5em">{{ bi+1 }}:</span>
+                                    <div class="tab-content" style="display:inline-block">
+                                        <input v-model="block.name" class="form-control my-block-title" type="text" placeholder="Block name">
                                     </div>
-                                </div>
-                                <div class="col">
-                                    <ul class="nav nav-tabs" style="display: flex;">
-                                        <li class="nav-item">
-                                            <a class="nav-link">
-                                               Id
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    <input type="text" class="form-control" v-model="block.ident">
                                 </div>
                                 <div class="col">
                                     <button type="button" class="btn btn-success d-block mr-2 float-right" @click="addItem(bi)">Add Item</button>
                                     <button v-if="blocks.length != 1" type="button" class="btn btn-warning mr-2 d-block float-right" @click="removeBlock(bi)">Remove</button>
                                     <button v-if="bi != 0" type="button" class="btn btn-info d-block mr-2 float-right" @click="move(blocks, bi, 'up')">^</button>
                                     <button v-if="blocks.length != 1 && blocks.length-1 != bi" type="button" class="btn btn-info d-block mr-2 float-right" @click="move(blocks, bi, 'down')">v</button>
+                                    <input type="text" class="form-control float-right mr-2 my-block-ident" v-model="block.ident" placeholder="Block anchor">
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body my-post-block">
                             <div class="row block-item-wrapper">
-                                <div v-for="(item, ii) in block.items.sort((a,b) => a.order - b.order)" :key="ii" class="col-md-12">
-                                    <div class="form-group">
-                                        <div class="mb-2">
-                                            <select v-model="item.type" class="form-control w-auto d-inline item-type-select">
-                                                <option v-for="(iType, iti) in dataprops.itemTypes" :key="iti" :value="iType">{{readable(iType)}}</option>
-                                            </select>
-                                            <button v-if="block.items.length != 1" type="button" class="btn btn-warning remove-item float-right" @click="removeItem(bi, ii)">Remove</button>
-                                            <button v-if="ii != 0" type="button" class="btn btn-info d-block mr-2 float-right" @click="move(block.items, ii, 'up')">^</button>
-                                            <button v-if="block.items.length != 1 && block.items.length-1 != ii" type="button" class="btn btn-info d-block mr-2 float-right" @click="move(block.items, ii, 'down')">v</button>
-                                        </div>
-                                        <template v-if="['title', 'text'].includes(item.type)">
-                                            <ul class="nav nav-tabs" style="display: flex;">
-                                                <li v-for="(localeParams, locale) in dataprops.locales" :key="locale" class="nav-item">
-                                                    <a
-                                                        :href="`#test${locale}`"
-                                                        class="nav-link"
-                                                        :class="{ active: (item.langTab??'en')==locale }"
-                                                        @click="item.langTab = locale"
-                                                    >
-                                                        {{locale}}
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                            <div class="tab-content">
-                                                <div v-for="(localeParams, locale) in dataprops.locales" :key="locale" class="tab-pane" :class="{ active: (item.langTab??'en')==locale }">
-                                                    <input v-if="item.type == 'title'" v-model="item.value[locale]" class="form-control" type="text">
-                                                    <SummernoteEditor
-                                                        v-if="item.type == 'text'"
-                                                        v-model="item.value[locale]"
-                                                    />
+                                <template v-for="(item, ii) in block.items.sort((a,b) => a.order - b.order)" :key="ii">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="mb-2">
+                                                {{ ii+1 }}:
+                                                <select v-model="item.type" class="form-control w-auto d-inline item-type-select">
+                                                    <option v-for="(iType, iTypeKey) in dataprops.itemTypes" :key="iTypeKey" :value="iTypeKey">
+                                                        {{iType}}
+                                                    </option>
+                                                </select>
+                                                <button v-if="item.type == 'image-gallery'" @click="addImageToSlider(item)" class="btn btn-default ml-2">
+                                                    Add image
+                                                </button>
+                                                <button v-if="block.items.length != 1" type="button" class="btn btn-warning remove-item float-right" @click="removeItem(bi, ii)">Remove</button>
+                                                <button v-if="ii != 0" type="button" class="btn btn-info d-block mr-2 float-right" @click="move(block.items, ii, 'up')">^</button>
+                                                <button v-if="block.items.length != 1 && block.items.length-1 != ii" type="button" class="btn btn-info d-block mr-2 float-right" @click="move(block.items, ii, 'down')">v</button>
+                                            </div>
+                                            <template v-if="['title-h2','title-h3','title-h4','title-h5'].includes(item.type)">
+                                                <input v-model="item.value.value" class="form-control" type="text" placeholder="Title">
+                                            </template>
+                                            <template v-if="item.type == 'text'">
+                                                <div>
+                                                    <SummernoteEditor v-model="item.value.value"/>
                                                 </div>
-                                            </div>
-                                        </template>
-                                        <template v-else-if="item.type == 'image'">
-                                            <div class="custom-file">
-                                                <input @change="fileUploaded(item, $event)" type="file" class="custom-file-input">
-                                                <label class="custom-file-label">{{item.value.original_name ?? item.previewName ?? 'Choose file'}}</label>
-                                            </div>
-                                            <img :src="item.value.url ?? item.previewImage ?? ''" alt="" class="custom-file-preview">
-                                        </template>
-                                        <template v-else-if="item.type == 'slider'">
-                                            TODO
-                                        </template>
-                                        <template v-else-if="item.type == 'video'">
-                                            <div class="show-uploaded-file-name">
+                                            </template>
+                                            <template v-else-if="['image', 'image-small'].includes(item.type)">
                                                 <div class="custom-file">
-                                                    <input @change="fileUploaded(item, $event)" type="file" class="custom-file-input">
-                                                    <label class="custom-file-label">{{item.value.original_name ?? 'Choose file'}}</label>
+                                                    <input @change="fileUploaded(item, $event)" type="file" class="custom-file-input" accept="image/*">
+                                                    <label class="custom-file-label">{{item.value.original_name ?? item.previewName ?? 'Choose file'}}</label>
                                                 </div>
-                                            </div>
-                                        </template>
+                                                <img :src="item.value.url ?? item.previewImage ?? ''" alt="" class="custom-file-preview">
+                                            </template>
+                                            <template v-else-if="item.type == 'image-title'">
+                                                <input v-model="item.value.title" class="form-control" type="text" placeholder="Title">
+                                                <div class="custom-file">
+                                                    <input @change="fileUploaded(item, $event)" type="file" class="custom-file-input" accept="image/*">
+                                                    <label class="custom-file-label">{{item.value.image?.original_name ?? item.previewName ?? 'Choose file'}}</label>
+                                                </div>
+                                                <img :src="item.value.image?.url ?? item.previewImage ?? ''" alt="" class="custom-file-preview">
+                                            </template>
+                                            <template v-else-if="item.type == 'image-text'">
+                                                <div>
+                                                    <SummernoteEditor v-model="item.value.text"/>
+                                                    <div class="custom-file">
+                                                        <input @change="fileUploaded(item, $event)" type="file" class="custom-file-input" accept="image/*">
+                                                        <label class="custom-file-label">{{item.value.image?.original_name ?? item.previewName ?? 'Choose file'}}</label>
+                                                    </div>
+                                                    <img :src="item.value.image?.url ?? item.previewImage ?? ''" alt="" class="custom-file-preview">
+                                                </div>
+                                            </template>
+                                            <template v-else-if="item.type == 'image-gallery'">
+                                                <div class="row">
+                                                    <div v-for="(image, iii) in item.value.images || []" :key="iii" class="col-6">
+                                                        <div class="custom-file">
+                                                            <input @change="fileUploaded(image, $event)" type="file" class="custom-file-input" accept="image/*">
+                                                            <label class="custom-file-label">{{image.original_name ?? image.previewName ?? 'Choose file'}}</label>
+                                                        </div>
+                                                        <img :src="image.url ?? image.previewImage ?? ''" alt="" class="custom-file-preview">
+                                                    </div>
+                                                </div>
+                                            </template>
+                                            <template v-else-if="item.type == 'youtube'">
+                                                <div>
+                                                    <input v-model="item.value.value" class="form-control" type="text" placeholder="https://youtu.be/sg20GbUrbCA?si=eeGeJcDSSTVrhPLg">
+                                                </div>
+                                            </template>
+                                        </div>
                                     </div>
-                                </div>
+                                    <hr v-if="block.items.length != ii+1">
+                                </template>
                             </div>
                         </div>
                     </div>
@@ -133,7 +128,7 @@ export default {
 
     },
     data: () => ({
-        blocks: [],
+        blocks: []
     }),
     computed: {
 
@@ -150,7 +145,8 @@ export default {
                 title: 'Select preset of blocks',
                 input: 'select',
                 inputOptions: {
-                    'preset-1': 'Preset 1'
+                    'title+image+text': 'Title + Image + Text',
+                    'title+text': 'Title + Text'
                 },
                 inputPlaceholder: 'Select a preset',
                 showCancelButton: true,
@@ -161,56 +157,45 @@ export default {
                 return;
             }
 
-            let maxOrder = this.blocks.length
-                ? Math.max(...this.blocks.map(o => o.order))
-                : 0;
-            if (preset == 'preset-1') {
+            let maxOrder = this.getMaxOrder();
+            if (preset == 'title+image+text') {
                 this.blocks.push({
-                    ident: 'trailder',
+                    ident: '',
                     order: maxOrder+1,
-                    name: {
-                        en: 'Trailer'
-                    },
+                    name: '',
                     items: [
                         {
-                            type: 'title',
+                            type: 'title-h2',
                             order: 1,
-                            langTab: 'en',
-                            value: {
-                                en: 'Trailer'
-                            }
-                        },
-                        {
-                            type: 'video',
-                            order: 2,
-                            value: {}
-                        }
-                    ]
-                });
-                this.blocks.push({
-                    ident: 'gameplay',
-                    order: maxOrder+2,
-                    name: {
-                        en: 'Gameplay'
-                    },
-                    items: [
-                        {
-                            type: 'title',
-                            order: 1,
-                            langTab: 'en',
-                            value: {
-                                en: 'Gameplay'
-                            }
+                            value: this.getDefaultValue()
                         },
                         {
                             type: 'image',
                             order: 2,
-                            value: {}
+                            value: this.getDefaultValue()
                         },
                         {
                             type: 'text',
                             order: 3,
-                            value: {}
+                            value: this.getDefaultValue()
+                        }
+                    ]
+                });
+            } else if (preset == 'title+text') {
+                this.blocks.push({
+                    ident: '',
+                    order: maxOrder+1,
+                    name: '',
+                    items: [
+                        {
+                            type: 'title-h2',
+                            order: 1,
+                            value: this.getDefaultValue()
+                        },
+                        {
+                            type: 'text',
+                            order: 3,
+                            value: this.getDefaultValue()
                         }
                     ]
                 });
@@ -219,9 +204,17 @@ export default {
         fileUploaded(obj, event) {
             let file = event.target.files[0];
 
-            obj.value = file;
+            let separateImageTypes = ['image-title', 'image-text'];
+
+            if (separateImageTypes.includes(obj.type)) {
+                obj.value.image = file;
+            } else {
+                obj.value = file;
+            }
+
             obj.previewImage = URL.createObjectURL(file);
             obj.previewName = file.name;
+
         },
         move(elems, i, direction) {
             let next = direction == 'up' ? elems[i-1] : elems[i+1];
@@ -235,18 +228,15 @@ export default {
             // $('.summernote').summernote();
         },
         addBlock() {
-            let maxOrder = this.blocks.length
-                ? Math.max(...this.blocks.map(o => o.order))
-                : 0;
+            let maxOrder = this.getMaxOrder();
             this.blocks.push({
                 ident: '',
-                name: {},
+                name: '',
                 items: [
                     {
-                        type: 'title',
+                        type: 'title-h2',
                         order: 1,
-                        langTab: 'en',
-                        value: {}
+                        value: this.getDefaultValue()
                     }
                 ],
                 order: maxOrder+1
@@ -256,14 +246,11 @@ export default {
             this.blocks.splice(i, 1);
         },
         addItem(bi) {
-            let maxOrder = this.blocks[bi].items.length
-                ? Math.max(...this.blocks[bi].items.map(o => o.order))
-                : 0;
+            let maxOrder = this.getMaxOrder(this.blocks[bi].items);
             this.blocks[bi].items.push({
-                type: 'title',
+                type: 'title-h2',
                 order: maxOrder+1,
-                langTab: 'en',
-                value: {}
+                value: this.getDefaultValue()
             });
         },
         removeItem(bi, ii) {
@@ -276,7 +263,7 @@ export default {
             let formData = new FormData();
             this.helpers.objToFormData(formData, {blocks: this.blocks});
 
-            axios.post(`/admin/posts/${this.dataprops.post.id}/update-content`,
+            axios.post(this.dataprops.submitUrl,
                 formData,
                 {
                     headers: {
@@ -296,6 +283,27 @@ export default {
                     app.helpers.showError()
                 }
             });
+        },
+        addImageToSlider(item) {
+            if (!item.value.images) {
+                item.value.images = [{}];
+            } else {
+                item.value.images.push({});
+            }
+        },
+        getDefaultValue() {
+            return {
+                
+            };
+        },
+        getMaxOrder(items=null) {
+            if (!items) {
+                items = this.blocks;
+            }
+
+            return items.length
+                ? Math.max(...items.map(o => o.order))
+                : 0;
         }
     },
     created() {
@@ -303,6 +311,8 @@ export default {
         if (!this.blocks.length) {
             this.addBlock();
         }
+
+        console.log('dataprops: ', this.dataprops);
     }
 }
 </script>
