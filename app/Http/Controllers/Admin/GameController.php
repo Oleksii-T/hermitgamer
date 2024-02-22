@@ -29,7 +29,6 @@ class GameController extends Controller
     {
         $input = $request->validated();
         $game = Game::create($input);
-        $game->saveTranslations($input);
 
         return $this->jsonSuccess('Game created successfully', [
             'redirect' => route('admin.games.index')

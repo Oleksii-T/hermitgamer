@@ -96,33 +96,18 @@
                             <span data-input="tags" class="input-error"></span>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header">
-                <h5 class="m-0">Custom css\js</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group show-uploaded-file-name">
-                            <label>CSS</label>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="css" name="css">
-                                <label class="custom-file-label" for="css">Choose file</label>
-                            </div>
-                            <span data-input="css" class="input-error"></span>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Intro</label>
+                            <textarea name="intro" class="form-control summernote"></textarea>
+                            <span data-input="intro" class="input-error"></span>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group show-uploaded-file-name">
-                            <label>JS</label>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="js" name="js">
-                                <label class="custom-file-label" for="js">Choose file</label>
-                            </div>
-                            <span data-input="js" class="input-error"></span>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Conclusion</label>
+                            <textarea name="conclusion" class="form-control summernote"></textarea>
+                            <span data-input="conclusion" class="input-error"></span>
                         </div>
                     </div>
                 </div>

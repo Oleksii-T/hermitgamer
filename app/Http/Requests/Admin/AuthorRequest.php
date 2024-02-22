@@ -27,14 +27,11 @@ class AuthorRequest extends FormRequest
 
         return [
             'name' => ['required', 'string', 'max:255'],
+            'title' => ['required', 'string', 'max:255'],
             'avatar' => [$model ? 'nullable' : 'required', 'image', 'max:5000'],
             'email' => ['nullable', 'string', 'max:255'],
-            'slug' => ['required', 'array'],
-            'slug.en' => ['required', 'string', 'max:255'],
-            'slug.*' => ['nullable', 'string', 'max:255'],
-            'description' => ['required', 'array'],
-            'description.en' => ['required', 'string', 'max:10000'],
-            'description.*' => ['nullable', 'string', 'max:10000'],
+            'slug' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string', 'max:10000'],
             'facebook' => ['nullable', 'string', 'max:255'],
             'instagram' => ['nullable', 'string', 'max:255'],
             'youtube' => ['nullable', 'string', 'max:255'],

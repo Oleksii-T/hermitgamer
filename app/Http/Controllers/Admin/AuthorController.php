@@ -32,7 +32,6 @@ class AuthorController extends Controller
             $input['order'] = Author::max('order') + 1;
         }
         $author = Author::create($input);
-        $author->saveTranslations($input);
 
         return $this->jsonSuccess('Author created successfully', [
             'redirect' => route('admin.authors.index')

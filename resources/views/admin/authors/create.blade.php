@@ -39,6 +39,13 @@
                             <span data-input="avatar" class="input-error"></span>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" class="form-control" name="title">
+                            <span data-input="title" class="input-error"></span>
+                        </div>
+                    </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Slug</label>

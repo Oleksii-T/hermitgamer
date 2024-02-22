@@ -98,11 +98,15 @@ function deleteResource(dataTable, url) {
                 },
                 success: (response)=>{
                     if (response.success) {
-                        Toast.fire({
-                            icon: 'success',
-                            title: response.message
-                        });
-                        dataTable.draw();
+                        if (dataTable) {
+                            Toast.fire({
+                                icon: 'success',
+                                title: response.message
+                            });
+                            dataTable.draw();
+                        } else {
+                            showServerSuccess(response);
+                        }
                     } else {
                         swal.fire("Error!", response.message, 'error');
                     }
@@ -144,6 +148,8 @@ function showServerSuccess(response) {
         swal.fire("Success!", response.message, 'success').then((result) => {
             if (response.data?.redirect) {
                 window.location.href = response.data.redirect;
+            }else if (response.data?.reload) {
+                window.location.reload();
             }
         });
     } else {

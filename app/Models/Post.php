@@ -19,7 +19,14 @@ class Post extends Model
         'category_id',
         'author_id',
         'is_active',
+        'intro',
+        'conclusion',
         'views',
+        'related',
+    ];
+
+    protected $casts = [
+        'related' => 'array'
     ];
 
     const ATTACHMENTS = [
@@ -65,6 +72,11 @@ class Post extends Model
         return $this->belongsTo(Game::class);
     }
 
+    public function faqs()
+    {
+        return $this->hasMany(Faq::class);
+    }
+
     public function author()
     {
         return $this->belongsTo(Author::class);
@@ -97,6 +109,11 @@ class Post extends Model
         $res = $query->whereRelation('category', 'slug', $slug);
 
         return $get ? $res->get() : $res;
+    }
+
+    public function getRelatedPosts()
+    {
+        return self::whereIn('id', $this->related??[])->latest()->get();
     }
 
     public static function dataTable($query)

@@ -24,15 +24,9 @@ class GameRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'array'],
-            'name.en' => ['required', 'string', 'max:255'],
-            'name.*' => ['nullable', 'string', 'max:255'],
-            'slug' => ['required', 'array'],
-            'slug.en' => ['required', 'string', 'max:255'],
-            'slug.*' => ['nullable', 'string', 'max:255'],
-            'description' => ['required', 'array'],
-            'description.en' => ['required', 'string', 'max:10000'],
-            'description.*' => ['nullable', 'string', 'max:10000'],
+            'name' => ['required', 'string', 'max:255'],
+            'slug' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string', 'max:10000'],
         ];
     }
 }

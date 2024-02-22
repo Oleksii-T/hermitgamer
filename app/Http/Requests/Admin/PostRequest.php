@@ -27,6 +27,8 @@ class PostRequest extends FormRequest
 
         return [
             'title' => ['required', 'string', 'max:255'],
+            'intro' => ['nullable', 'string'],
+            'conclusion' => ['nullable', 'string'],
             'slug' => ['required', 'string', 'max:255'],
             'thumbnail' => [$model ? 'nullable' : 'required', 'image', 'max:5000'],
             'is_active' => ['nullable', 'boolean'],
@@ -35,8 +37,6 @@ class PostRequest extends FormRequest
             'author_id' => ['required', 'exists:authors,id'],
             'tags' => ['nullable', 'array'],
             'tags.*' => ['nullable', 'exists:tags,id'],
-            'css' => ['nullable', 'file', 'max:10000'],
-            'js' => ['nullable', 'file', 'max:10000'],
         ];
     }
 }

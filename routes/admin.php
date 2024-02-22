@@ -36,8 +36,16 @@ Route::middleware('is-admin')->group(function () {
     Route::resource('authors', AuthorController::class)->except('show');
 
     Route::prefix('posts')->name('posts.')->group(function () {
-        Route::get('{post}/edit-content', [PostController::class, 'editContent'])->name('edit-content');
-        Route::post('{post}/update-content', [PostController::class, 'updateContent'])->name('update-content');
+        Route::get('{post}/blocks', [PostController::class, 'blocks'])->name('blocks');
+        Route::get('{post}/faqs', [PostController::class, 'faqs'])->name('faqs');
+        Route::get('{post}/assets', [PostController::class, 'assets'])->name('assets');
+        Route::get('{post}/related', [PostController::class, 'related'])->name('related');
+        Route::post('{post}/blocks', [PostController::class, 'updateBlocks'])->name('update-blocks');
+        Route::post('{post}/faqs', [PostController::class, 'storeFaq'])->name('store-faq');
+        Route::put('{post}/assets', [PostController::class, 'updateAssets'])->name('update-assets');
+        Route::put('{post}/related', [PostController::class, 'updateRelated'])->name('update-related');
+        Route::put('{post}/faqs/{faq}', [PostController::class, 'updateFaq'])->name('update-faq');
+        Route::delete('{post}/faqs/{faq}', [PostController::class, 'destroyFaq'])->name('destroy-faq');
     });
     Route::resource('posts', PostController::class)->except('show');
 

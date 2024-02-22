@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Faq;
 use App\Models\Post;
 use App\Models\BlockItem;
 use App\Enums\BlockItemType;
@@ -43,15 +44,13 @@ class PostController extends Controller
         $input = $request->validated();
         $post = Post::create($input);
         $post->addAttachment($input['thumbnail']??null, 'thumbnail');
-        $post->addAttachment($input['css']??null, 'css');
-        $post->addAttachment($input['js']??null, 'js');
 
         return $this->jsonSuccess('Post created successfully', [
-            'redirect' => route('admin.posts.edit-content', $post)
+            'redirect' => route('admin.posts.blocks', $post)
         ]);
     }
 
-    public function editContent(Post $post)
+    public function blocks(Post $post)
     {
         $blocks = $post->blocks()->with('items')->get();
         $blocksA = $blocks->toArray();
@@ -65,13 +64,13 @@ class PostController extends Controller
                 'id' => $post->id,
                 'blocks' => $blocksA
             ],
-            'submitUrl' => route('admin.posts.update-content', $post),
+            'submitUrl' => route('admin.posts.update-blocks', $post),
         ]);
 
-        return view('admin.posts.edit-content', compact('appData', 'post'));
+        return view('admin.posts.blocks', compact('appData', 'post'));
     }
 
-    public function updateContent(Request $request, Post $post)
+    public function updateBlocks(Request $request, Post $post)
     {
         $request->validate([
             'blocks' => ['required', 'array'],
@@ -170,6 +169,94 @@ class PostController extends Controller
         return $this->jsonSuccess('Post content saved successfully', $post);
     }
 
+    public function faqs(Request $request, Post $post)
+    {
+        return view('admin.posts.faqs', compact('post'));
+    }
+
+    public function storeFaq(Request $request, Post $post)
+    {
+        $data = $request->validate([
+            'question' => ['required', 'string', 'max:255'],
+            'answer' => ['required', 'string'],
+        ]);
+
+        $data['order'] = $post->faqs()->max('order') + 1;
+
+        $post->faqs()->create($data);
+
+        return $this->jsonSuccess('FAQ create successfully', [
+            'reload' => true
+        ]);
+    }
+
+    public function updateFaq(Request $request, Post $post, Faq $faq)
+    {
+        $data = $request->validate([
+            'question' => ['required', 'string', 'max:255'],
+            'answer' => ['required', 'string'],
+            'order' => ['required', 'integer'],
+        ]);
+
+        $faq->update($data);
+
+        return $this->jsonSuccess('FAQ updated successfully', [
+            'reload' => true
+        ]);
+    }
+
+    public function destroyFaq(Request $request, Post $post, Faq $faq)
+    {
+        $faq->delete();
+
+        return $this->jsonSuccess('FAQ deleted successfully', [
+            'reload' => true
+        ]);
+    }
+
+    public function assets(Request $request, Post $post)
+    {
+        return view('admin.posts.assets', compact('post'));
+    }
+
+    public function updateAssets(Request $request, Post $post)
+    {
+        $input = $request->validate([
+            'css' => ['nullable', 'file', 'max:10000'],
+            'js' => ['nullable', 'file', 'max:10000'],
+        ]);
+
+        $post->addAttachment($input['css']??null, 'css');
+        $post->addAttachment($input['js']??null, 'js');
+
+        return $this->jsonSuccess('Assets updated successfully', [
+            'reload' => true
+        ]);
+    }
+
+    public function related(Request $request, Post $post)
+    {
+        $posts = Post::latest()->where('id', '!=', $post->id)->get();
+
+        return view('admin.posts.related', compact('post', 'posts'));
+    }
+
+    public function updateRelated(Request $request, Post $post)
+    {
+        $input = $request->validate([
+            'related' => ['nullable', 'array'],
+            'related.*' => ['nullable', 'exists:posts,id'],
+        ]);
+
+        $post->update([
+            'related' => $input['related']
+        ]);
+
+        return $this->jsonSuccess('Related updated successfully', [
+            'reload' => true
+        ]);
+    }
+
     public function edit(Post $post)
     {
         return view('admin.posts.edit', compact('post'));
@@ -179,7 +266,6 @@ class PostController extends Controller
     {
         $input = $request->validated();
         $post->update($input);
-        $post->saveTranslations($input);
         $post->addAttachment($input['thumbnail']??null, 'thumbnail');
         $post->addAttachment($input['css']??null, 'css');
         $post->addAttachment($input['js']??null, 'js');

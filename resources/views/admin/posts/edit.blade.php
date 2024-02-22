@@ -7,11 +7,9 @@
         <div class="row mb-2">
             <div class="col-sm-6">
                 <div class="float-left">
-                    <h1 class="m-0">Edit Post General Info</h1>
+                    <h1 class="m-0">Edit Post</h1>
                 </div>
-                <div class="float-left pl-3">
-                    <a href="{{route('admin.posts.edit-content', $post)}}" class="btn btn-primary">Edit Content</a>
-                </div>
+                <x-admin.post-nav active="general" :post="$post" />
             </div>
         </div>
     </div>
@@ -106,33 +104,18 @@
                             <span data-input="tags" class="input-error"></span>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header">
-                <h5 class="m-0">Custom css\js</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group show-uploaded-file-name">
-                            <label>CSS</label>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="css" name="css">
-                                <label class="custom-file-label" for="css">{{$post->css?->original_name ?? 'Choose File'}}</label>
-                            </div>
-                            <span data-input="css" class="input-error"></span>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Intro</label>
+                            <textarea name="intro" class="form-control summernote">{{$post->intro}}</textarea>
+                            <span data-input="intro" class="input-error"></span>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group show-uploaded-file-name">
-                            <label>JS</label>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="js" name="js">
-                                <label class="custom-file-label" for="js">{{$post->js?->original_name ?? 'Choose File'}}</label>
-                            </div>
-                            <span data-input="js" class="input-error"></span>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Conclusion</label>
+                            <textarea name="conclusion" class="form-control summernote">{{$post->conclusion}}</textarea>
+                            <span data-input="conclusion" class="input-error"></span>
                         </div>
                     </div>
                 </div>

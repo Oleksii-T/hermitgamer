@@ -23,7 +23,7 @@ export default {
             for (let i = 0; i < data.length; i++) {
                 this.objToFormData(formData, data[i], parentKey ? `${parentKey}[${i}]` : parentKey);
             }
-        } else if (typeof data === "object" && !(data instanceof File)) {
+        } else if (data && typeof data === "object" && !(data instanceof File)) {
             Object.keys(data).forEach((key) => {
                 this.objToFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key)
             })

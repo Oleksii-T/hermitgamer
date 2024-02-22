@@ -1,6 +1,6 @@
 @extends('layouts.admin.app')
 
-@section('title', 'Edit post Content')
+@section('title', 'Edit post blocks')
 
 @push('styles')
     <style>
@@ -31,11 +31,9 @@
     <div class="row mb-2">
         <div class="col-sm-6">
             <div class="float-left">
-                <h1 class="m-0">Edit Post Content</h1>
+                <h1 class="m-0">Edit Post</h1>
             </div>
-            <div class="float-left pl-3">
-                <a href="{{route('admin.posts.edit', $post)}}" class="btn btn-primary">Edit General Info</a>
-            </div>
+            <x-admin.post-nav active="blocks" :post="$post" />
         </div>
     </div>
 </div>

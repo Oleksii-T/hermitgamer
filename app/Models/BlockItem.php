@@ -95,4 +95,20 @@ class BlockItem extends Model
             },
         );
     }
+
+    public function valueSimple(): Attribute
+    {
+        return new Attribute(
+            get: function () {
+                $value = $this->value;
+                $simpleValueTypes = BlockItemType::getSimpleTextTypes();
+
+                if (in_array( $this->type->value, $simpleValueTypes)) {
+                    return $value['value'];
+                }
+
+                return $value;
+            },
+        );
+    }
 }
