@@ -151,8 +151,9 @@ class PostController extends Controller
                     if ($t == BlockItemType::IMAGE_GALLERY->value) {
                         $toAttach = [];
                         foreach ($v['images'] as $sliderImage) {
-                            if ($sliderImage['value'] instanceof UploadedFile) {
-                                $toAttach[] = $sliderImage['value'];
+                            $val = $sliderImage['value']??null;
+                            if ($val instanceof UploadedFile) {
+                                $toAttach[] = $val;
                             }
                         }
                         if ($toAttach) {
@@ -230,6 +231,60 @@ class PostController extends Controller
         $post->addAttachment($input['js']??null, 'js');
 
         return $this->jsonSuccess('Assets updated successfully', [
+            'reload' => true
+        ]);
+    }
+
+    public function reviewsFields(Request $request, Post $post)
+    {
+        $info = $post->info;
+
+        if (!$info) {
+            $info = $post->info()->create([]);
+        }
+
+        return view('admin.posts.reviewsFields', compact('post', 'info'));
+    }
+
+    public function updateReviewsFields(Request $request, Post $post)
+    {
+        $input = $request->validate([
+            'info' => ['required', 'array'],
+            'info.rating' => ['required', 'numeric', 'min:0', 'max:5'],
+            'info.game_details' => ['required', 'array'],
+            'info.advantages' => ['required', 'string'],
+            'info.disadvantages' => ['required', 'string'],
+        ]);
+
+        if ($input['info']['advantages']) {
+            $input['info']['advantages'] = explode("\r\n", $input['info']['advantages']);
+        }
+
+        if ($input['info']['disadvantages']) {
+            $input['info']['disadvantages'] = explode("\r\n", $input['info']['disadvantages']);
+        }
+
+        $info = $post->info->update($input['info']);
+
+        return $this->jsonSuccess('Review info updated successfully', [
+            'reload' => true
+        ]);
+    }
+
+    public function conclusion(Request $request, Post $post)
+    {
+        return view('admin.posts.conclusion', compact('post'));
+    }
+
+    public function updateConclusion(Request $request, Post $post)
+    {
+        $input = $request->validate([
+            'conclusion' => ['nullable', 'string'],
+        ]);
+
+        $post->update($input);
+
+        return $this->jsonSuccess('Conclusion updated successfully', [
             'reload' => true
         ]);
     }

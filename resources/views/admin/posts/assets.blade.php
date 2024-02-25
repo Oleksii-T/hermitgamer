@@ -5,7 +5,7 @@
 @section('content_header')
     <div class="container-fluid">
         <div class="row mb-2">
-            <div class="col-sm-6">
+            <div class="col-sm-12">
                 <div class="float-left">
                     <h1 class="m-0">Edit Post</h1>
                 </div>

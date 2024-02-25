@@ -2,7 +2,7 @@
     <div>
         <div class="card">
             <div class="card-header row">
-                <h5 class="m-0 col">Content</h5>
+                <h5 class="m-0 col">Post Blocks</h5>
                 <div class="col">
                     <button type="button" class="btn btn-success d-block float-right" @click="addBlock()">Add Block</button>
                     <button type="button" class="btn btn-info d-block float-right mr-2" @click="addPreset()">Add Preset</button>
@@ -16,7 +16,7 @@
                                 <div class="col">
                                     <span style="font-size:1.5em">{{ bi+1 }}:</span>
                                     <div class="tab-content" style="display:inline-block">
-                                        <input v-model="block.name" class="form-control my-block-title" type="text" placeholder="Block name">
+                                        <input v-model="block.name" class="form-control my-block-title" @input="blockNameChanged(block)" type="text" placeholder="Block name">
                                     </div>
                                 </div>
                                 <div class="col">
@@ -24,7 +24,7 @@
                                     <button v-if="blocks.length != 1" type="button" class="btn btn-warning mr-2 d-block float-right" @click="removeBlock(bi)">Remove</button>
                                     <button v-if="bi != 0" type="button" class="btn btn-info d-block mr-2 float-right" @click="move(blocks, bi, 'up')">^</button>
                                     <button v-if="blocks.length != 1 && blocks.length-1 != bi" type="button" class="btn btn-info d-block mr-2 float-right" @click="move(blocks, bi, 'down')">v</button>
-                                    <input type="text" class="form-control float-right mr-2 my-block-ident" v-model="block.ident" placeholder="Block anchor">
+                                    <input type="text" class="form-control float-right mr-2 my-block-ident" v-model="block.ident" placeholder="Block anchor" @input="blockIdentChanged(block)">
                                 </div>
                             </div>
                         </div>
@@ -291,6 +291,19 @@ export default {
                 item.value.images.push({});
             }
         },
+        blockNameChanged(block) {
+            if (block.id || block.doNotAutoSlug) {
+                // do not autoslug when it is block editing
+                return;
+            }
+            block.ident = this.helpers.slugify(block.name);
+        },
+        blockIdentChanged(block) {
+            block.doNotAutoSlug = true;
+        },
+
+        // helpers
+
         getDefaultValue() {
             return {
                 

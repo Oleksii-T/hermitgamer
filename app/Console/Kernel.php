@@ -15,7 +15,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // update ip-to-country database
+        $schedule->command('location:update')->weekly();
+
+        // generate sitemap
+        // $schedule->command('sitemap:generate')->everySixHours();
+
+        // clear spatie activity logs
+        // $schedule->command('activitylog:clean')->daily();
     }
 
     /**

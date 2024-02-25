@@ -22,7 +22,8 @@ return new class extends Migration
             $table->foreignId('game_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('author_id')->nullable()->constrained()->onDelete('set null');
-            $table->boolean('is_active')->default(false);
+            $table->smallInteger('status');
+            $table->smallInteger('tc_style');
             $table->unsignedInteger('views')->default(0);
             $table->json('related')->nullable();
             $table->timestamps();

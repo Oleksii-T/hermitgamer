@@ -104,10 +104,18 @@
             text-decoration: none;
             display: block;
         }
+        .image-gallery {
+            display: flex;
+            overflow: hidden;
+        }
+        .image-gallery div{
+
+        }
     </style>
 @endpush
 
 @section('content')
+    <span data-sendview="{{route('posts.view', $post)}}"></span>
     <div class="wrapper_main pt-74">
         <main class="content">
             <section class="post-page">
@@ -161,10 +169,27 @@
                                                 <img src="{{$item->file()->url}}" alt="{{$item->file()->alt}}" title="{{$item->file()->title}}">
                                                 @break
                                             @case('youtube')
-                                                
+                                                {!!$item->value_simple!!}
                                                 @break
-                                            @case('slider')
-                                                TODO
+                                            @case(\App\Enums\BlockItemType::IMAGE_GALLERY->value)
+                                                @if (count($item->value_simple) == 1)
+                                                    <img src="{{$image['url']}}" alt="">
+                                                @elseif(count($item->value_simple) == 2)
+                                                    <div class="row">
+                                                        <img src="{{$item->value_simple[0]['url']}}" alt="" class="col-5">
+                                                        <img src="{{$item->value_simple[1]['url']}}" alt="" class="col-5">
+                                                    </div>
+                                                @else
+                                                    <div class="prod-photo">
+                                                        @foreach ($item->value_simple as $image)
+                                                            <div class="prod-photo-slide">
+                                                                <a href="{{$image['url']}}" data-fancybox='postsgallery'>
+                                                                    <img src="{{$image['url']}}" alt="">
+                                                                </a>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                @endif
                                                 @break
                                         @endswitch
                                     @endforeach
@@ -231,3 +256,29 @@
     </div>
 @endsection
 
+@push('scripts')
+    <script>
+        $(".prod-photo").on("init", function(event, slick){
+            $(".prod-top .prod-current").text(parseInt(slick.currentSlide + 1));
+            $(".prod-top .prod-all").text(parseInt(slick.slideCount));
+        });
+        $(".prod-photo").on("afterChange", function(event, slick, currentSlide){
+            $(".prod-top .prod-current").text(parseInt(slick.currentSlide + 1));
+            $(".prod-top .prod-all").text(parseInt(slick.slideCount));
+        });
+        $('.prod-photo').slick({
+            dots: false,
+            arrows: true,
+            autoplay: false,
+            prevArrow: $('.prod-top .prod-prev'),
+            nextArrow: $('.prod-top .prod-next'),
+            speed: 1000,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            infinite: false
+        });
+        Fancybox.bind("[data-fancybox='postsgallery']", {
+            // Your custom options
+        });
+    </script>
+@endpush

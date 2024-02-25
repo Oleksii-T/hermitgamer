@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Enums\PostStatus;
+use App\Enums\PostTCStyle;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PostRequest extends FormRequest
@@ -28,10 +31,10 @@ class PostRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255'],
             'intro' => ['nullable', 'string'],
-            'conclusion' => ['nullable', 'string'],
             'slug' => ['required', 'string', 'max:255'],
             'thumbnail' => [$model ? 'nullable' : 'required', 'image', 'max:5000'],
-            'is_active' => ['nullable', 'boolean'],
+            'status' => ['required', Rule::in(PostStatus::values())],
+            'tc_style' => ['required', Rule::in(PostTCStyle::values())],
             'category_id' => ['nullable', 'exists:categories,id'],
             'game_id' => ['nullable', 'exists:games,id'],
             'author_id' => ['required', 'exists:authors,id'],

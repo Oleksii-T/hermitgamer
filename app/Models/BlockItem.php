@@ -106,6 +106,10 @@ class BlockItem extends Model
                 if (in_array( $this->type->value, $simpleValueTypes)) {
                     return $value['value'];
                 }
+                
+                if ($this->type == BlockItemType::IMAGE_GALLERY) {
+                    return $value['images'];
+                }
 
                 return $value;
             },

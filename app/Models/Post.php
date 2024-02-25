@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Traits\Viewable;
+use App\Enums\PostStatus;
+use App\Enums\PostTCStyle;
 use App\Traits\HasAttachments;
 use Yajra\DataTables\DataTables;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
-    use HasFactory, HasAttachments;
+    use HasFactory, HasAttachments, Viewable;
 
     protected $fillable = [
         'game_id',
@@ -18,15 +21,17 @@ class Post extends Model
         'title',
         'category_id',
         'author_id',
-        'is_active',
+        'status',
         'intro',
         'conclusion',
-        'views',
+        'tc_style',
         'related',
     ];
 
     protected $casts = [
-        'related' => 'array'
+        'related' => 'array',
+        'status' => PostStatus::class,
+        'tc_style' => PostTCStyle::class
     ];
 
     const ATTACHMENTS = [
@@ -70,6 +75,11 @@ class Post extends Model
     public function game()
     {
         return $this->belongsTo(Game::class);
+    }
+
+    public function info()
+    {
+        return $this->hasOne(PostInfo::class);
     }
 
     public function faqs()
@@ -124,6 +134,9 @@ class Post extends Model
             })
             ->addColumn('author', function ($model) {
                 return $model->author->name;
+            })
+            ->addColumn('views', function ($model) {
+                return $model->views()->count();
             })
             ->editColumn('is_active', function ($model) {
                 return $model->is_active

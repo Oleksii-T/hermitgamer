@@ -20,36 +20,26 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Title</label>
-                            <input type="text" class="form-control" name="title">
+                            <input type="text" class="form-control" name="title" id="post-title">
                             <span data-input="slug" class="input-error"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Slug</label>
-                            <input type="text" class="form-control" name="slug">
+                            <input type="text" class="form-control" name="slug" data-autoslug="#post-title">
                             <span data-input="slug" class="input-error"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group show-uploaded-file-name show-uploaded-file-preview">
-                            <label>Thumbnail</label>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="thumbnail" name="thumbnail">
-                                <label class="custom-file-label" for="thumbnail">Choose file</label>
-                            </div>
-                            <img src="" alt="" class="custom-file-preview">
-                            <span data-input="thumbnail" class="input-error"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
                         <div class="form-group">
-                            <label>Is Active</label>
-                            <div class="custom-control custom-checkbox">
-                                <input class="custom-control-input" type="checkbox" id="is_active" name="is_active" value="1">
-                                <label for="is_active" class="custom-control-label">Yes</label>
-                            </div>
-                            <span data-input="is_active" class="input-error"></span>
+                            <label>Status</label>
+                            <select class="form-control" name="status">
+                                @foreach (\App\Enums\PostStatus::all() as $key => $value)
+                                    <option value="{{$key}}">{{$value}}</option>
+                                @endforeach
+                            </select>
+                            <span data-input="status" class="input-error"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -66,7 +56,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Game</label>
-                            <select class="form-control" name="game_id">
+                            <select class="form-control select2" name="game_id">
                                 @foreach (\App\Models\Game::all() as $model)
                                     <option value="{{$model->id}}">{{$model->name}}</option>
                                 @endforeach
@@ -96,18 +86,33 @@
                             <span data-input="tags" class="input-error"></span>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Table of content style</label>
+                            <select class="form-control" name="tc_style">
+                                @foreach (\App\Enums\PostTCStyle::all() as $key => $value)
+                                    <option value="{{$key}}">{{$value}}</option>
+                                @endforeach
+                            </select>
+                            <span data-input="tc_style" class="input-error"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group show-uploaded-file-name show-uploaded-file-preview">
+                            <label>Thumbnail</label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="thumbnail" name="thumbnail">
+                                <label class="custom-file-label" for="thumbnail">Choose file</label>
+                            </div>
+                            <img src="" alt="" class="custom-file-preview">
+                            <span data-input="thumbnail" class="input-error"></span>
+                        </div>
+                    </div>
                     <div class="col-12">
                         <div class="form-group">
                             <label>Intro</label>
                             <textarea name="intro" class="form-control summernote"></textarea>
                             <span data-input="intro" class="input-error"></span>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-group">
-                            <label>Conclusion</label>
-                            <textarea name="conclusion" class="form-control summernote"></textarea>
-                            <span data-input="conclusion" class="input-error"></span>
                         </div>
                     </div>
                 </div>

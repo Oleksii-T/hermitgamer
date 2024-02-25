@@ -19,7 +19,12 @@ use App\Http\Controllers\Admin\AttachmentController;
  *
  */
 
-Route::view('/login', 'admin.auth.login')->name('login');
+Route::get('/login', function () {
+    if (auth()->check()) {
+        return redirect()->route('admin.index');
+    }
+    return view('admin.auth.login');
+})->name('login');
 
 Route::middleware('is-admin')->group(function () {
 
@@ -40,9 +45,12 @@ Route::middleware('is-admin')->group(function () {
         Route::get('{post}/faqs', [PostController::class, 'faqs'])->name('faqs');
         Route::get('{post}/assets', [PostController::class, 'assets'])->name('assets');
         Route::get('{post}/related', [PostController::class, 'related'])->name('related');
+        Route::get('{post}/conclusion', [PostController::class, 'conclusion'])->name('conclusion');
+        Route::get('{post}/reviewsFields', [PostController::class, 'reviewsFields'])->name('reviewsFields');
         Route::post('{post}/blocks', [PostController::class, 'updateBlocks'])->name('update-blocks');
         Route::post('{post}/faqs', [PostController::class, 'storeFaq'])->name('store-faq');
         Route::put('{post}/assets', [PostController::class, 'updateAssets'])->name('update-assets');
+        Route::put('{post}/reviewsFields', [PostController::class, 'updateReviewsFields'])->name('update-reviewsFields');
         Route::put('{post}/related', [PostController::class, 'updateRelated'])->name('update-related');
         Route::put('{post}/faqs/{faq}', [PostController::class, 'updateFaq'])->name('update-faq');
         Route::delete('{post}/faqs/{faq}', [PostController::class, 'destroyFaq'])->name('destroy-faq');

@@ -18,6 +18,8 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 Route::any('dev/{action}', [\App\Http\Controllers\DevController::class, 'action']);
 
 Route::prefix('posts')->name('posts.')->group(function () {
+    Route::get('{post}', [PostController::class, 'show'])->name('show');
+    Route::post('{post}/view', [PostController::class, 'view'])->name('view');
     Route::get('more', [PostController::class, 'more']);
 });
 
@@ -28,7 +30,6 @@ Route::prefix('comments')->name('comments.')->group(function () {
 
 Route::get('/', [PageController::class, 'index'])->name('index');
 
-Route::get('posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
 Route::get('categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
 

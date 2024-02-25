@@ -56,4 +56,15 @@ $(document).ready(function () {
             }
         });
     })
+
+    let sendViewUrl = $('[data-sendview]').data('sendview');
+    if (sendViewUrl) {
+        $.ajax({
+            url: sendViewUrl,
+            type: 'post',
+            data: {
+                _token: window.Laravel.csrf
+            }
+        });
+    }
 });

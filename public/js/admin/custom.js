@@ -64,6 +64,32 @@ $(document).ready(function () {
             title: message??'Copied successfully'
         });
     })
+
+    // automaticaly fill slug from other field
+    let autoslugs = {};
+    $('[data-autoslug]').each(function(index) {
+        let target = $(this).data('autoslug');
+        let autoSlugEl = $(this);
+
+        autoslugs[target] = {
+            do: true,
+            slug: autoSlugEl,
+            target: $(target)
+        }
+
+        $(target).on('input', function() {
+            let val = $(this).val();
+            if (!val || !autoslugs[target].do) {
+                return;
+            }
+            val = slugify(val);
+            autoSlugEl.val(val);
+        });
+
+        autoSlugEl.on('input', function() {
+            autoslugs[target].do = false;
+        });
+    });
 });
 
 // flash notification
@@ -121,25 +147,37 @@ function deleteResource(dataTable, url) {
 
 // general error logic, after ajax form submit been processed
 function showServerError(response) {
-    if (response.status == 422) {
+    if (response.status != 422) {
         for ([field, value] of Object.entries(response.responseJSON.errors)) {
-            let dotI = field.indexOf('.');
-            if (dotI != -1) {
-                field = field.slice(0, dotI);
-            }
+
+            // escape dot in field name
+            field = field.replace(/\./g, '\\.');
+
+            // compact the error message
             let errorText = '';
-            let errorElement = $(`.input-error[data-input=${field}]`);
-            errorElement = errorElement.length ? errorElement : $(`.input-error[data-input="${field}[]"]`);
-            errorElement = errorElement.length ? errorElement : $(`[name=${field}]`).closest('.form-group').find('.input-error');
-            errorElement = errorElement.length ? errorElement : $(`[name="${field}[]"]`).closest('.form-group').find('.input-error');
             for (const [key, error] of Object.entries(value)) {
                 errorText = errorText ? errorText+'<br>'+error : error;
             }
-            errorElement.html(errorText);
+
+            // find the element to show error
+            let errorElement = $(`.input-error[data-input=${field}]`);
+
+            // check if field is array
+            let dotI = field.indexOf('.');
+            if (!errorElement.length && dotI != -1) {
+                field = field.slice(0, dotI);
+                errorElement = $(`.input-error[data-input=${field}]`);
+            }
+            
+            // insert error message
+            if (errorElement.length) {
+                errorElement.html(errorText);
+            }
         }
-    } else {
-        swal.fire('Error!', 'Server error', 'error');
+        return;
     }
+
+    swal.fire('Error!', 'Server error', 'error');
 }
 
 // general success logic, after ajax form submit been processed
@@ -165,4 +203,16 @@ function loading(text='Request processing...') {
         showConfirmButton: false,
         allowOutsideClick: false
     });
+}
+
+// simple slugify
+function slugify(str) {
+    return String(str)
+      .normalize('NFKD') // split accented characters into their base characters and diacritical marks
+      .replace(/[\u0300-\u036f]/g, '') // remove all the accents, which happen to be all in the \u03xx UNICODE block.
+      .trim() // trim leading or trailing whitespace
+      .toLowerCase() // convert to lowercase
+      .replace(/[^a-z0-9 -]/g, '') // remove non-alphanumeric characters
+      .replace(/\s+/g, '-') // replace spaces with hyphens
+      .replace(/-+/g, '-'); // remove consecutive hyphens
 }

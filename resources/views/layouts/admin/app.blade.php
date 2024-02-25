@@ -6,6 +6,6 @@
 @stop
 
 @section('js')
-    <script src="/js/admin/custom.js"></script>
+    <script src="/js/admin/custom.js?v={{time()}}"></script>
     @stack('scripts')
 @stop

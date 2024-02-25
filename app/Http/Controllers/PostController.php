@@ -43,8 +43,8 @@ class PostController extends Controller
         ]);
     }
 
-    public function like(Request $request, Post $post)
+    public function view(Request $request, Post $post)
     {
-        // TODO
+        $post->saveView();
     }
 }

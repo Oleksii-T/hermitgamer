@@ -61,7 +61,7 @@ return [
     |
     */
 
-    'home' => RouteServiceProvider::HOME,
+    'home' => '/admin',
 
     /*
     |--------------------------------------------------------------------------
@@ -103,7 +103,7 @@ return [
     */
 
     'limiters' => [
-        'login' => 'login',
+        // 'login' => 'login',
         'two-factor' => 'two-factor',
     ],
 

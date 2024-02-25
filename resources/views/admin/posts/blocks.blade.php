@@ -27,16 +27,16 @@
 @endpush
 
 @section('content_header')
-<div class="container-fluid">
-    <div class="row mb-2">
-        <div class="col-sm-6">
-            <div class="float-left">
-                <h1 class="m-0">Edit Post</h1>
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <div class="float-left">
+                    <h1 class="m-0">Edit Post</h1>
+                </div>
+                <x-admin.post-nav active="blocks" :post="$post" />
             </div>
-            <x-admin.post-nav active="blocks" :post="$post" />
         </div>
     </div>
-</div>
 @stop
 
 @section('content')

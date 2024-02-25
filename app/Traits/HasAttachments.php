@@ -25,12 +25,16 @@ trait HasAttachments
         foreach ($attachments as $attachment) {
             $type = $this->determineType($attachment->extension());
             $disk = Attachment::disk($type);
-            $path = $attachment->store('', $disk);
+            $og_name = $attachment->getClientOriginalName();
+            $path = $attachment->storeAs('', $og_name, $disk);
+            $alt = readable(strstr($og_name, '.', true));
 
             $this->$group()->create([
                 'name' => $path,
                 'original_name' => $attachment->getClientOriginalName(),
                 'type' => $type,
+                'alt' => $alt,
+                'title' => $alt,
                 'group' => $group,
                 'size' => $attachment->getSize()
             ]);
