@@ -26,6 +26,11 @@ class Category extends Model
         return $this->hasMany(Post::class);
     }
 
+    public static function forHeader()
+    {
+        return self::where('in_menu', true)->orderBy('order')->get();
+    }
+
     public static function dataTable($query)
     {
         return DataTables::of($query)

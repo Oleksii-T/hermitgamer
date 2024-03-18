@@ -44,6 +44,10 @@ class RouteServiceProvider extends ServiceProvider
             return \App\Models\Tag::where('slug', $value)->first();
         });
 
+        Route::bind('author', function ($value) {
+            return \App\Models\Author::where('slug', $value)->first();
+        });
+
         $this->routes(function () {
             Route::middleware('api')
                 ->prefix('api')

@@ -25,14 +25,9 @@ class CategoryRequest extends FormRequest
     {
         return [
             'in_menu' => ['nullable', 'boolean'],
-            'key' => ['required', 'string', 'max:255'],
             'order' => ['nullable', 'integer'],
-            'name' => ['required', 'array'],
-            'name.en' => ['required', 'string', 'max:255'],
-            'name.*' => ['nullable', 'string', 'max:255'],
-            'slug' => ['required', 'array'],
-            'slug.en' => ['required', 'string', 'max:255'],
-            'slug.*' => ['nullable', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
+            'slug' => ['required', 'string', 'max:255'],
         ];
     }
 }

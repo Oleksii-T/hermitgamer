@@ -107,11 +107,11 @@ class Post extends Model
         return $this->hasMany(PostBlock::class);
     }
 
-    public function scopeActive($query)
+    public function scopePublised($query)
     {
         return $query
             // ->has('blocks')
-            ->where('is_active', true);
+            ->where('status', PostStatus::PUBLISHED);
     }
 
     public function scopeCategory($query, $slug, $get=false)
@@ -138,10 +138,8 @@ class Post extends Model
             ->addColumn('views', function ($model) {
                 return $model->views()->count();
             })
-            ->editColumn('is_active', function ($model) {
-                return $model->is_active
-                    ? '<span class="badge badge-success">yes</span>'
-                    : '<span class="badge badge-warning">no</span>';
+            ->editColumn('status', function ($model) {
+                return $model->status->readable();
             })
             ->editColumn('created_at', function ($model) {
                 return $model->created_at->format(env('ADMIN_DATETIME_FORMAT'));
@@ -152,7 +150,7 @@ class Post extends Model
                     'name' => 'posts'
                 ])->render();
             })
-            ->rawColumns(['is_active', 'action'])
+            ->rawColumns(['action'])
             ->make(true);
     }
 }

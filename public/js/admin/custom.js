@@ -105,6 +105,26 @@ const Toast = Swal.mixin({
     }
 });
 
+// show message depends on role and fade out it after 3 sec
+function showToast(title, icon=true) {
+	Toast.fire({
+        icon: icon ? 'success' : 'error',
+        title: title,
+        // toast: false
+    });
+}
+
+// show popup notification
+function showPopUp(title=null, text=null, role) {
+    if (title===null) {
+        title = role ? 'Success' : 'Oops!';
+    }
+    if (text===null) {
+        text = role ? '' : 'Something went wrong!';
+    }
+    swal.fire(title, text, role ? 'success' : 'error');
+}
+
 //delete resource from datatable
 function deleteResource(dataTable, url) {
     swal.fire({
@@ -147,7 +167,7 @@ function deleteResource(dataTable, url) {
 
 // general error logic, after ajax form submit been processed
 function showServerError(response) {
-    if (response.status != 422) {
+    if (response.status == 422) {
         for ([field, value] of Object.entries(response.responseJSON.errors)) {
 
             // escape dot in field name
@@ -177,19 +197,19 @@ function showServerError(response) {
         return;
     }
 
-    swal.fire('Error!', 'Server error', 'error');
+    showToast(response.responseJSON.message, false);
 }
 
 // general success logic, after ajax form submit been processed
 function showServerSuccess(response) {
     if (response.success) {
-        swal.fire("Success!", response.message, 'success').then((result) => {
-            if (response.data?.redirect) {
-                window.location.href = response.data.redirect;
-            }else if (response.data?.reload) {
-                window.location.reload();
-            }
-        });
+        if (response.data?.redirect) {
+            window.location.href = response.data.redirect;
+        }else if (response.data?.reload) {
+            window.location.reload();
+        } else {
+            showToast(response.message);
+        }
     } else {
         swal.fire("Error!", response.message, 'error');
     }

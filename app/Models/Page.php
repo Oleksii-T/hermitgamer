@@ -44,6 +44,17 @@ class Page extends Model
         return $this->status == 'static';
     }
 
+    public function show($key, $default='')
+    {
+        $explode = explode(':', $key);
+        $blockName = $explode[0];
+        $dataName = $explode[1];
+        return $this->blocks
+            ->where('name', $blockName)
+            ->first()
+            ->show($dataName, $default);
+    }
+
     public static function dataTable($query)
     {
         return DataTables::of($query)
@@ -54,20 +65,12 @@ class Page extends Model
                 return $model->created_at->format(env('ADMIN_DATETIME_FORMAT'));
             })
             ->addColumn('action', function ($model) {
-                return view('admin.pages.actions-list', compact('model'))->render();
+                return view('components.admin.actions', [
+                    'model' => $model,
+                    'name' => 'pages'
+                ])->render();
             })
             ->rawColumns(['link', 'action'])
             ->make(true);
-    }
-
-    public function show($key, $default='')
-    {
-        $explode = explode(':', $key);
-        $blockName = $explode[0];
-        $dataName = $explode[1];
-        return $this->blocks
-            ->where('name', $blockName)
-            ->first()
-            ->show($dataName, $default);
     }
 }

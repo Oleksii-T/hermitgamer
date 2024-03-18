@@ -16,19 +16,16 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>In Top Menu</label>
-                            <div class="custom-control custom-checkbox">
-                                <input class="custom-control-input" type="checkbox" id="in_menu" name="in_menu">
-                                <label for="in_menu" class="custom-control-label">Yes</label>
-                            </div>
-                            <span data-input="in_menu" class="input-error"></span>
+                            <label>Name</label>
+                            <input type="text" class="form-control" name="name">
+                            <span data-input="name" class="input-error"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Key</label>
-                            <input type="text" class="form-control" name="key">
-                            <span data-input="order" class="input-error"></span>
+                            <label>Slug</label>
+                            <input type="text" class="form-control" name="slug">
+                            <span data-input="slug" class="input-error"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -40,16 +37,12 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Name</label>
-                            <input type="text" class="form-control" name="name">
-                            <span data-input="name" class="input-error"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Slug</label>
-                            <input type="text" class="form-control" name="slug">
-                            <span data-input="slug" class="input-error"></span>
+                            <label>In Top Menu</label>
+                            <div class="custom-control custom-checkbox">
+                                <input class="custom-control-input" type="checkbox" value="1" id="in_menu" name="in_menu">
+                                <label for="in_menu" class="custom-control-label">Yes</label>
+                            </div>
+                            <span data-input="in_menu" class="input-error"></span>
                         </div>
                     </div>
                 </div>

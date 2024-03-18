@@ -28,9 +28,6 @@ class AuthorController extends Controller
     public function store(AuthorRequest $request)
     {
         $input = $request->validated();
-        if (!($input['order']??null)) {
-            $input['order'] = Author::max('order') + 1;
-        }
         $author = Author::create($input);
 
         return $this->jsonSuccess('Author created successfully', [

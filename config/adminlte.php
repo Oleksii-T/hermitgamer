@@ -271,6 +271,11 @@ return [
             'icon' => 'fas fa-fw fa-folder-open',
         ],
         [
+            'text' => 'Pages',
+            'route'  => 'admin.pages.index',
+            'icon' => 'fas fa-fw fa-copy',
+        ],
+        [
             'text' => 'Return to Site',
             'url'  => '/',
             'icon' => 'fas fa-fw fa-reply',
@@ -368,7 +373,7 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
+                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@11',
                 ],
             ],
         ],

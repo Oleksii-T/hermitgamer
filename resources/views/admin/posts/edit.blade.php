@@ -44,7 +44,7 @@
                             <label>Status</label>
                             <select class="form-control" name="status">
                                 @foreach (\App\Enums\PostStatus::all() as $key => $value)
-                                    <option value="{{$key}}">{{$value}}</option>
+                                    <option value="{{$key}}" @selected($post->status->value == $key)>{{$value}}</option>
                                 @endforeach
                             </select>
                             <span data-input="status" class="input-error"></span>

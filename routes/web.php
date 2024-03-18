@@ -33,6 +33,8 @@ Route::get('/', [PageController::class, 'index'])->name('index');
 
 Route::get('categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
 
+Route::get('authors/{author}', [AuthorController::class, 'show'])->name('authors.show');
+
 Route::get('tags/{tag}', [TagController::class, 'show'])->name('tags.show');
 
 Route::get('games/{game}', [GameController::class, 'show'])->name('games.show');

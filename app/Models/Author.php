@@ -17,6 +17,7 @@ class Author extends Model
         'instagram',
         'youtube',
         'email',
+        'twitter',
         'slug',
         'description',
         'steam'
@@ -27,6 +28,12 @@ class Author extends Model
     ];
 
     public $disk = 'authors';
+
+    // overload laravel`s method for route key generation
+    public function getRouteKey()
+    {
+        return $this->slug;
+    }
 
     public function posts()
     {
