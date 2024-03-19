@@ -271,6 +271,11 @@ return [
             'icon' => 'fas fa-fw fa-folder-open',
         ],
         [
+            'text' => 'Feedbacks',
+            'route'  => 'admin.feedbacks.index',
+            'icon' => 'fa fa-fw fa-paper-plane ',
+        ],
+        [
             'text' => 'Pages',
             'route'  => 'admin.pages.index',
             'icon' => 'fas fa-fw fa-copy',

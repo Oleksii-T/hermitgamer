@@ -30,13 +30,27 @@
                         </div>
                     </div>
                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Meta Title</label>
+                            <input type="text" class="form-control" name="meta_title" value="{{$author->meta_title}}">
+                            <span data-input="meta_title" class="input-error"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Meta Description</label>
+                            <input type="text" class="form-control" name="meta_description" value="{{$author->meta_description}}">
+                            <span data-input="meta_description" class="input-error"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
                         <div class="form-group show-uploaded-file-name show-uploaded-file-preview">
                             <label>Avatar</label>
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="avatar" name="avatar">
                                 <label class="custom-file-label" for="avatar">Choose file</label>
                             </div>
-                            <img src="{{$author->avatar}}" alt="" class="custom-file-preview">
+                            <img src="{{$author->avatar->url}}" alt="" class="custom-file-preview">
                             <span data-input="avatar" class="input-error"></span>
                         </div>
                     </div>
@@ -57,7 +71,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Description</label>
-                            <textarea class="form-control" name="description">{{$author->description}}</textarea>
+                            <textarea class="form-control summernote" name="description">{!!$author->description!!}</textarea>
                             <span data-input="description" class="input-error"></span>
                         </div>
                     </div>

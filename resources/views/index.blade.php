@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@php
+    $pageClass = 'home-page';
+@endphp
+
 @section('content')
     <section class="cover prime">
         <div class="background prime__background">
@@ -9,9 +13,7 @@
             <h1 class="prime__title">
                 {{$page->show('header:title')}}
             </h1>
-            <p class="prime__text">
-                {{$page->show('header:text')}}
-            </p>
+            <p class="prime__text">{!!$page->show('header:text')!!}</p>
             <p class="prime__desc">
                 {{$page->show('header:sub-text')}}
             </p>
@@ -49,11 +51,8 @@
 
     <div class="content">
         <section class="section reviews">
-            <h2><span>Video Games Reviews</span></h2>
-            <p>We help players all over the world to choose the video game based on numerous criteria. With our
-                own review and rating system, we use testing and reviewing games in different genres. Below you
-                can check the latest reviews from our experts. You can also find more interesting reviews on the
-                video games reviews page.</p>
+            <h2><span>{{$page->show('reviews:title')}}</span></h2>
+            {!!$page->show('reviews:text')!!}
             <ul class="reviews__list">
                 @foreach ($latestReviews as $post)
                     <li>
@@ -71,11 +70,8 @@
             </ul>
             <div class="reviews__wrap">
                 <div class="reviews__inner">
-                    <h2><span>Guides and Walkthroughs</span></h2>
-                    <p>We check and use the most frequent requests of all players to create really necessary and
-                        useful guides. If you are stuck at some point in the game, need help to collect some
-                        items, or any other help in specific moments, you may find your answers on our page with
-                        video game guides. Here are the examples of the latest guides from our team.</p>
+                    <h2><span>{{$page->show('guides:title')}}</span></h2>
+                    {!!$page->show('guides:text')!!}
                     <ul class="reviews__list">
                         @foreach ($latestGuides as $post)
                             <li>
@@ -93,15 +89,8 @@
                     </ul>
                 </div>
                 <div class="reviews__inner">
-                    <h2><span>Ranked Lists</span></h2>
-                    <p>Our team compares games in different categories to choose the best of them. Based on our
-                        comparisons, we make ranked lists from games to make it easier for you to decide what to
-                        play.</p>
-                    <p>
-                        Moreover, we make ranked lists with different characters, weapons, armor, or other
-                        in-game items. Below you can check the examples of our latest ranked lists. Moreover,
-                        you can find more on the video games lists page.
-                    </p>
+                    <h2><span>{{$page->show('top-lists:title')}}</span></h2>
+                    {!!$page->show('top-lists:text')!!}
                     <ul class="reviews__list">
                         @foreach ($latestNews as $post)
                             <li>
@@ -123,57 +112,42 @@
         </section>
 
         <section class="section reasons">
-            <h2><span>Reasons to Trust Us</span></h2>
-            <p>Neognosis Games was created by true gamers with one reason – to help other players find the
-                required information and answers to any questions. We hope our expert reviews, guides, and game
-                tips will help you make decisions and find answers.</p>
-            <p>We have organized and structured the processes of game testing, reviewing, and quality control.
-                We only write about games that we have played and know well. Moreover, all of our authors really
-                love what they do.</p>
-            <p>We try not to use any AI tools and write all the information by ourselves. We believe this will
-                help make the information more accurate, useful, and complete.</p>
+            <h2><span>{{$page->show('reasons:title')}}</span></h2>
+            {!!$page->show('reasons:text')!!}
             <ul class="type-list reasons__list">
                 <li class="type-item">
                     <div class="type-item__image">
                         <img src="{{asset('images/reasons1.svg')}}" alt="">
                     </div>
-                    <div class="type-item__title">Players Oriented</div>
-                    <p class="type-item__text ">We use all available tools and knowledge to provide the most
-                        accurate and understandable information for players.</p>
+                    <div class="type-item__title">{{$page->show('reasons:block-1-title')}}</div>
+                    <p class="type-item__text ">{{$page->show('reasons:block-1-text')}}</p>
                 </li>
                 <li class="type-item">
                     <div class="type-item__image">
                         <img src="{{asset('images/reasons2.svg')}}" alt="">
                     </div>
-                    <div class="type-item__title">Clear Review Process</div>
-                    <p class="type-item__text">We use our rating system and a 10-point rating scale to be as
-                        objective as possible and not to mislead players.</p>
+                    <div class="type-item__title">{{$page->show('reasons:block-2-title')}}</div>
+                    <p class="type-item__text ">{{$page->show('reasons:block-2-text')}}</p>
                 </li>
                 <li class="type-item">
                     <div class="type-item__image">
                         <img src="{{asset('images/reasons3.svg')}}" alt="">
                     </div>
-                    <div class="type-item__title">Expert Writers</div>
-                    <p class="type-item__text">We work only with experienced writers to provide high-quality
-                        content. Read our guides to find recommendations from experts.</p>
+                    <div class="type-item__title">{{$page->show('reasons:block-3-title')}}</div>
+                    <p class="type-item__text ">{{$page->show('reasons:block-3-text')}}</p>
                 </li>
             </ul>
         </section>
 
         <section class="section about">
-            <h2><span>About Our Team</span></h2>
-            <p>Neognosis Games is a relatively new website about video games. Although our team is not big, we
-                work hard to bring the most interesting content about video games. Moreover, we are constantly
-                growing and believe that one day we will be one of the leading online resources in the industry.
-                You can find more on the About Us page.</p>
-            <p>As for the team, we are proud to have the best writers with a huge experience. You are guaranteed
-                to get an expert’s advice on any of your searches regarding video games. So, meet our team:</p>
+            <h2><span>{{$page->show('team:title')}}</span></h2>
+            {!!$page->show('team:text')!!}
             <ul class="about__list">
                 @foreach ($authors as $author)
                     <li>
                         <div class="about-item">
                             <a href="{{route('authors.show', $author)}}" class="about-item__image">
-                                <img src="{{$author->avatar}}" class="lazyload" alt="">
+                                <img src="{{$author->avatar->url}}" class="lazyload" alt="{{$author->avatar->alt}}">
                             </a>
                             <div class="about-item__desc">
                                 <a href="{{route('authors.show', $author)}}" class="about-item__name">
@@ -188,19 +162,9 @@
         </section>
 
         <section class="section howto">
-            <h2><span>How to Contact Us?</span></h2>
-            <p>We value our readers and are always happy to communicate with our community. You can contact us
-                directly using our message form on the Contact Us page. If you prefer to write an email, you can
-                use the email of the Neognosis Games founder yarikmoklyak2010@gmail.com.</p>
-            <p>We usually respond to all emails within several days (1 or 2). Sometimes it may take some more
-                time, due to several reasons.</p>
+            <h2><span>{{$page->show('contact-us:title')}}</span></h2>
+            {!!$page->show('contact-us:text')!!}
         </section>
-        <div class="back-top">
-            <a href="#header" class="anchor-link back-top__button">
-                <img src="{{asset('images/icons/back-top.svg')}}" alt="">
-                Back to Top
-            </a>
-        </div>
     </div>
     <div class="page-bg">
         <img src="{{asset('images/pag-figure.svg')}}" alt="">

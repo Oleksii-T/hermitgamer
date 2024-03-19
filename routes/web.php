@@ -5,6 +5,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CategoryController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -29,7 +30,12 @@ Route::prefix('comments')->name('comments.')->group(function () {
 });
 
 Route::get('/', [PageController::class, 'index'])->name('index');
-
+Route::get('rate', [PageController::class, 'rate'])->name('rate');
+Route::get('contact-us', [PageController::class, 'contactUs'])->name('contact-us');
+Route::post('contact-us', [PageController::class, 'feedback'])->name('feedbacks.store');
+Route::get('about-us', [PageController::class, 'aboutUs'])->name('about-us');
+Route::get('privacy', [PageController::class, 'privacy'])->name('privacy');
+Route::get('terms', [PageController::class, 'terms'])->name('terms');
 
 Route::get('categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
 

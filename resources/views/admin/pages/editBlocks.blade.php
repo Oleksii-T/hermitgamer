@@ -36,9 +36,7 @@
                                         name="blocks[{{ $block->id }}][{{ $name }}][value]"
                                         class="form-control" rows="2"
                                         cols="2"
-                                    >
-                                        {!! $field['value'] ?? '' !!}
-                                    </textarea>
+                                    >{!! $field['value'] ?? '' !!}</textarea>
                                 @break
 
                                 @case('editor')
@@ -48,9 +46,7 @@
                                         rows="2"
                                         cols="2"
                                         id="editor{{ $name }}{{ $block->id }}"
-                                    >
-                                        {!! $field['value'] ?? '' !!}
-                                    </textarea>
+                                    >{!! $field['value'] ?? '' !!}</textarea>
                                 @break
 
                                 @case('image')

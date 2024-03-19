@@ -2,16 +2,22 @@
 
 namespace App\Models;
 
-use App\Casts\File;
+use App\Traits\Viewable;
+use App\Traits\HasAttachments;
 use Yajra\DataTables\DataTables;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Author extends Model
 {
+    use HasAttachments, Viewable;
+
+    const ATTACHMENTS = [
+        'thumbnail'
+    ];
+
     protected $fillable = [
         'name',
-        'avatar',
         'title',
         'facebook',
         'instagram',
@@ -20,11 +26,9 @@ class Author extends Model
         'twitter',
         'slug',
         'description',
+        'meta_description',
+        'meta_title',
         'steam'
-    ];
-
-    protected $casts = [
-        'avatar' => File::class
     ];
 
     public $disk = 'authors';
@@ -33,6 +37,11 @@ class Author extends Model
     public function getRouteKey()
     {
         return $this->slug;
+    }
+
+    public function avatar()
+    {
+        return $this->morphOne(Attachment::class, 'attachmentable')->where('group', 'avatar');
     }
 
     public function posts()
@@ -44,7 +53,7 @@ class Author extends Model
     {
         return DataTables::of($query)
             ->editColumn('avatar', function ($model) {
-                return '<img src="'.$model->avatar.'" alt="">';
+                return '<img src="'.$model->avatar->url.'" alt="">';
             })
             ->editColumn('created_at', function ($model) {
                 return $model->created_at->format(env('ADMIN_DATETIME_FORMAT'));

@@ -1,17 +1,19 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\GameController;
 use App\Http\Controllers\Admin\PageController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\TagController;
-use App\Http\Controllers\Admin\AuthorController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\AuthorController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\FeedbackController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AttachmentController;
+use App\Http\Controllers\Admin\FeedbackBanController;
 
 /*
  *
@@ -60,6 +62,11 @@ Route::middleware('is-admin')->group(function () {
     Route::resource('comments', CommentController::class)->except('show');
 
     Route::resource('settings', SettingController::class)->except('show');
+
+    Route::post('feedback-bans/{feedback-ban}/toggle', [FeedbackBanController::class, 'toggle'])->name('feedback-bans.toggle');
+    Route::resource('feedback-bans', FeedbackBanController::class)->only('index', 'store', 'update', 'destroy');
+
+    Route::resource('feedbacks', FeedbackController::class)->only('show', 'index', 'destroy', 'update');
 
     Route::get('pages/{page}/edit-blocks', [PageController::class, 'editBlocks'])->name('pages.edit-blocks');
     Route::put('pages/{page}/update-blocks', [PageController::class, 'updateBlocks'])->name('pages.update-blocks');

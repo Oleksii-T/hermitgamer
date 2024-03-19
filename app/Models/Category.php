@@ -11,8 +11,11 @@ class Category extends Model
     protected $fillable = [
         'in_menu',
         'name',
+        'description',
         'order',
-        'slug'
+        'slug',
+        'meta_description',
+        'meta_title',
     ];
 
     // overload laravel`s method for route key generation

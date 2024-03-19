@@ -31,9 +31,30 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
+                            <label>Description</label>
+                            <input type="text" class="form-control" name="description" value="{{$category->description}}">
+                            <span data-input="description" class="input-error"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <label>Order</label>
                             <input type="number" class="form-control" name="order" value="{{$category->order}}">
                             <span data-input="order" class="input-error"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Meta Title</label>
+                            <input type="text" class="form-control" name="meta_title" value="{{$category->meta_title}}">
+                            <span data-input="meta_title" class="input-error"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Meta Description</label>
+                            <input type="text" class="form-control" name="meta_description" value="{{$category->meta_description}}">
+                            <span data-input="meta_description" class="input-error"></span>
                         </div>
                     </div>
                     <div class="col-md-6">

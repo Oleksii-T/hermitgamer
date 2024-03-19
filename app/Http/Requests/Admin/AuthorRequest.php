@@ -32,6 +32,8 @@ class AuthorRequest extends FormRequest
             'email' => ['nullable', 'string', 'max:255'],
             'slug' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:10000'],
+            'meta_description' => ['required', 'string', 'max:255'],
+            'meta_title' => ['required', 'string', 'max:255'],
             'facebook' => ['nullable', 'string', 'max:255'],
             'instagram' => ['nullable', 'string', 'max:255'],
             'youtube' => ['nullable', 'string', 'max:255'],

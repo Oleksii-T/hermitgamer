@@ -2,16 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Page;
 use App\Models\Category;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
     public function show(Request $request, Category $category)
     {
-        $perPage = 6;
-        $posts = $category->posts()->active()->latest()->limit(6)->get();
+        $perPage = 2;
+        $posts = $category->posts()->publised()->latest()->paginate($perPage);
+        
+        if (!$request->ajax()) {
+            $page = Page::get('category');
+            return view('categories.show', compact('category', 'posts', 'page'));
+        }
 
-        return view('categories.show', compact('category', 'posts'));
+        return $this->jsonSuccess('', [
+            'hasMore' => $posts->hasMorePages(),
+            'html' => view('components.post-cards', compact('posts'))->render()
+        ]);
     }
 }

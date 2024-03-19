@@ -13,15 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pages', function (Blueprint $table) {
+        Schema::create('feedback', function (Blueprint $table) {
             $table->id();
-            $table->string('status')->default('draft');
-            $table->string('title');
-            $table->string('link')->unique();
-            $table->string('template')->nullable();
-            $table->longText('content')->nullable();
-            $table->string('meta_title')->nullable();
-            $table->string('meta_description')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->string('email');
+            $table->string('name');
+            $table->string('subject');
+            $table->text('text');
+            $table->string('ip');
+            $table->smallInteger('status')->default(0);
             $table->timestamps();
         });
     }
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pages');
+        Schema::dropIfExists('feedback');
     }
 };
