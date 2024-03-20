@@ -26,6 +26,7 @@ class Author extends Model
         'twitter',
         'slug',
         'description',
+        'description_small',
         'meta_description',
         'meta_title',
         'steam'
@@ -47,6 +48,11 @@ class Author extends Model
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function paragraphs()
+    {
+        return $this->morphMany(Paragraph::class, 'paragraphable');
     }
 
     public static function dataTable($query)

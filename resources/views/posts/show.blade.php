@@ -1,258 +1,250 @@
 @extends('layouts.app')
 
-@push('css')
-    <style>
-        .container {
-            background-color: rgb(5,3,15);
-            color: white;
-            /* line-height: 12px; */
-        }
-        .container a{
-            color: #6842FE;
-        }
-        .ws-pl {
-            white-space: pre-line;
-        }
-        .section-title {
-            color: white;
-            font-size: 250%;
-        }
-        .post-menu {
-            background-color: rgb(16,14,23);
-            padding: 10px 15px;
-            margin-bottom: 30px;
-        }
-        .post-menu p {
-            color: rgb(112,106,133)
-        }
-        .post-menu a {
-            color: white;
-            text-decoration: none;
-        }
-        .post-menu a:hover {
-            color: rgb(237,52,252);
-        }
-        .post-intro {
-            white-space: pre-line;
-        }
-        .post-block {
-            margin-bottom: 60px;
-        }
-        h2{
-            font-size: 200%;
-            color: white;
-        }
-        h3{
-            font-size: 150%;
-            color: white;
-        }
-        .post-block p{
-            white-space: pre-line;
-        }
-        table{
-        }
-        table * {
-            color: white;
-            border-width: 0 0px !important;
-        }
-        table tr:first-child {
-            background-color: rgb(15,15,23);
-        }
-        table tr:first-child td{
-            color: #6E6B86;
-        }
-        .post-game-ad, .post-author, .post-conclusion, .post-faqs {
-            margin-bottom: 60px;
-        }
-        .post-conclusion{
-            border: 1.5px solid #6842FE;
-            border-radius: 10px;
-            padding: 22px 28px;
-            box-shadow: 0 0 15px 0.1px #6842FE;
-        }
-        .post-conclusion p{
-            white-space: pre-line;
-        }
-        .post-game-ad {
-            color: #5F5D74;
-        }
-        .post-faq {
-            background-color: rgb(15,15,23);
-            border-radius: 10px;
-            padding: 22px 28px;
-            margin-bottom: 10px;
-        }
-        .faq-answer {
-            color: #6E6B86;
-            font-size: 90%;
-        }
-        .rel-post-img-wraper{
-            display: block;
-            overflow: hidden;
-            border-radius: 10px;
-            padding: 0px !important;
-        }
-        .rel-post-game{
-            color: #E442FE !important;
-            text-decoration: none;
-            padding-bottom: 10px;
-            display: block;
-            font-size: 90%;
-        }
-        .rel-post-title{
-            color: white !important;
-            text-decoration: none;
-            display: block;
-        }
-        .image-gallery {
-            display: flex;
-            overflow: hidden;
-        }
-        .image-gallery div{
-
-        }
-    </style>
-@endpush
+@php
+    $pageClass = 'article-page';
+    $bcs = [
+        ['Home', route('index')],
+        [$category->name, route('categories.show', $category)],
+        [$post->title]
+    ];
+@endphp
 
 @section('content')
     <span data-sendview="{{route('posts.view', $post)}}"></span>
-    <div class="wrapper_main pt-74">
-        <main class="content">
-            <section class="post-page">
-                <div class="container post-page__container card">
-                    <div class="post-page__body card-body">
-                        <span class="post-page__data">
-                            {{ $post->created_at->format('M d, Y') }}
-                            <br>
-                            Category: {{ $post->category->name }}
-                            <br>
-                            Game: {{ $post->game->name }}
-                            <br>
-                            Tags: {{ $post->tags->pluck('name')->implode(',') }}
-                        </span>
-                        <h2 class="section-title">
-                            {{ $post->title }}
-                        </h2>
-                        <div class="post-page__img">
-                            <img src="{{ $post->thumbnail->url }}" alt="{{ $post->thumbnail->alt }}" title="{{ $post->thumbnail->title }}">
+    <div class="page__wrapper">
+        <section class="links">
+            <button class="links__button-toggle">
+                Useful Links
+                <img src="{{asset('images/icons/links-arrow-white.svg')}}" alt="" />
+            </button>
+            <div class="links__wrapper">
+                <div class="links__menu">
+                    <div class="links__desc">
+                        <button class="links__button-close"><img src="{{asset('images/icons/close.svg')}}" alt="" /></button>
+                        <div class="links__desc-caption">USEFUL LINKS</div>
+                        <p class="links__desc-text">Find more useful information and about <a href="{{route('games.show', $game)}}">{{$game->name}}</a> on HermitGamer.</p>
+                    </div>
+                    <ul class="links__list links__menu-list">
+                        @foreach ($sameGamePosts as $sameGamePost)
+                            <li>
+                                @if ($sameGamePost->childs->isEmpty())
+                                    <a href="{{route('posts.show', $sameGamePost)}}">
+                                        {{$sameGamePost->title}}
+                                    </a>
+                                @else
+                                    <a class="links__menu-button" data-target="{{$sameGamePost->slug}}">
+                                        {{$sameGamePost->title}}
+                                    </a>
+                                @endif
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+                <div class="links__submenu">
+                    @foreach ($sameGamePosts as $sameGamePost)
+                        @if ($sameGamePost->childs->isEmpty())
+                            @continue
+                        @endif
+                        <div class="links__submenu-item" id="{{$sameGamePost->slug}}">
+                            <div class="links__submenu-button">{{$sameGamePost->title}}</div>
+                            <ul class="links__list links__submenu-list">
+                                <li>
+                                    <a href="{{route('posts.show', $sameGamePost)}}">{{$sameGamePost->title}}</a>
+                                </li>
+                                @foreach ($sameGamePost->childs as $sameGameP)
+                                    <li>
+                                        <a href="{{route('posts.show', $sameGameP)}}">{{$sameGameP->title}}</a>
+                                    </li>
+                                @endforeach
+                            </ul>
                         </div>
-                        <div class="post-menu">
-                            <p>
-                                Table of contents:
-                            </p>
-                            @foreach ($post->blocks as $block)
-                                <a href="#{{$block->ident}}">{{$block->name}}</a>
-                                <br>
-                            @endforeach
-                        </div>
-                        <div class="post-intro">
-                            {!!$post->intro!!}
-                        </div>
-                        <div class="post-content">
-                            @foreach ($post->blocks->sortBy('order') as $block)
-                                <div class="post-block" id="{{$block->ident}}">
-                                    @foreach ($block->items->sortBy('order') as $item)
-                                        @switch($item->type->value)
-                                            @case(\App\Enums\BlockItemType::TITLE_H2->value)
-                                                <h2>{{$item->value_simple}}</h2>
-                                                @break
-                                            @case(\App\Enums\BlockItemType::TITLE_H3->value)
-                                                <h3>{{$item->value_simple}}</h3>
-                                                @break
-                                            @case(\App\Enums\BlockItemType::TITLE_H4->value)
-                                                <h4>{{$item->value_simple}}</h4>
-                                                @break
-                                            @case(\App\Enums\BlockItemType::TEXT->value)
-                                                <p>{!!$item->value_simple!!}</p>
-                                                @break
-                                            @case(\App\Enums\BlockItemType::IMAGE->value)
-                                                <img src="{{$item->file()->url}}" alt="{{$item->file()->alt}}" title="{{$item->file()->title}}">
-                                                @break
-                                            @case('youtube')
-                                                {!!$item->value_simple!!}
-                                                @break
-                                            @case(\App\Enums\BlockItemType::IMAGE_GALLERY->value)
-                                                @if (count($item->value_simple) == 1)
-                                                    <img src="{{$image['url']}}" alt="">
-                                                @elseif(count($item->value_simple) == 2)
-                                                    <div class="row">
-                                                        <img src="{{$item->value_simple[0]['url']}}" alt="" class="col-5">
-                                                        <img src="{{$item->value_simple[1]['url']}}" alt="" class="col-5">
-                                                    </div>
-                                                @else
-                                                    <div class="prod-photo">
-                                                        @foreach ($item->value_simple as $image)
-                                                            <div class="prod-photo-slide">
-                                                                <a href="{{$image['url']}}" data-fancybox='postsgallery'>
-                                                                    <img src="{{$image['url']}}" alt="">
-                                                                </a>
-                                                            </div>
-                                                        @endforeach
-                                                    </div>
-                                                @endif
-                                                @break
-                                        @endswitch
-                                    @endforeach
-                                </div>
-                            @endforeach
-                        </div>
-                        <div class="post-conclusion">
-                            <h3>Conclusion</h3>
-                            <p>{!!$post->conclusion!!}</p>
-                        </div>
-                        <div class="post-faqs">
-                            <h3>FAQ</h3>
-                            @foreach ($post->faqs->sortBy('order') as $faq)
-                                <div class="post-faq">
-                                    <p>{{$faq->question}}</p>
-                                    <div class="faq-answer">
-                                        {!!$faq->answer!!}
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                        <div class="post-game-ad">
-                            Interested in some additional guides or help? Check out our <a href="{{route('games.show', $post->game)}}">{{$post->game->name}}</a> page for more useful tips and guides.
-                        </div>
-                        <div class="post-author">
-                            <div class="row">
-                                <div class="col-2">
-                                    <img src="{{$post->author->avatar}}" alt="">
-                                </div>
-                                <div class="col-10">
-                                    <p>
-                                        {{$post->author->name}}
-                                        <br>
-                                        {{$post->author->title}}
-                                    </p>
-                                    <p>{{$post->author->description}}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="post-related">
-                            <h3>Related Articaled</h3>
-                            <div class="row">
-                                @foreach ($post->getRelatedPosts() as $relPost)
-                                    <div class="col-6">
-                                        <div class="row" style="align-items: center">
-                                            <a href="{{route('posts.show', $relPost)}}" class="col-5 rel-post-img-wraper">
-                                                <img src="{{$relPost->thumbnail->url}}" alt="">
-                                            </a>
-                                            <div class="col-7">
-                                                <a href="{{route('games.show', $relPost->game)}}" class="rel-post-game">{{$relPost->game->name}}</a>
-                                                <a href="{{route('posts.show', $relPost)}}" class="rel-post-title">{{$relPost->title}}</a>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+        <main class="main">
+            <section class="hero">
+                <h1 class="hero__title">{{$post->title}}</h1>
+                <ul class="hero__desc">
+                    <li>by <a href="{{route('authors.show', $author)}}">{{$author->name}}</a></li>
+                    <li>UPDATED: {{$post->updated_at->format('M d, Y')}}</li>
+                </ul>
+                <div class="image hero__image">
+                    <img src="{{$post->thumbnail->url}}" class="lazyload" alt="{{$post->thumbnail->alt}}" />
+                </div>
+            </section>
+
+            @foreach ($blockGroups as $i => $blocks)
+                <div class="main__wrapper">
+                    <div class="content">
+                        @if (!$i)
+                            <section class="section article">
+                                {!! $post->intro !!}
+                            </section>
+                        @endif
+                        @foreach ($blocks as $block)
+                            @php
+                                $items = $block->items->sortBy('order');
+                            @endphp
+                            <section class="section {{$items->where('type', \App\Enums\BlockItemType::IMAGE_GALLERY)->count() ? 'screens' : 'article'}}" id="{{$block->ident}}">{{-- screens --}}
+                                @foreach ($items as $item)
+                                    @switch($item->type->value)
+                                        @case(\App\Enums\BlockItemType::TITLE_H2->value)
+                                            <h2>{{$item->value_simple}}</h2>
+                                            @break
+                                        @case(\App\Enums\BlockItemType::TITLE_H3->value)
+                                            <h3>{{$item->value_simple}}</h3>
+                                            @break
+                                        @case(\App\Enums\BlockItemType::TITLE_H4->value)
+                                            <h4>{{$item->value_simple}}</h4>
+                                            @break
+                                        @case(\App\Enums\BlockItemType::TEXT->value)
+                                            {!!$item->value_simple!!}
+                                            @break
+                                        @case(\App\Enums\BlockItemType::IMAGE->value)
+                                            <div class="image article__image">
+                                                <img src="{{$item->file()->url}}" alt="{{$item->file()->alt}}" title="{{$item->file()->title}}" class="lazyload" />
                                             </div>
+                                            @break
+                                        @case('youtube')
+                                            {!!$item->value_simple!!}
+                                            @break
+                                        @case(\App\Enums\BlockItemType::IMAGE_GALLERY->value)
+                                            <div class="screens-slider">
+                                                @foreach ($item->value_simple as $image)
+                                                    <div class="screens-slider__item">
+                                                        {{-- <a href="{{$image['url']}}" data-fancybox='postsgallery'> --}}
+                                                            <img src="{{$image['url']}}" alt="">
+                                                        {{-- </a> --}}
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                            @break
+                                    @endswitch
+                                @endforeach
+                            </section>
+                        @endforeach
+                        @if ($loop->last)
+                            <section class="section article">
+                                <blockquote>
+                                    <h2>Conclusion</h2>
+                                    {!!$post->conclusion!!}
+                                </blockquote>
+                            </section>
+                            @if ($post->faqs->isNotEmpty())
+                                <section class="section faq" id="10">
+                                    <h2 class="title faq__title"><span>FAQ</span></h2>
+                                    <ul class="faq__list" itemscope itemtype="https://schema.org/FAQPage">
+                                        @foreach ($post->faqs as $faq)
+                                            <li class="faq__item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                                                <h3 class="faq-item__title js-button-expander" itemprop="name">{{$faq->question}}</h3>
+                                                <div class="faq-item__desc js-expand-content" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                                                    <div class="wrap" itemprop="text">
+                                                        {!!$faq->answer!!}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                    <p class="faq__additional">Interested in some additional guides or help? Check out our <a href="{{route('games.show', $game)}}">{{$game->name}}</a> page for more useful tips and guides.</p>
+                                </section>
+                            @endif
+                            <section class="section editor">
+                                <div class="editor__head">
+                                    <div class="editor__info">
+                                        <div class="editor__image">
+                                            <img src="{{$author->avatar->url}}" class="lazyload" alt="{{$author->avatar->alt}}" />
+                                        </div>
+                                        <div>
+                                            <a href="{{route('authors.show', $author)}}" class="editor__name">{{$author->name}}</a>
+                                            <p class="editor__desc">{{$author->title}}</p>
                                         </div>
                                     </div>
-                                @endforeach
+                                    <ul class="socials editor__socials">
+                                        @if ($author->instagram)
+                                            <li>
+                                                <a href="{{$author->instagram}}" target="_blank">
+                                                    <img src="{{asset('images/icons/instagram.svg')}}" alt="Instagram" title="instagram"/>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if ($author->facebook)
+                                            <li>
+                                                <a href="{{$author->facebook}}" target="_blank">
+                                                    <img src="{{asset('images/icons/facebook.svg')}}" alt="Facebook" title="facebook"/>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if ($author->twitter)
+                                            <li>
+                                                <a href="{{$author->twitter}}" target="_blank">
+                                                    <img src="{{asset('images/icons/twitter.svg')}}" alt="X (twitter)" title="X (twitter)"/>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if ($author->linkedin)
+                                            <li>
+                                                <a href="{{$author->linkedin}}" target="_blank">
+                                                    <img src="{{asset('images/icons/linkedin.svg')}}" alt="linkedin" title="linkedin"/>
+                                                </a>
+                                            </li>
+                                        @endif
+                                    </ul>
+                                </div>
+                                {!!$author->description_small!!}
+                            </section>
+                            @if ($relatedPosts->isNotEmpty())
+                                <section class="section related">
+                                    <h2 class="title related__title"><span>Related Articles</span></h2>
+                                    <ul class="related__list">
+                                        @foreach ($relatedPosts as $relPost)
+                                            <li>
+                                                <div class="related-item">
+                                                    <a href="{{route('posts.show', $relPost)}}" class="image related-item__image">
+                                                        <img src="{{$relPost->thumbnail->url}}" class="lazyload" alt="" />
+                                                    </a>
+                                                    <div class="related-item__desc">
+                                                        <a href="{{route('games.show', $relPost->game)}}" class="related-item__subtitle">{{$relPost->game->name}}</a>
+                                                        <h3 class="relted-item__title">
+                                                            <a href="{{route('posts.show', $relPost)}}">
+                                                                {{$relPost->title}}
+                                                            </a>
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </section>
+                            @endif
+                        @endif
+                    </div>
+                    <div class="sidebar">
+                        @if (!$i)
+                            <div class="sidebar__nav">
+                                <div class="sidebar__nav-button">
+                                    Table of contents
+                                    <img src="images/icons/sidebar-nav-arrow.svg" alt="" />
+                                </div>
+                                <ul class="sidebar__nav-list">
+                                    @foreach ($post->blocks as $block)
+                                        <li>
+                                            <a href="#{{$block->ident}}" class="anchor-link">{{$block->name}}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
                             </div>
+                        @endif
+                        <div class="sidebar__banner">
+                            <img src="/images/sidebar-banner1.webp" class="lazyload" alt="" />
                         </div>
                     </div>
                 </div>
-            </section>
-        </main>
+            @endforeach
 
-        <x-footer />
+            <x-go-to-top />
+        </main>
+        <x-page-bg />
     </div>
 @endsection
 

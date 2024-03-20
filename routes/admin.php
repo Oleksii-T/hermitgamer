@@ -40,6 +40,12 @@ Route::middleware('is-admin')->group(function () {
 
     Route::resource('games', GameController::class)->except('show');
 
+    Route::prefix('authors')->name('authors.')->group(function () {
+        Route::get('{author}/edit/socials', [AuthorController::class, 'socials'])->name('socials');
+        Route::get('{author}/edit/paragraphs', [AuthorController::class, 'paragraphs'])->name('paragraphs');
+        Route::put('{author}/edit/socials', [AuthorController::class, 'updateSocials'])->name('update-socials');
+        Route::put('{author}/edit/paragraphs', [AuthorController::class, 'updateParagraphs'])->name('update-paragraphs');
+    });
     Route::resource('authors', AuthorController::class)->except('show');
 
     Route::prefix('posts')->name('posts.')->group(function () {
@@ -48,6 +54,7 @@ Route::middleware('is-admin')->group(function () {
         Route::get('{post}/assets', [PostController::class, 'assets'])->name('assets');
         Route::get('{post}/related', [PostController::class, 'related'])->name('related');
         Route::get('{post}/conclusion', [PostController::class, 'conclusion'])->name('conclusion');
+        Route::post('{post}/conclusion', [PostController::class, 'updateConclusion'])->name('update-conclusion');
         Route::get('{post}/reviewsFields', [PostController::class, 'reviewsFields'])->name('reviewsFields');
         Route::post('{post}/blocks', [PostController::class, 'updateBlocks'])->name('update-blocks');
         Route::post('{post}/faqs', [PostController::class, 'storeFaq'])->name('store-faq');

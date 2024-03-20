@@ -29,6 +29,7 @@ class PostRequest extends FormRequest
         $model = $this->route('post');
 
         return [
+            'parent_id' => ['nullable', 'exists:posts,id'],
             'title' => ['required', 'string', 'max:255'],
             'intro' => ['nullable', 'string'],
             'slug' => ['required', 'string', 'max:255'],

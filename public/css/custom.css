@@ -10,3 +10,6 @@
 .cursor-wait {
     cursor: wait !important;
 }
+button {
+    font-family: Inter, sans-serig;
+}

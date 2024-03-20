@@ -2,45 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Page;
+use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
     public function show(Request $request, Post $post)
     {
-        return view('posts.show', compact('post'));
-    }
+        $page = Page::get('post');
+        $author = $post->author;
+        $game = $post->game;
+        $category = $post->category;
+        $relatedPosts = $post->getRelatedPosts();
+        $sameGamePosts = Post::whereNull('parent_id')->where('game_id', $post->game_id)->with('childs')->latest()->get();
+        $blockGroups = $post->getGroupedBlocks();
 
-    public function more(Request $request)
-    {
-        $request->validate([
-            'page' => ['required', 'integer', 'min:1'],
-            'category' => ['required', 'string', 'max:50'],
-        ]);
-
-        $perPage = 6;
-        $page = $request->page ?? 0;
-        $isLast = false;
-
-        $posts = Post::query()
-            ->active()
-            ->category($request->category)
-            ->latest()
-            ->offset($perPage * $page)
-            ->limit($perPage)
-            ->get();
-
-        if ($posts->count() < $perPage) {
-            $isLast = true;
-        }
-
-        //todo: check next page to prevent empty page load
-
-        return $this->jsonSuccess('', [
-            'posts' => view('components.posts.news', ['news' => $posts])->render(),
-            'isLast' => $isLast
-        ]);
+        return view('posts.show', compact('post', 'page', 'author', 'game', 'category', 'relatedPosts', 'sameGamePosts', 'blockGroups'));
     }
 
     public function view(Request $request, Post $post)

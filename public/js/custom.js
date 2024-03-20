@@ -90,7 +90,14 @@ $(document).ready(function () {
             type: 'get',
             data: {page: postsPage},
             success: (response)=>{
-                button.before(response.data.html);
+                let wraper = button.parent().find('.guides__list');
+                
+                if (wraper.length) {
+                    wraper.append(response.data.html);
+                } else {
+                    button.before(response.data.html);
+                }
+
                 postsPage++;
                 button.unlock();
 

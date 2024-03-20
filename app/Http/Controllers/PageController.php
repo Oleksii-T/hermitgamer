@@ -24,6 +24,32 @@ class PageController extends Controller
         return view('index', compact('page', 'authors', 'latestReviews', 'latestGuides', 'latestNews'));
     }
 
+    public function search(Request $request)
+    {
+        $s = $request->search;
+        $posts = Post::query()
+            ->publised()
+            ->where(fn ($q) => $q
+                ->where('title', 'like', "%$s%")
+                ->orWhere('intro', 'like', "%$s%")
+                ->orWhere('conclusion', 'like', "%$s%")
+                ->orWhereRelation('game', 'name', 'like', "%$s%")
+                ->orWhereHas('blocks', fn ($qq) => $qq->whereRelation('items', 'value', 'like', "%$s%"))
+            )
+            ->paginate(6);
+        $hasMore = $posts->hasMorePages();
+
+        if (!$request->ajax()) {
+            $page = Page::get('search');
+            return view('search', compact('page', 'posts', 'hasMore'));
+        }
+
+        return $this->jsonSuccess('', [
+            'hasMore' => $hasMore,
+            'html' => view('components.post-cards', compact('posts'))->render()
+        ]);
+    }
+
     public function rate()
     {
         $page = Page::get('rate');
@@ -31,15 +57,14 @@ class PageController extends Controller
         return view('rate', compact('page'));
     }
 
-    public function contactUs()
+    public function contactUs(Request $request)
     {
-        $page = Page::get('contact-us');
+        if (!$request->ajax()) {
+            $page = Page::get('contact-us');
+            
+            return view('contact-us', compact('page'));
+        }
 
-        return view('contact-us', compact('page'));
-    }
-
-    public function feedback(Request $request)
-    {
         $input = $request->validate([
             'subject' => ['required', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
@@ -62,6 +87,7 @@ class PageController extends Controller
         }
 
         $input['user_id'] = $user->id??null;
+        $input['ip'] = $request->ip();
 
         Feedback::create($input);
 
@@ -85,7 +111,8 @@ class PageController extends Controller
     public function aboutUs()
     {
         $page = Page::get('about-us');
+        $authors = Author::get();
 
-        return view('about-us', compact('page'));
+        return view('about-us', compact('page', 'authors'));
     }
 }

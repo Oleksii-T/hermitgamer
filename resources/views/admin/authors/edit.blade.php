@@ -3,9 +3,16 @@
 @section('title', 'Edit Author')
 
 @section('content_header')
-    <x-admin.title
-        text="Edit Author"
-    />
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <div class="float-left">
+                    <h1 class="m-0">Edit Author</h1>
+                </div>
+                <x-admin.author-nav active="general" :author="$author" />
+            </div>
+        </div>
+    </div>
 @stop
 
 @section('content')
@@ -75,45 +82,11 @@
                             <span data-input="description" class="input-error"></span>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
-                            <label>Facebook</label>
-                            <input type="text" class="form-control" name="facebook" value="{{$author->facebook}}">
-                            <span data-input="facebook" class="input-error"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Instagram</label>
-                            <input type="text" class="form-control" name="instagram" value="{{$author->instagram}}">
-                            <span data-input="instagram" class="input-error"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Youtube</label>
-                            <input type="text" class="form-control" name="youtube" value="{{$author->youtube}}">
-                            <span data-input="youtube" class="input-error"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Twitter</label>
-                            <input type="text" class="form-control" name="twitter" value="{{$author->twitter}}">
-                            <span data-input="twitter" class="input-error"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Steam</label>
-                            <input type="text" class="form-control" name="steam" value="{{$author->steam}}">
-                            <span data-input="steam" class="input-error"></span>
+                            <label>Description for Posts page</label>
+                            <textarea class="form-control summernote" name="description_small">{!!$author->description_small!!}</textarea>
+                            <span data-input="description_small" class="input-error"></span>
                         </div>
                     </div>
                 </div>

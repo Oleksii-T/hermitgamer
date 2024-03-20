@@ -362,6 +362,16 @@ return [
                 ],
             ],
         ],
+        'Moments' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdn.jsdelivr.net/momentjs/latest/moment.min.js',
+                ],
+            ],
+        ],
         'Chartjs' => [
             'active' => false,
             'files' => [
@@ -394,6 +404,21 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js',
+                ],
+            ],
+        ],
+        'DateRangePicker' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => '//cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js',
                 ],
             ],
         ],

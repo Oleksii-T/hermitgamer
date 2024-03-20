@@ -1,6 +1,19 @@
 $(document).ready(function () {
     $('.summernote').summernote();
     $('.select2').select2();
+    $('.select2-tags').select2({
+        tags: true
+    });
+    $('.daterangepicker-single').daterangepicker({
+        singleDatePicker: true,
+        timePicker: false,
+        showDropdowns: true,
+        minYear: 2000,
+        maxYear: parseInt(moment().format('YYYY'),10),
+        locale: {
+            format: 'YYYY-MM-DD'
+        }
+    });
 
     // general logic of ajax form submit (supports files)
     $('form.general-ajax-submit').submit(function(e){

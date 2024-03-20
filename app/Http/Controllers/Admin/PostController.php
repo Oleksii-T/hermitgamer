@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Faq;
 use App\Models\Post;
 use App\Models\BlockItem;
+use App\Enums\PostStatus;
 use App\Enums\BlockItemType;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -36,12 +37,17 @@ class PostController extends Controller
 
     public function create()
     {
-        return view('admin.posts.create');
+        $parents = Post::whereNull('parent_id')->get();
+
+        return view('admin.posts.create', compact('parents'));
     }
 
     public function store(PostRequest $request)
     {
         $input = $request->validated();
+        if ($input['status'] == PostStatus::PUBLISHED->value) {
+            $input['published_at'] = now();
+        }
         $post = Post::create($input);
         $post->addAttachment($input['thumbnail']??null, 'thumbnail');
 
@@ -62,6 +68,7 @@ class PostController extends Controller
             'itemTypes' => BlockItemType::all(),
             'post' => [
                 'id' => $post->id,
+                'block_groups' => $post->block_groups,
                 'blocks' => $blocksA
             ],
             'submitUrl' => route('admin.posts.update-blocks', $post),
@@ -73,16 +80,25 @@ class PostController extends Controller
     public function updateBlocks(Request $request, Post $post)
     {
         $request->validate([
+            'group_blocks' => ['required', 'array'],
             'blocks' => ['required', 'array'],
             'blocks.*.ident' => ['required', 'string', 'max:255'],
             'blocks.*.name' => ['required', 'string', 'max:255'],
             'blocks.*.items' => ['required', 'array'],
             'blocks.*.items.*' => ['required', 'array'],
         ]);
+
+        if (array_sum($request->group_blocks) != count($request->blocks)) {
+            abort(422, 'Invalid groups');
+        }
         
         \DB::transaction(function () use ($request, $post) {
             $simpleValueTypes = BlockItemType::getSimpleTextTypes();
             $simpleFileTypes = BlockItemType::getSimpleFileTypes();
+
+            $post->update([
+                'block_groups' => $request->group_blocks
+            ]);
 
             foreach ($request->blocks as $b) {
                 $block = $post->blocks()->updateOrcreate(
@@ -111,8 +127,14 @@ class PostController extends Controller
                     );
 
                     if (in_array($t, $simpleValueTypes)) {
+                        $value = $v;
+
+                        if ($t == BlockItemType::TEXT->value && str_contains($v['value'], '</table>')) {
+                            $value = ['value' => $this->addSpans($v['value'])];
+                        }
+
                         $item->update([
-                            'value' => $v
+                            'value' => $value
                         ]);
                         continue;
                     } 
@@ -304,7 +326,7 @@ class PostController extends Controller
         ]);
 
         $post->update([
-            'related' => $input['related']
+            'related' => $input['related']??[]
         ]);
 
         return $this->jsonSuccess('Related updated successfully', [
@@ -314,12 +336,19 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
-        return view('admin.posts.edit', compact('post'));
+        $parents = Post::whereNull('parent_id')->get();
+
+        return view('admin.posts.edit', compact('post', 'parents'));
     }
 
     public function update(PostRequest $request, Post $post)
     {
         $input = $request->validated();
+        
+        if ($input['status'] == PostStatus::PUBLISHED->value && $post->status != PostStatus::PUBLISHED) {
+            $input['published_at'] = now();
+        }
+        
         $post->update($input);
         $post->addAttachment($input['thumbnail']??null, 'thumbnail');
         $post->addAttachment($input['css']??null, 'css');
@@ -334,5 +363,42 @@ class PostController extends Controller
         $post->delete();
 
         return $this->jsonSuccess('Post deleted successfully');
+    }
+
+    private function addSpans($html)
+    {
+        $dom = new \DOMDocument;
+        $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        
+        $xpath = new \DOMXPath($dom);
+
+        $tds = $xpath->query('//td');
+
+        foreach ($tds as $td) {
+            // Remove 'br' elements
+            $brs = $td->getElementsByTagName('br');
+            for ($i = $brs->length - 1; $i >= 0; $i--) {
+                $brs->item($i)->parentNode->removeChild($brs->item($i));
+            }
+            // Unwrap 'p' elements
+            foreach ($td->getElementsByTagName('p') as $p) {
+                while ($p->childNodes->length > 0) {
+                    $p->parentNode->insertBefore($p->childNodes->item(0), $p);
+                }
+                $p->parentNode->removeChild($p);
+            }
+            // Wrap text nodes in 'span' elements
+            foreach ($td->childNodes as $child) {
+                $nodeValue = trim($child->nodeValue);
+                if ($child instanceof \DOMText && $nodeValue) {
+                    $span = $dom->createElement('span', $nodeValue);
+                    $td->replaceChild($span, $child);
+                }
+            }
+        }
+
+        $newHtml = $dom->saveHTML();
+
+        return $newHtml;
     }
 }

@@ -29,6 +29,8 @@ class GameController extends Controller
     {
         $input = $request->validated();
         $game = Game::create($input);
+        $game->addAttachment($input['thumbnail'], 'thumbnail');
+        $game->addAttachment($input['esbr_image'], 'esbr_image');
 
         return $this->jsonSuccess('Game created successfully', [
             'redirect' => route('admin.games.index')
@@ -45,6 +47,8 @@ class GameController extends Controller
         $input = $request->validated();
 
         $game->update($input);
+        $game->addAttachment($input['thumbnail']??null, 'thumbnail');
+        $game->addAttachment($input['esbr_image']??null, 'esbr_image');
 
         return $this->jsonSuccess('Game updated successfully');
     }

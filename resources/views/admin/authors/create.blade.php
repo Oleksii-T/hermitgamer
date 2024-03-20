@@ -74,45 +74,11 @@
                             <span data-input="description" class="input-error"></span>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
-                            <label>Facebook</label>
-                            <input type="text" class="form-control" name="facebook">
-                            <span data-input="facebook" class="input-error"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Instagram</label>
-                            <input type="text" class="form-control" name="instagram">
-                            <span data-input="instagram" class="input-error"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Youtube</label>
-                            <input type="text" class="form-control" name="youtube">
-                            <span data-input="youtube" class="input-error"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Twitter</label>
-                            <input type="text" class="form-control" name="twitter">
-                            <span data-input="twitter" class="input-error"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Steam</label>
-                            <input type="text" class="form-control" name="steam">
-                            <span data-input="steam" class="input-error"></span>
+                            <label>Description for Posts page</label>
+                            <textarea class="form-control summernote" name="description_small"></textarea>
+                            <span data-input="description_small" class="input-error"></span>
                         </div>
                     </div>
                 </div>

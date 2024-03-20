@@ -2,6 +2,34 @@
     <div>
         <div class="card">
             <div class="card-header row">
+                <h5 class="m-0 col">Groups for {{ blocks.length }} blocks</h5>
+                <div class="col">
+                    <button type="button" class="btn btn-success d-block float-right" @click="addBlockGroup()">+</button>
+                    <button type="button" class="btn btn-info d-block float-right mr-2" @click="subBlockGroup()">-</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div>
+                                <input 
+                                    v-for="(blocks_in_group, bgi) in group_blocks" 
+                                    :key="bgi" 
+                                    type="number" 
+                                    class="form-control" 
+                                    v-model="group_blocks[bgi]" 
+                                    style="max-width:55px;display:inline-block;margin-right:5px;"
+                                >
+                            </div>
+                            <span data-input="slug" class="input-error"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header row">
                 <h5 class="m-0 col">Post Blocks</h5>
                 <div class="col">
                     <button type="button" class="btn btn-success d-block float-right" @click="addBlock()">Add Block</button>
@@ -128,7 +156,8 @@ export default {
 
     },
     data: () => ({
-        blocks: []
+        blocks: [],
+        group_blocks: []
     }),
     computed: {
 
@@ -241,9 +270,11 @@ export default {
                 ],
                 order: maxOrder+1
             });
+            this.recalculateGroupBlocks();
         },
         removeBlock(i) {
             this.blocks.splice(i, 1);
+            this.recalculateGroupBlocks();
         },
         addItem(bi) {
             let maxOrder = this.getMaxOrder(this.blocks[bi].items);
@@ -261,7 +292,7 @@ export default {
             this.helpers.showLoading();
 
             let formData = new FormData();
-            this.helpers.objToFormData(formData, {blocks: this.blocks});
+            this.helpers.objToFormData(formData, {blocks: this.blocks, group_blocks: this.group_blocks});
 
             axios.post(this.dataprops.submitUrl,
                 formData,
@@ -301,6 +332,21 @@ export default {
         blockIdentChanged(block) {
             block.doNotAutoSlug = true;
         },
+        addBlockGroup() {
+            if (this.blocks.length < this.group_blocks.length + 1) {
+                return;
+            }
+            this.group_blocks.push(0);
+            this.recalculateGroupBlocks();
+        },
+        subBlockGroup() {
+            if (this.group_blocks.length == 1) {
+                return;
+            }
+
+            this.group_blocks.pop();
+            this.recalculateGroupBlocks();
+        },
 
         // helpers
 
@@ -317,13 +363,33 @@ export default {
             return items.length
                 ? Math.max(...items.map(o => o.order))
                 : 0;
+        },
+        recalculateGroupBlocks() {
+            let res = [];
+            let i = 1;
+            let newValOg = this.blocks.length / this.group_blocks.length;
+            this.group_blocks.forEach(val => {
+                let newVal = i == this.group_blocks.length 
+                    ? Math.ceil(newValOg) 
+                    : Math.floor(newValOg);
+                res.push(newVal);
+                i++;
+            });
+
+            res = res.filter(num => num !== 0);
+
+            this.group_blocks = res;
         }
     },
     created() {
         this.blocks = this.dataprops.post.blocks;
         if (!this.blocks.length) {
             this.addBlock();
+            this.group_blocks = [1];
+        } else {
+            this.group_blocks = this.dataprops.post.block_groups;
         }
+
 
         console.log('dataprops: ', this.dataprops);
     }

@@ -116,6 +116,18 @@
                             <span data-input="thumbnail" class="input-error"></span>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Parent</label>
+                            <select class="form-control select2" name="parent_id">
+                                <option value="">-</option>
+                                @foreach ($parents as $parent)
+                                    <option value="{{$parent->id}}" @selected($post->parent_id == $parent->id)>{{$parent->title}}</option>
+                                @endforeach
+                            </select>
+                            <span data-input="parent_id" class="input-error"></span>
+                        </div>
+                    </div>
                     <div class="col-12">
                         <div class="form-group">
                             <label>Intro</label>

@@ -16,7 +16,8 @@
     <meta name="theme-color" content="rgb(4, 3, 15)" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="rgb(4, 3, 15)" media="(prefers-color-scheme: dark)" />
 
-    <link rel="stylesheet" href="{{asset('css/main.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/slick.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/main.css')}}">
     <link rel="stylesheet" href="{{asset('css/custom-swal.css')}}">
     <link rel="stylesheet" href="{{asset('css/custom.css')}}">
 </head>
@@ -33,14 +34,14 @@
         </button>
         <nav class="header__menu">
             <div class="header__search">
-                <div class="header__search-dialog">
+                <form action="{{route('search')}}" class="header__search-dialog">
                     <div class="header__search-closeBtn"><img src="{{asset('images/icons/close.svg')}}" alt=""></div>
                     <div class="header__search-title">Search</div>
                     <p class="header__search-text">Start typing to search for a specific article on our website</p>
                     <div class="header__search-field">
-                        <input type="text" class="header__search-input" placeholder="Search for something...">
+                        <input type="text" name="search" class="header__search-input" placeholder="Search for something...">
                     </div>
-                </div>
+                </form>
             </div>
             <ul class="header__menu-list">
                 @foreach (\App\Models\Category::forHeader() as $category)
@@ -79,15 +80,7 @@
         </ul>
     @endif
     <div class="page {{$pageClass??''}}">
-        <main class="main">
-            @yield('content')
-            <div class="back-top">
-                <a href="#header" class="anchor-link back-top__button">
-                    <img src="{{asset('images/icons/back-top.svg')}}" alt="">
-                    Back to Top
-                </a>
-            </div>
-        </main>
+        @yield('content')
     </div>
 
     <footer class="footer">
@@ -165,7 +158,8 @@
 <script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{asset('js/lazysizes.min.js')}}"></script>
-<script src="{{asset('js/scripts.min.js')}}"></script>
+<script src="{{asset('js/slick.min.js')}}"></script>
+<script src="{{asset('js/scripts.js')}}"></script>
 <script src="{{asset('js/custom.js')}}?v={{time()}}"></script>
 @yield('scripts')
 

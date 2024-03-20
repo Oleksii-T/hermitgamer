@@ -51,6 +51,55 @@ class AuthorController extends Controller
         return $this->jsonSuccess('Author updated successfully');
     }
 
+    public function socials(Author $author)
+    {
+        return view('admin.authors.socials', compact('author'));
+    }
+
+    public function updateSocials(Request $request, Author $author)
+    {
+        $data = $request->validate([
+            'facebook' => ['nullable', 'string', 'max:255'],
+            'instagram' => ['nullable', 'string', 'max:255'],
+            'youtube' => ['nullable', 'string', 'max:255'],
+            'twitter' => ['nullable', 'string', 'max:255'],
+            'steam' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $author->update($data);
+
+        return $this->jsonSuccess('Socials updated successfully');
+    }
+
+    public function paragraphs(Author $author)
+    {
+        return view('admin.authors.paragraphs', compact('author'));
+    }
+
+    public function updateParagraphs(Request $request, Author $author)
+    {
+        $data = $request->validate([
+            'titles' => ['nullable', 'array'],
+            'texts' => ['nullable', 'array'],
+        ]);
+
+        $author->paragraphs()->delete();
+
+        foreach ($data['titles'] as $i => $title) {
+            $desc = $data['texts'][$i] ?? '';
+            if (!$title || !$desc) {
+                continue;
+            }
+
+            $author->paragraphs()->create([
+                'title' => $title,
+                'text' => $desc
+            ]);
+        }
+
+        return $this->jsonSuccess('Socials updated successfully');
+    }
+
     public function destroy(Author $author)
     {
         $author->delete();

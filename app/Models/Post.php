@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\Viewable;
 use App\Enums\PostStatus;
 use App\Enums\PostTCStyle;
+use Illuminate\Support\Str;
 use App\Traits\HasAttachments;
 use Yajra\DataTables\DataTables;
 use Illuminate\Database\Eloquent\Model;
@@ -16,6 +17,7 @@ class Post extends Model
     use HasFactory, HasAttachments, Viewable;
 
     protected $fillable = [
+        'parent_id',
         'game_id',
         'slug',
         'title',
@@ -26,10 +28,14 @@ class Post extends Model
         'conclusion',
         'tc_style',
         'related',
+        'block_groups',
+        'published_at',
     ];
 
     protected $casts = [
+        'published_at' => 'datetime',
         'related' => 'array',
+        'block_groups' => 'array',
         'status' => PostStatus::class,
         'tc_style' => PostTCStyle::class
     ];
@@ -75,6 +81,16 @@ class Post extends Model
     public function game()
     {
         return $this->belongsTo(Game::class);
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(self::class, 'parent_id');
+    }
+
+    public function childs()
+    {
+        return $this->hasMany(self::class, 'parent_id');
     }
 
     public function info()
@@ -124,6 +140,56 @@ class Post extends Model
     public function getRelatedPosts()
     {
         return self::whereIn('id', $this->related??[])->latest()->get();
+    }
+
+    public function introCropped(): Attribute
+    {
+        return new Attribute(fn () => Str::limit(strip_tags($this->intro), 250));
+    }
+
+    public function getSameGamePosts()
+    {
+        $res = [];
+        $posts = self::query()
+            ->where('game_id', $this->game_id)
+            ->where('id', '!=', $this->id)
+            ->latest()
+            ->get();
+
+        foreach ($posts as $post) {
+            $group = $post->links_group;
+
+            if (!$group) {
+                $res[$post->id] = [$post];
+                continue;
+            }
+
+            // $group = Str::slug($group);
+
+            if ($res[$group] ?? false) {
+                $res[$group][] = $post;
+                continue;
+            }
+
+            $res[$group] = [$post];
+        }
+
+        return $res;
+    }
+
+    public function getGroupedBlocks()
+    {
+        $blockGroups = $this->block_groups;
+        $blocks = $this->blocks;
+        $skip = 0;
+        $res = [];
+
+        foreach ($blockGroups as $a) {
+            $res[] = $blocks->skip($skip)->take($a);
+            $skip += $a;
+        }
+
+        return $res;
     }
 
     public static function dataTable($query)

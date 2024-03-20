@@ -23,10 +23,30 @@ class GameRequest extends FormRequest
      */
     public function rules()
     {
+        $model = $this->route('game');
+        $reqNull = $model ? 'nullable' : 'required';
+
         return [
             'name' => ['required', 'string', 'max:255'],
             'slug' => ['required', 'string', 'max:255'],
+            'rating' => ['required', 'integer', 'min:1', 'max:5'],
+            'metacritic' => ['required', 'integer', 'min:1', 'max:100'],
+            'users_score' => ['required', 'numeric', 'min:1', 'max:10'],
+            'release_date' => ['required', 'string', 'max:255'],
+            'developer' => ['required', 'string', 'max:255'],
+            'publisher' => ['nullable', 'string', 'max:255'],
+            'platforms' => ['required', 'string', 'max:255'],
+            'ganres' => ['required', 'string', 'max:255'],
+            'thumbnail' => [$reqNull, 'file', 'max:5000'],
             'description' => ['required', 'string', 'max:10000'],
+            'summary' => ['required', 'string', 'max:10000'],
+            'esbr' => ['required', 'string', 'max:10000'],
+            'esbr_image' => [$reqNull, 'file', 'max:5000'],
+            'hours' => ['required', 'array'],
+            'hours.main' => ['required', 'numeric'],
+            'hours.main_sides' => ['required', 'numeric'],
+            'hours.completionist' => ['required', 'numeric'],
+            'hours.all' => ['required', 'numeric'],
         ];
     }
 }
