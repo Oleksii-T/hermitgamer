@@ -29,34 +29,6 @@
                             <span data-input="info.rating" class="input-error"></span>
                         </div>
                     </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <label>Publisher</label>
-                            <input type="text" class="form-control" name="info[game_details][publisher]" value="{{$info->game_details['publisher']??''}}">
-                            <span data-input="info.game_details.publisher" class="input-error"></span>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <label>Developer</label>
-                            <input type="text" class="form-control" name="info[game_details][developer]" value="{{$info->game_details['developer']??''}}">
-                            <span data-input="info.game_details.developer" class="input-error"></span>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <label>Release Date</label>
-                            <input type="text" class="form-control" name="info[game_details][release_date]" value="{{$info->game_details['release_date']??''}}">
-                            <span data-input="info.release_date" class="input-error"></span>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <label>Available platforms</label>
-                            <input type="text" class="form-control" name="info[game_details][available_platforms]" value="{{$info->game_details['available_platforms']??''}}">
-                            <span data-input="info.game_details.available_platforms" class="input-error"></span>
-                        </div>
-                    </div>
                     <div class="col-12">
                         <div class="form-group">
                             <label>Advantages</label>

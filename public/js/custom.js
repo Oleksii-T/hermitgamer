@@ -112,7 +112,7 @@ $(document).ready(function () {
         });
     }) 
 
-    $('.feedback-form').submit(function(e) {
+    $('.feedback-form').submit(async function(e) {
         e.preventDefault();
         let button = $(this).find('button[type=submit]');
         let form = button.closest('form');
@@ -123,14 +123,29 @@ $(document).ready(function () {
 
         button.lock();
 
+        let formData = new FormData(this);
+        let token = await grecaptcha.execute(window.Laravel.recaptcha_key, {action: 'submit'});
+        formData.append('g-recaptcha-response', token);
+
         $.ajax({
             url: form.attr('action'),
             type: form.attr('method'),
-            data: form.serialize(),
-            success: (response)=>{
-                showPopUp(null, response.message);
-                form.find('input, textarea').val('');
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: (response) => {
                 button.unlock();
+
+                if (!response.success) {
+                    showPopUp(null, response.message, false);
+                    return;
+                }
+                
+                showPopUp(null, response.message);
+                form.find('[name="name"]').val('');
+                form.find('[name="email"]').val('');
+                form.find('[name="subject"]').val('');
+                form.find('[name="text"]').val('');
             },
             error: function(response) {
                 showServerError(response);

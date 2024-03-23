@@ -12,7 +12,6 @@
 @section('content')
     <div class="row">
         <div class="col-lg-3 col-sm-6">
-            <!-- small box -->
             <div class="small-box" style="background: linear-gradient(94.79deg, #1AA7F6 1.91%, #57C3FF 95.64%);">
                 <div class="inner">
                     <h3>{{$data['users_total']}}</h3>
@@ -42,9 +41,7 @@
                 </a>
             </div>
         </div>
-        <!-- ./col -->
         <div class="col-lg-3 col-sm-6">
-            <!-- small box -->
             <div class="small-box" style="background: linear-gradient(94.79deg, #1DE183 1.91%, #5CECA7 95.64%);">
                 <div class="inner">
                     <h3>{{$data['pages_total']}}</h3>
@@ -73,13 +70,11 @@
                 </a>
             </div>
         </div>
-        <!-- ./col -->
         <div class="col-lg-3 col-sm-6">
-            <!-- small box -->
             <div class="small-box" style="background: linear-gradient(94.79deg, #FF9900 1.91%, #FFBB55 95.64%);">
                 <div class="inner">
-                    <h3>{{$data['plans_total']}}</h3>
-                    <p>Subscriptions Plans</p>
+                    <h3>{{$data['posts_total']}}</h3>
+                    <p>Posts</p>
                 </div>
                 <div class="icon">
                     <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -89,7 +84,7 @@
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M30 52.5094L36.5652 51.699C37.0266 51.6408 37.4558 51.4315 37.7857 51.1038L53.6899 35.1997C54.5383 34.3548 55.0152 33.2069 55.0152 32.0096C55.0152 30.8123 54.5383 29.6643 53.6899 28.8195V28.8195C52.8451 27.9711 51.6971 27.4941 50.4998 27.4941C49.3025 27.4941 48.1545 27.9711 47.3097 28.8195L31.5531 44.5761C31.234 44.8954 31.0269 45.3096 30.9629 45.7566L30 52.5094Z" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </div>
-                <a href="#" class="small-box-footer">More Info
+                <a href="{{route('admin.posts.index')}}" class="small-box-footer">More Info
                     <span class="fas">
                         <svg width="6" height="9" viewBox="0 0 6 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clip-path="url(#clip0_965_31214)">
@@ -105,48 +100,41 @@
                 </a>
             </div>
         </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-sm-6">
-            <!-- small box -->
-            <div class="small-box" style="background: linear-gradient(94.79deg, #EE164A 1.91%, #FF4F79 95.64%);">
-                <div class="inner">
-                    <h3>{{$data['subscriptions_total']}}</h3>
-                    <p>Subsciptions</p>
-                </div>
-                <div class="icon">
-                    <!-- <i class="ion ion-pie-graph"></i> -->
-                    <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M34.1383 25.8616C36.4238 28.1472 36.4238 31.8528 34.1383 34.1383C31.8527 36.4238 28.1471 36.4238 25.8616 34.1383C23.576 31.8528 23.576 28.1471 25.8616 25.8616C28.1471 23.5761 31.8527 23.5761 34.1383 25.8616" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M53.6223 26.2752C55.6793 28.3323 55.6793 31.6675 53.6223 33.7246C51.5652 35.7817 48.23 35.7817 46.1729 33.7246C44.1158 31.6675 44.1158 28.3323 46.1729 26.2752C48.23 24.2181 51.5652 24.2181 53.6223 26.2752" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M13.8272 26.2752C15.8843 28.3323 15.8843 31.6675 13.8272 33.7246C11.7701 35.7817 8.43491 35.7817 6.37781 33.7246C4.32072 31.6675 4.32072 28.3323 6.37781 26.2752C8.43489 24.2181 11.7701 24.2181 13.8272 26.2752" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M43.6723 9.04282C45.7293 11.0999 45.7293 14.4351 43.6723 16.4922C41.6152 18.5493 38.28 18.5493 36.2229 16.4922C34.1658 14.4351 34.1658 11.0999 36.2229 9.04282C38.28 6.98573 41.6152 6.98573 43.6723 9.04282" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M23.7772 43.5077C25.8343 45.5647 25.8343 48.8999 23.7772 50.957C21.7201 53.0141 18.3849 53.0141 16.3278 50.957C14.2707 48.8999 14.2707 45.5648 16.3278 43.5077C18.3849 41.4506 21.7201 41.4506 23.7772 43.5077" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M23.7772 9.04282C25.8343 11.0999 25.8343 14.4351 23.7772 16.4922C21.7201 18.5493 18.3849 18.5493 16.3278 16.4922C14.2707 14.4351 14.2707 11.0999 16.3278 9.04282C18.3849 6.98573 21.7201 6.98573 23.7772 9.04282" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M43.6723 43.5077C45.7293 45.5647 45.7293 48.8999 43.6723 50.957C41.6152 53.0141 38.28 53.0141 36.2229 50.957C34.1658 48.8999 34.1658 45.5648 36.2229 43.5077C38.28 41.4506 41.6152 41.4506 43.6723 43.5077" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M22.675 42.675L27.075 35.05" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M22.675 17.325L27.075 24.95" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M44.625 30H35.85" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </div>
-                <a href="#" class="small-box-footer">More Info
-                    <span class="fas">
-                        <svg width="6" height="9" viewBox="0 0 6 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g clip-path="url(#clip0_965_31214)">
-                                <path d="M0.967557 1.59001L3.87756 4.50001L0.967557 7.41001C0.898121 7.47944 0.843041 7.56188 0.805462 7.6526C0.767884 7.74332 0.748542 7.84056 0.748542 7.93876C0.748542 8.03696 0.767884 8.13419 0.805462 8.22492C0.843041 8.31564 0.898121 8.39807 0.967557 8.46751C1.03699 8.53694 1.11943 8.59202 1.21015 8.6296C1.30087 8.66718 1.39811 8.68652 1.49631 8.68652C1.59451 8.68652 1.69174 8.66718 1.78246 8.6296C1.87319 8.59202 1.95562 8.53694 2.02506 8.46751L5.46756 5.02501C5.53708 4.95562 5.59224 4.87321 5.62988 4.78248C5.66752 4.69175 5.68689 4.59448 5.68689 4.49626C5.68689 4.39803 5.66752 4.30077 5.62988 4.21004C5.59224 4.11931 5.53708 4.03689 5.46756 3.96751L2.02506 0.525007C1.73256 0.232507 1.26006 0.232507 0.967557 0.525008C0.682557 0.817508 0.675057 1.29751 0.967557 1.59001Z" fill="white" />
-                            </g>
-                            <defs>
-                                <clipPath id="clip0_965_31214">
-                                    <rect width="6" height="9" fill="white" transform="translate(6 9) rotate(180)" />
-                                </clipPath>
-                            </defs>
-                        </svg>
-                    </span>
-                </a>
-            </div>
-        </div>
-        <!-- ./col -->
     </div>
     <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Posts</h3>
+                </div>
+                <div class="card-body table-responsive p-0">
+                    <table id="posts-table" class="table text-nowrap">
+                        <thead>
+                            <tr>
+                                <th class="ids-column">Title</th>
+                                <th>Category</th>
+                                <th>Author</th>
+                                <th>Status</th>
+                                <th>Created at</th>
+                                <th class="actions-column-2">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($data['posts'] as $post)
+                                <tr>
+                                    <td>{{$post->title}}</td>
+                                    <td>{{$post->category->name}}</td>
+                                    <td>{{$post->author->name}}</td>
+                                    <td>{{$post->status->readable()}}</td>
+                                    <td>{{$post->created_at->format(env('ADMIN_DATETIME_FORMAT'))}}</td>
+                                    <td>@include('components.admin.actions', ['name' => 'pages', 'model' => $post])</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
@@ -203,73 +191,7 @@
                                     <td>{{$page->link}}</td>
                                     <td>{{$page->status}}</td>
                                     <td>{{$page->created_at->format(env('ADMIN_DATETIME_FORMAT'))}}</td>
-                                    <td>@include('admin.pages.actions-list', ['model' => $page])</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Plans</h3>
-                </div>
-                <div class="card-body table-responsive p-0">
-                    <table id="plans-table" class="table text-nowrap">
-                        <thead>
-                            <tr>
-                                <th class="ids-column">ID</th>
-                                <th>Title</th>
-                                <th>Interval</th>
-                                <th>Price</th>
-                                <th>Trial</th>
-                                <th class="actions-column-2">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($data['plans'] as $plan)
-                                <tr>
-                                    <td>{{$plan->id}}</td>
-                                    <td>{{$plan->title}}</td>
-                                    <td>{{$plan->interval}}</td>
-                                    <td>{{$plan->price}}</td>
-                                    <td>{{$plan->trial}}</td>
-                                    <td>@include('admin.subscrption-plans.actions-list', ['model' => $plan])</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Subscriptions</h3>
-                </div>
-                <div class="card-body table-responsive p-0">
-                    <table id="subscriptions-table" class="table text-nowrap">
-                        <thead>
-                            <tr>
-                                <th class="ids-column">ID</th>
-                                <th>User Name</th>
-                                <th>Subscription Plan</th>
-                                <th>Status</th>
-                                <th>Created at</th>
-                                <th class="actions-column-2">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($data['subscriptions'] as $subscription)
-                                <tr>
-                                    <td>{{$subscription->id}}</td>
-                                    <td>{{$subscription->user->name}}</td>
-                                    <td>{{$subscription->plan->title}}</td>
-                                    <td>{{$subscription->status}}</td>
-                                    <td>{{$subscription->created_at->format(env('ADMIN_DATETIME_FORMAT'))}}</td>
-                                    <td>@include('admin.subscrptions.actions-list', ['model' => $subscription])</td>
+                                    <td>@include('components.admin.actions', ['name' => 'pages', 'model' => $page])</td>
                                 </tr>
                             @endforeach
                         </tbody>

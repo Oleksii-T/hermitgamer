@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Post;
 use App\Models\Page;
 
 class DashboardController extends Controller
@@ -16,6 +17,8 @@ class DashboardController extends Controller
             'users_total' => User::count(),
             'pages' => Page::latest()->limit(5)->get(),
             'pages_total' => Page::count(),
+            'posts' => Post::latest()->limit(5)->get(),
+            'posts_total' => Post::count(),
             'plans' => [],
             'plans_total' => 0,
             'subscriptions' => [],

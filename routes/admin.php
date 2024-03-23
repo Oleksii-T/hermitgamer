@@ -54,7 +54,7 @@ Route::middleware('is-admin')->group(function () {
         Route::get('{post}/assets', [PostController::class, 'assets'])->name('assets');
         Route::get('{post}/related', [PostController::class, 'related'])->name('related');
         Route::get('{post}/conclusion', [PostController::class, 'conclusion'])->name('conclusion');
-        Route::post('{post}/conclusion', [PostController::class, 'updateConclusion'])->name('update-conclusion');
+        Route::put('{post}/conclusion', [PostController::class, 'updateConclusion'])->name('update-conclusion');
         Route::get('{post}/reviewsFields', [PostController::class, 'reviewsFields'])->name('reviewsFields');
         Route::post('{post}/blocks', [PostController::class, 'updateBlocks'])->name('update-blocks');
         Route::post('{post}/faqs', [PostController::class, 'storeFaq'])->name('store-faq');

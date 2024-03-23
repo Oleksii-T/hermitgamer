@@ -273,7 +273,6 @@ class PostController extends Controller
         $input = $request->validate([
             'info' => ['required', 'array'],
             'info.rating' => ['required', 'numeric', 'min:0', 'max:5'],
-            'info.game_details' => ['required', 'array'],
             'info.advantages' => ['required', 'string'],
             'info.disadvantages' => ['required', 'string'],
         ]);

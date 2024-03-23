@@ -33,7 +33,7 @@ Route::get('/', [PageController::class, 'index'])->name('index');
 Route::get('search', [PageController::class, 'search'])->name('search');
 Route::get('rate', [PageController::class, 'rate'])->name('rate');
 Route::get('contact-us', [PageController::class, 'contactUs'])->name('contact-us');
-Route::post('contact-us', [PageController::class, 'contactUs'])->name('feedbacks.store');
+Route::post('contact-us', [PageController::class, 'contactUs'])->name('feedbacks.store')->middleware('recaptcha');
 Route::get('about-us', [PageController::class, 'aboutUs'])->name('about-us');
 Route::get('privacy', [PageController::class, 'privacy'])->name('privacy');
 Route::get('terms', [PageController::class, 'terms'])->name('terms');

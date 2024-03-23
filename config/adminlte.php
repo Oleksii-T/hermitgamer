@@ -285,11 +285,11 @@ return [
             'url'  => '/',
             'icon' => 'fas fa-fw fa-reply',
         ],
-        [
-            'text' => 'Settings',
-            'route'  => 'admin.settings.index',
-            'icon' => 'fas fa-fw fa-cogs',
-        ],
+        // [
+        //     'text' => 'Settings',
+        //     'route'  => 'admin.settings.index',
+        //     'icon' => 'fas fa-fw fa-cogs',
+        // ],
     ],
 
     /*

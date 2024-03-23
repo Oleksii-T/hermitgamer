@@ -69,39 +69,8 @@ class DevController extends Controller
     {
         $d = [];
 
-        $html = \App\Models\BlockItem::find(28)->value['value'];
-        dump($html);
-
-        $dom = new \DOMDocument;
-        $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        
-        $xpath = new \DOMXPath($dom);
-
-        $tds = $xpath->query('//td');
-
-        foreach ($tds as $td) {
-            foreach ($td->childNodes as $child) {
-                $nodeValue = trim($child->nodeValue);
-                if ($child instanceof \DOMText && $nodeValue) {
-                    $span = $dom->createElement('span', $nodeValue);
-                    $td->replaceChild($span, $child);
-                }
-            }
-        }
-
-        $newHtml = $dom->saveHTML();
-        dd($newHtml);  // Outputs: <table><tr><td><span>Content 1</span></td><td><span>Content 2</span></td></tr></table>
-        
-
-        // $text = str_replace("\r\n", '', $text);
-
-        dump($text);
-
-        $matches = [];
-
-        preg_match_all('/<td>(.*)<\/td>/', $text, $matches);
-
-        $d = $matches;
+        $d[] = config('services.recaptcha.private_key');
+        $d[] = config('services.recaptcha.threshold');
 
         dd($d);
     }

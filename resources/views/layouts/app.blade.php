@@ -161,6 +161,13 @@
 <script src="{{asset('js/slick.min.js')}}"></script>
 <script src="{{asset('js/scripts.js')}}"></script>
 <script src="{{asset('js/custom.js')}}?v={{time()}}"></script>
+<script src="https://www.google.com/recaptcha/api.js?render={{config('services.recaptcha.public_key')}}"></script>
+
+<script type="text/javascript">
+    window.Laravel = {!!$LaravelDataForJS!!};
+    console.log(`window.Laravel`, window.Laravel); //! LOG
+</script>
+
 @yield('scripts')
 
 </html>

@@ -77,10 +77,37 @@
             @foreach ($blockGroups as $i => $blocks)
                 <div class="main__wrapper">
                     <div class="content">
-                        @if (!$i)
+                        @if ($loop->first)
                             <section class="section article">
                                 {!! $post->intro !!}
                             </section>
+
+                            @if ($category->slug == 'reviews')
+                                <section class="section article advantages">
+                                    <div class="advantages-item">
+                                        <h3 class="advantages-item__title">Advantage</h3>
+                                        <ul>
+                                            @foreach ($post->info->advantages??[] as $adv)
+                                                <li>
+                                                    <img src="{{asset('images/icons/advantages.svg')}}" alt="" />
+                                                    {{$adv}}
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                    <div class="advantages-item">
+                                        <h3 class="advantages-item__title">Disadvantages</h3>
+                                        <ul>
+                                            @foreach ($post->info->disadvantages??[] as $disadv)
+                                                <li>
+                                                    <img src="{{asset('images/icons/disadvantages.svg')}}" alt="" />
+                                                    {{$disadv}}
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </section>
+                            @endif
                         @endif
                         @foreach ($blocks as $block)
                             @php
@@ -125,12 +152,32 @@
                             </section>
                         @endforeach
                         @if ($loop->last)
-                            <section class="section article">
-                                <blockquote>
-                                    <h2>Conclusion</h2>
-                                    {!!$post->conclusion!!}
-                                </blockquote>
-                            </section>
+                            @if ($category->slug == 'reviews')
+                                <section class="section article article-rating" id="9">
+                                    <div class="article-rating__info">
+                                        <h2>Conclusion</h2>
+                                        <a href="{{route('rate')}}" class="article-rating__link">Review Policy</a>
+                                        {!!$post->conclusion!!}
+                                    </div>
+                                    <div class="article-rating__item">
+                                        <div class="article-rating__wrap" itemscope itemtype="https://schema.org/Game">
+                                            <span itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating" class="article-rating__numbers">
+                                                <span itemprop="ratingValue">{{$post->info->rating}}</span>/<span itemprop="bestRating">5</span> <meta itemprop="reviewCount" content="5" />
+                                            </span>
+                                            <meta itemprop="name" content="https://hermitgamer.com" />
+                                            <p>rating</p>
+                                        </div>
+                                        <a href="{{route('rate')}}" class="article-rating__link">Review Policy</a>
+                                    </div>
+                                </section>
+                            @else
+                                <section class="section article">
+                                    <blockquote>
+                                        <h2>Conclusion</h2>
+                                        {!!$post->conclusion!!}
+                                    </blockquote>
+                                </section>
+                            @endif
                             @if ($post->faqs->isNotEmpty())
                                 <section class="section faq" id="10">
                                     <h2 class="title faq__title"><span>FAQ</span></h2>
@@ -221,6 +268,32 @@
                     </div>
                     <div class="sidebar">
                         @if (!$i)
+                            @if ($category->slug == 'reviews')
+                                <div class="sidebar__details">
+                                    <div class="sidebar__details-button">
+                                        Game Details
+                                        <img src="{{asset('images/icons/sidebar-nav-arrow.svg')}}" alt="" />
+                                    </div>
+                                    <ul class="sidebar__details-list">
+                                        <li>
+                                            <p>Publisher:</p>
+                                            <a href="#">{{$game->publisher}}</a>
+                                        </li>
+                                        <li>
+                                            <p>Developer:</p>
+                                            <a href="#">{{$game->publisher}}</a>
+                                        </li>
+                                        <li>
+                                            <p>Release Date:</p>
+                                            <a href="#">{{$game->release_date->format('M d, Y')}}</a>
+                                        </li>
+                                        <li>
+                                            <p>Available Platforms:</p>
+                                            <a href="#">{{$game->platforms}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            @endif
                             <div class="sidebar__nav">
                                 <div class="sidebar__nav-button">
                                     Table of contents
