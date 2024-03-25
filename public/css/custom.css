@@ -13,3 +13,23 @@
 button {
     font-family: Inter, sans-serig;
 }
+.admin-header {
+    background-color: white;
+    display: flex;
+    padding: 5px 10px;
+}
+.admin-header-item {
+    padding: 0 5px;
+}
+.admin-header-item:not(:last-child) {
+    border-right: 1px solid black;
+}
+.admin-header a {
+    text-decoration: underline;
+}
+.admin-header a:hover {
+    text-decoration: none;
+}
+.article__image_small {
+    max-width: 50%;
+}

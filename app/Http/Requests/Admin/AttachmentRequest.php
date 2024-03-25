@@ -25,10 +25,8 @@ class AttachmentRequest extends FormRequest
     {
 
         return [
-            'alt' => ['nullable', 'array'],
-            'alt.*' => ['nullable', 'string', 'max:255'],
-            'title' => ['nullable', 'array'],
-            'title.*' => ['nullable', 'string', 'max:255'],
+            'alt' => ['nullable', 'string', 'max:255'],
+            'title' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

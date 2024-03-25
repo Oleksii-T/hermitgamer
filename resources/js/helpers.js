@@ -12,6 +12,18 @@ export default {
     showError(title='Oops!', text='Something goes wrong<br>Please refresh the page and try again') {
         return Swal.fire(title, text, 'error');
     },
+    showToast(title='Success', type=true) {
+        Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        }).fire({
+            icon: type ? 'success' : 'error',
+            title: title,
+        });
+    },
     showNotif(title='', text='', type=true) {
         if (typeof type == 'boolean') {
             type = type ? 'success' : 'error';

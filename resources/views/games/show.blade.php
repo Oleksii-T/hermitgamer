@@ -155,6 +155,14 @@
                         </ul>
                     </section>
                 @endif
+                @if ($cheats->isNotEmpty())
+                    <section class="section guides">
+                        <h2><span>{{$game->name}} Cheats</span></h2>
+                        <ul class="guides__list">
+                            <x-post-cards-small :posts="$cheats" />
+                        </ul>
+                    </section>
+                @endif
                 <section class="section summary">
                     <h2>Summary</h2>
                     <div class="summary__wrap">

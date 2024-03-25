@@ -37,18 +37,25 @@ document.addEventListener("DOMContentLoaded", (function () {
     })), window.onclick = function (e) {
         e.target == i && i.classList.remove("active")
     };
-    const l = document.querySelectorAll(".anchor-link");
-    for (const e of l) e.addEventListener("click", r);
 
-    function r(e) {
-        e.preventDefault();
-        const t = this.getAttribute("href").split("#"),
-            s = document.getElementById(t[1]).getBoundingClientRect().top + document.documentElement.scrollTop - 20;
-        scroll({
-            top: s,
-            behavior: "smooth"
-        })
+    const anchorLinks = document.querySelectorAll(".anchor-link");
+    for (const anchor of anchorLinks) {
+        anchor.addEventListener("click", smoothScroll);
     }
+
+    function smoothScroll(event) {
+        event.preventDefault();
+        const hrefParts = this.getAttribute("href").split("#");
+        console.log(`document.getElementById(hrefParts[1]).getBoundingClientRect().top`, document.getElementById(hrefParts[1]).getBoundingClientRect().top); //! LOG
+        console.log(`document.documentElement.scrollTop`, document.documentElement.scrollTop); //! LOG
+        const targetPosition = document.getElementById(hrefParts[1]).getBoundingClientRect().top + document.documentElement.scrollTop - 20;
+        console.log(`targetPosition`, targetPosition); //! LOG
+        scroll({
+            top: 10,
+            behavior: "smooth"
+        });
+    }
+
     const a = document.querySelectorAll(".links__menu-button"),
         d = document.querySelectorAll(".links__submenu-item"),
         u = document.querySelector(".links__submenu"),

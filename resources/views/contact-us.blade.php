@@ -93,3 +93,8 @@
 
     <x-page-bg />
 @endsection
+
+
+@section('scripts')
+    <script src="https://www.google.com/recaptcha/api.js?render={{config('services.recaptcha.public_key')}}"></script>
+@endsection

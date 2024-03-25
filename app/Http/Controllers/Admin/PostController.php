@@ -96,6 +96,14 @@ class PostController extends Controller
             $simpleValueTypes = BlockItemType::getSimpleTextTypes();
             $simpleFileTypes = BlockItemType::getSimpleFileTypes();
 
+            $oldBlocks = $post->blocks()->pluck('id')->toArray();
+            $newBlocks = collect($request->blocks)->pluck('id')->toArray();
+            $blocksToDelete = array_values(array_diff($oldBlocks, $newBlocks));
+            $blocksToDelete = $post->blocks()->whereIn('id', $blocksToDelete)->get();
+            foreach ($blocksToDelete as $b) {
+                $b->delete();
+            }
+
             $post->update([
                 'block_groups' => $request->group_blocks
             ]);

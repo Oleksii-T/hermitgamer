@@ -7,7 +7,7 @@
         <div class="row mb-2">
             <div class="col-sm-12">
                 <div class="float-left">
-                    <h1 class="m-0">Edit Post</h1>
+                    <h1 class="m-0">Edit Post #{{$post->id}}</h1>
                 </div>
                 <x-admin.post-nav active="general" :post="$post" />
             </div>

@@ -133,6 +133,25 @@
                                                 <img src="{{$item->file()->url}}" alt="{{$item->file()->alt}}" title="{{$item->file()->title}}" class="lazyload" />
                                             </div>
                                             @break
+                                        @case(\App\Enums\BlockItemType::IMAGE_SMALL->value)
+                                            <div class="article__image_small">
+                                                <img src="{{$item->file()->url}}" alt="{{$item->file()->alt}}" title="{{$item->file()->title}}" class="lazyload" />
+                                            </div>
+                                            @break
+                                        @case(\App\Enums\BlockItemType::IMAGE_TITLE->value)
+                                            <h4>
+                                                <img src="{{$item->file()->url}}" class="ls-is-cached lazyloaded" alt="{{$item->file()->alt}}">
+                                                {{$item->value['title']}}
+                                            </h4>
+                                            @break
+                                        @case(\App\Enums\BlockItemType::IMAGE_TEXT->value)
+                                            <div class="desc">
+                                                <div>
+                                                    <img src="{{$item->file()->url}}" class="ls-is-cached lazyloaded" alt="{{$item->file()->alt}}">
+                                                    {!!$item->value['text']!!}
+                                                </div>
+                                            </div>
+                                            @break
                                         @case('youtube')
                                             {!!$item->value_simple!!}
                                             @break
@@ -153,7 +172,7 @@
                         @endforeach
                         @if ($loop->last)
                             @if ($category->slug == 'reviews')
-                                <section class="section article article-rating" id="9">
+                                <section class="section article article-rating" id="conclusion">
                                     <div class="article-rating__info">
                                         <h2>Conclusion</h2>
                                         <a href="{{route('rate')}}" class="article-rating__link">Review Policy</a>
@@ -281,7 +300,7 @@
                                         </li>
                                         <li>
                                             <p>Developer:</p>
-                                            <a href="#">{{$game->publisher}}</a>
+                                            <a href="#">{{$game->developer}}</a>
                                         </li>
                                         <li>
                                             <p>Release Date:</p>
@@ -305,6 +324,11 @@
                                             <a href="#{{$block->ident}}" class="anchor-link">{{$block->name}}</a>
                                         </li>
                                     @endforeach
+                                    @if ($post->conclusion)
+                                        <li>
+                                            <a href="#conclusion" class="anchor-link">Conclusion</a>
+                                        </li>
+                                    @endif
                                 </ul>
                             </div>
                         @endif

@@ -36,7 +36,6 @@ class AttachmentController extends Controller
         $input = $request->validated();
 
         $attachment->update($input);
-        $attachment->saveTranslations($input);
 
         return $this->jsonSuccess('Attachment updated successfully');
     }

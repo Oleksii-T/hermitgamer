@@ -11,6 +11,9 @@ use Yajra\DataTables\DataTables;
 class Attachment extends Model
 {
     use HasFactory;
+    // 1440 - full width
+
+    // 1920x1080 = 1.7 OR 0.56
 
     /**
      * @var array

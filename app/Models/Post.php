@@ -9,12 +9,13 @@ use Illuminate\Support\Str;
 use App\Traits\HasAttachments;
 use Yajra\DataTables\DataTables;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
-    use HasFactory, HasAttachments, Viewable;
+    use HasFactory, HasAttachments, Viewable, SoftDeletes;
 
     protected $fillable = [
         'parent_id',
@@ -180,7 +181,7 @@ class Post extends Model
     public function getGroupedBlocks()
     {
         $blockGroups = $this->block_groups;
-        $blocks = $this->blocks;
+        $blocks = $this->blocks->sortBy('order');
         $skip = 0;
         $res = [];
 
@@ -211,9 +212,8 @@ class Post extends Model
                 return $model->created_at->format(env('ADMIN_DATETIME_FORMAT'));
             })
             ->addColumn('action', function ($model) {
-                return view('components.admin.actions', [
-                    'model' => $model,
-                    'name' => 'posts'
+                return view('admin.posts.actions', [
+                    'post' => $model,
                 ])->render();
             })
             ->rawColumns(['action'])

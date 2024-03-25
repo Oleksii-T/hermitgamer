@@ -126,8 +126,11 @@
                                             </template>
                                         </div>
                                     </div>
-                                    <hr v-if="block.items.length != ii+1">
+                                    <hr>
                                 </template>
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-success d-block float-right" @click="addItem(bi)">Add Item</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -303,9 +306,10 @@ export default {
                 }
             )
             .then(response => {
-                app.helpers.showNotif(response.data.message, '', response.data.success).then(res => {
-                    window.location.reload();
-                });
+                app.helpers.showToast(response.data.message, response.data.success);
+                // app.helpers.showNotif(response.data.message, '', response.data.success).then(res => {
+                //     window.location.reload();
+                // });
             })
             .catch(error => {
                 if (error.response.status == 422) {

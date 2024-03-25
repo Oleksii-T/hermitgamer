@@ -23,6 +23,29 @@
 </head>
 
 <body>
+    @if ($currentUser)
+        @php
+            $editUrl = match (Route::currentRouteName()) {
+                'games.show' => route('admin.games.edit', $game),
+                'posts.show' => route('admin.posts.edit', $post),
+                'categories.show' => route('admin.categories.edit', $category),
+                'authors.show' => route('admin.authors.edit', $author),
+                default => null
+            };
+        @endphp
+        <div class="admin-header">
+            <div class="admin-header-item">
+                <a href="{{route('admin.index')}}">
+                    {{config('app.name')}} Admin
+                </a>
+            </div>
+            @if ($editUrl)
+                <div class="admin-header-item">
+                    <a href="{{$editUrl}}">Edit</a>
+                </div>
+            @endif
+        </div>
+    @endif
     <header class="header" id="header">
         <a class="header__logo" href="{{route('index')}}">
             <img src="{{asset('images/logo.png')}}" alt="HermitGamer" title="HermitGamer">
@@ -161,7 +184,6 @@
 <script src="{{asset('js/slick.min.js')}}"></script>
 <script src="{{asset('js/scripts.js')}}"></script>
 <script src="{{asset('js/custom.js')}}?v={{time()}}"></script>
-<script src="https://www.google.com/recaptcha/api.js?render={{config('services.recaptcha.public_key')}}"></script>
 
 <script type="text/javascript">
     window.Laravel = {!!$LaravelDataForJS!!};
