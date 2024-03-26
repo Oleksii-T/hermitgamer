@@ -185,6 +185,7 @@ return [
         /*
          * Package Service Providers...
          */
+        LaravelTrailingSlash\RoutingServiceProvider::class,
 
         /*
          * Application Service Providers...

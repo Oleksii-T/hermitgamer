@@ -12,14 +12,15 @@ class CategoryController extends Controller
     {
         $perPage = 2;
         $posts = $category->posts()->publised()->latest()->paginate($perPage);
+        $hasMore = $posts->hasMorePages();
         
         if (!$request->ajax()) {
             $page = Page::get('category');
-            return view('categories.show', compact('category', 'posts', 'page'));
+            return view('categories.show', compact('category', 'posts', 'page', 'hasMore'));
         }
 
         return $this->jsonSuccess('', [
-            'hasMore' => $posts->hasMorePages(),
+            'hasMore' => $hasMore,
             'html' => view('components.post-cards', compact('posts'))->render()
         ]);
     }

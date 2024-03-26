@@ -160,8 +160,17 @@ export default {
     },
     data: () => ({
         blocks: [],
-        group_blocks: []
+        group_blocks: [],
+        someThingWasChanged: -1
     }),
+    watch: {
+        blocks: {
+            handler: function(val) {
+                this.initLeaveConfirmation(val)
+            },
+            deep: true
+        }
+    },
     computed: {
 
     },
@@ -383,6 +392,15 @@ export default {
             res = res.filter(num => num !== 0);
 
             this.group_blocks = res;
+        },
+        initLeaveConfirmation(val) {
+            this.someThingWasChanged++;
+
+            if (this.someThingWasChanged == 1) {
+                window.onbeforeunload = function(){
+                    return 'Are you sure you want to leave?';
+                };
+            }
         }
     },
     created() {

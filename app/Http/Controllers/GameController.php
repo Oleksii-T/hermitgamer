@@ -16,12 +16,18 @@ class GameController extends Controller
         if (!$request->ajax()) {
             $page = Page::get('post');
             $review = $game->posts()->whereRelation('category', 'slug', 'reviews')->latest()->first();
-            $guides = $game->posts()->whereRelation('category', 'slug', 'guides')->latest()->paginate($perPage);
+            $guides = $game->posts()
+                ->whereHas('category', fn ($q) => $q->whereIn('slug', ['guides', 'cheats']))
+                ->latest()
+                ->paginate($perPage);
             $hasMoreGuides = $guides->hasMorePages();
-            $topLists = $game->posts()->whereRelation('category', 'slug', 'top-lists')->latest()->limit(2)->get();
-            $cheats = $game->posts()->whereRelation('category', 'slug', 'cheats')->latest()->limit(2)->get();
+            $topLists = $game->posts()
+                ->whereHas('category', fn ($q) => $q->whereIn('slug', ['top-lists', 'mods']))
+                ->latest()
+                ->limit(2)
+                ->get();
 
-            return view('games.show', compact('page', 'game', 'review', 'guides', 'topLists', 'hasMoreGuides', 'cheats'));
+            return view('games.show', compact('page', 'game', 'review', 'guides', 'topLists', 'hasMoreGuides'));
         }
 
         return $this->jsonSuccess('', [

@@ -58,6 +58,7 @@ Route::middleware('is-admin')->group(function () {
         Route::get('{post}/reviewsFields', [PostController::class, 'reviewsFields'])->name('reviewsFields');
         Route::post('{post}/blocks', [PostController::class, 'updateBlocks'])->name('update-blocks');
         Route::post('{post}/faqs', [PostController::class, 'storeFaq'])->name('store-faq');
+        Route::get('{id}/recover', [PostController::class, 'recover'])->name('recover');
         Route::put('{post}/assets', [PostController::class, 'updateAssets'])->name('update-assets');
         Route::put('{post}/reviewsFields', [PostController::class, 'updateReviewsFields'])->name('update-reviewsFields');
         Route::put('{post}/related', [PostController::class, 'updateRelated'])->name('update-related');

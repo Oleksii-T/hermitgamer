@@ -33,3 +33,9 @@ button {
 .article__image_small {
     max-width: 50%;
 }
+.admin-only-post {
+    margin: 0;
+    color: red;
+    font-size: 150%;
+    text-align: center;
+}

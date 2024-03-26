@@ -32,6 +32,7 @@ class CategoryController extends Controller
             $input['order'] = Category::max('order') + 1;
         }
         $category = Category::create($input);
+        Category::getAllSlugs(true);
 
         return $this->jsonSuccess('Category created successfully', [
             'redirect' => route('admin.categories.index')
@@ -49,6 +50,7 @@ class CategoryController extends Controller
         $input['in_menu'] = $input['in_menu'] ?? false;
 
         $category->update($input);
+        Category::getAllSlugs(true);
 
         return $this->jsonSuccess('Category updated successfully');
     }

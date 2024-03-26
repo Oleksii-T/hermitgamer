@@ -24,12 +24,11 @@
 
                 <section class="section category">
                     <x-post-cards :posts="$posts" />
-                    <a
-                        href="#"
-                        class="button button-dark category__button show-more-posts"
-                    >
-                        Show More
-                    </a>
+                    @if ($hasMore)
+                        <a href="#" class="button button-dark category__button show-more-posts">
+                            Show More
+                        </a>
+                    @endif
                 </section>
             </div>
             <div class="sidebar">

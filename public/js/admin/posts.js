@@ -5,9 +5,7 @@ $(document).ready(function () {
         ajax: {
 			url: window.location.href,
 			data: function (filter) {
-				filter.category = $('.table-filter[name=category]').val();
-				filter.game = $('.table-filter[name=game]').val();
-				filter.author = $('.table-filter[name=author]').val();
+                addTableFilters(filter);
 			}
 		},
         columns: [

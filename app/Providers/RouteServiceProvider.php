@@ -45,7 +45,13 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         Route::bind('author', function ($value) {
-            return \App\Models\Author::where('slug', $value)->first();
+            $a = \App\Models\Author::where('slug', $value)->first();
+            // if (!$a) {
+            //     dd($value, $a);
+            // } else {
+            //     dd($a);
+            // }
+            return $a;
         });
 
         $this->routes(function () {

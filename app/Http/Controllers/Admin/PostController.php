@@ -22,6 +22,9 @@ class PostController extends Controller
 
         $posts = Post::query();
 
+        if ($request->trashed) {
+            $posts->onlyTrashed();
+        }
         if ($request->category !== null) {
             $posts->where('category_id', $request->category);
         }
@@ -48,12 +51,22 @@ class PostController extends Controller
         if ($input['status'] == PostStatus::PUBLISHED->value) {
             $input['published_at'] = now();
         }
+        $input['slug'] = makeSlug($input['slug'], Post::withTrashed()->pluck('slug')->toArray());
         $post = Post::create($input);
         $post->addAttachment($input['thumbnail']??null, 'thumbnail');
 
         return $this->jsonSuccess('Post created successfully', [
             'redirect' => route('admin.posts.blocks', $post)
         ]);
+    }
+
+    public function recover(Request $request, $id)
+    {
+        $post = Post::withTrashed()->where('slug', $id)->firstOrFail();
+        $post->deleted_at = null;
+        $post->save();
+
+        return redirect()->back();
     }
 
     public function blocks(Post $post)
@@ -96,18 +109,30 @@ class PostController extends Controller
             $simpleValueTypes = BlockItemType::getSimpleTextTypes();
             $simpleFileTypes = BlockItemType::getSimpleFileTypes();
 
-            $oldBlocks = $post->blocks()->pluck('id')->toArray();
-            $newBlocks = collect($request->blocks)->pluck('id')->toArray();
-            $blocksToDelete = array_values(array_diff($oldBlocks, $newBlocks));
-            $blocksToDelete = $post->blocks()->whereIn('id', $blocksToDelete)->get();
-            foreach ($blocksToDelete as $b) {
-                $b->delete();
+            // delete removed blocks and items
+            foreach ($post->blocks()->get() as $b) {
+                $requestBlock = collect($request->blocks)->where('id', $b->id)->first();
+
+                if (!$requestBlock) {
+                    $b->delete();
+                    continue;
+                }
+
+                foreach ($b->items as $item) {
+                    $requestItem = collect($requestBlock['items'])->where('id', $item->id)->first();
+
+                    if (!$requestItem) {
+                        $item->delete();
+                    }
+                }
             }
 
+            // update block group
             $post->update([
                 'block_groups' => $request->group_blocks
             ]);
 
+            // add or update blocks and items
             foreach ($request->blocks as $b) {
                 $block = $post->blocks()->updateOrcreate(
                     [
@@ -137,8 +162,13 @@ class PostController extends Controller
                     if (in_array($t, $simpleValueTypes)) {
                         $value = $v;
 
-                        if ($t == BlockItemType::TEXT->value && str_contains($v['value'], '</table>')) {
-                            $value = ['value' => $this->addSpans($v['value'])];
+                        if ($t == BlockItemType::TEXT->value) {
+
+                            $value = ['value' => str_replace('<br>', '', $v['value'])];
+                            
+                            if (str_contains($v['value'], '</table>')) {
+                                $value = ['value' => $this->addSpans($v['value'])];
+                            }
                         }
 
                         $item->update([

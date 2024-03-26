@@ -39,6 +39,10 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="col-lg-6" style="text-align: right">
+                            <label for="trashed">Show trashed</label>
+                            <input type="checkbox" id="trashed" name="trashed" value="1" class="table-filter">
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">

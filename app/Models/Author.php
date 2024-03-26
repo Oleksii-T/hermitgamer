@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Viewable;
+use App\Traits\GetAllSlugs;
 use App\Traits\HasAttachments;
 use Yajra\DataTables\DataTables;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Author extends Model
 {
-    use HasAttachments, Viewable;
+    use HasAttachments, Viewable, GetAllSlugs;
 
     const ATTACHMENTS = [
         'thumbnail'

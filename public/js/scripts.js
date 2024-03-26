@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", (function () {
         const targetPosition = document.getElementById(hrefParts[1]).getBoundingClientRect().top + document.documentElement.scrollTop - 20;
         console.log(`targetPosition`, targetPosition); //! LOG
         scroll({
-            top: 10,
+            top: targetPosition,
             behavior: "smooth"
         });
     }

@@ -12,6 +12,7 @@
     <link rel="apple-touch-icon" href="{{asset('images/favicon/apple-touch-icon.png')}}">
     <link rel="apple-touch-icon" sizes="72x72" href="{{asset('images/favicon/apple-touch-icon-72x72.png')}}">
     <link rel="apple-touch-icon" sizes="114x114" href="{{asset('images/favicon/apple-touch-icon-114x114.png')}}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
 
     <meta name="theme-color" content="rgb(4, 3, 15)" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="rgb(4, 3, 15)" media="(prefers-color-scheme: dark)" />
@@ -180,6 +181,7 @@
 
 <script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
 <script src="{{asset('js/lazysizes.min.js')}}"></script>
 <script src="{{asset('js/slick.min.js')}}"></script>
 <script src="{{asset('js/scripts.js')}}"></script>

@@ -10,6 +10,7 @@ class AuthorController extends Controller
 {
     public function show(Request $request, Author $author)
     {
+        // $author = Author::where('slug', $slug)->firstOrFail();
         $perPage = 5;
         $posts = $author->posts()->publised()->latest()->paginate($perPage);
 

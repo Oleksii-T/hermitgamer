@@ -257,7 +257,12 @@ function addTableFilters(data, wraper=null) {
 
     filters.each(function(i) {
         let name = $(this).attr('name');
-        let val = $(this).val();
+        let val;
+        if ($(this).attr('type') == 'checkbox') {
+            val = $(this).prop('checked') ? 1 : 0;
+        } else {
+            val = $(this).val();
+        }
         data[name] = val;
     });
 }

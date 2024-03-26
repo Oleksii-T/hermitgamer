@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Page;
+use App\Enums\PostStatus;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
     public function show(Request $request, Post $post)
     {
+        $user = auth()->user();
+        abort_if($post->status != PostStatus::PUBLISHED && !$user, 404);
         $page = Page::get('post');
         $author = $post->author;
         $game = $post->game;

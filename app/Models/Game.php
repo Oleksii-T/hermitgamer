@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\GetAllSlugs;
 use App\Traits\HasAttachments;
 use Yajra\DataTables\DataTables;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Game extends Model
 {
-    use HasAttachments;
+    use HasAttachments, GetAllSlugs;
 
     const ATTACHMENTS = [
         'thumbnail',

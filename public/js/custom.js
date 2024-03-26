@@ -25,6 +25,10 @@ $.fn.toggleClassIf = function(className, condition) {
 }
 
 $(document).ready(function () {
+    Fancybox.bind("[data-fancybox='postsgallery']", {
+        //
+    });
+
     // general logic of ajax form submit (supports files)
     $('form.general-ajax-submit').submit(async function(e){
         e.preventDefault();

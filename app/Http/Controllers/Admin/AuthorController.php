@@ -30,6 +30,7 @@ class AuthorController extends Controller
         $input = $request->validated();
         $author = Author::create($input);
         $author->addAttachment($input['avatar'], 'avatar');
+        Author::getAllSlugs(true);
 
         return $this->jsonSuccess('Author created successfully', [
             'redirect' => route('admin.authors.index')
@@ -47,6 +48,7 @@ class AuthorController extends Controller
 
         $author->update($input);
         $author->addAttachment($input['avatar']??false, 'avatar');
+        Author::getAllSlugs(true);
 
         return $this->jsonSuccess('Author updated successfully');
     }

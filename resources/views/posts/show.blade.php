@@ -11,6 +11,9 @@
 
 @section('content')
     <span data-sendview="{{route('posts.view', $post)}}"></span>
+    @if ($post->status != \App\Enums\PostStatus::PUBLISHED)
+        <p class="admin-only-post">The post is {{$post->status->readable()}}. Only admin can see it.</p>
+    @endif
     <div class="page__wrapper">
         <section class="links">
             <button class="links__button-toggle">
@@ -109,6 +112,25 @@
                                 </section>
                             @endif
                         @endif
+                        
+                        @if ($post->tc_style == \App\Enums\PostTCStyle::WIDE)
+                            <section class="article">
+                                <table>
+                                    <tbody>    
+                                        @foreach ($post->blocks->chunk(3) as $blocksChunk)
+                                            <tr>
+                                                @foreach ($blocksChunk as $block)
+                                                    <td>
+                                                        <a href="#{{$block->ident}}" class="anchor-link">{{$block->name}}</a>
+                                                    </td>
+                                                @endforeach
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </section>
+                        @endif
+
                         @foreach ($blocks as $block)
                             @php
                                 $items = $block->items->sortBy('order');
@@ -159,9 +181,9 @@
                                             <div class="screens-slider">
                                                 @foreach ($item->value_simple as $image)
                                                     <div class="screens-slider__item">
-                                                        {{-- <a href="{{$image['url']}}" data-fancybox='postsgallery'> --}}
+                                                        <a href="{{$image['url']}}" data-fancybox='postsgallery'>
                                                             <img src="{{$image['url']}}" alt="">
-                                                        {{-- </a> --}}
+                                                        </a>
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -313,24 +335,26 @@
                                     </ul>
                                 </div>
                             @endif
-                            <div class="sidebar__nav">
-                                <div class="sidebar__nav-button">
-                                    Table of contents
-                                    <img src="images/icons/sidebar-nav-arrow.svg" alt="" />
+                            @if ($post->tc_style == \App\Enums\PostTCStyle::R_SIDEBAR)
+                                <div class="sidebar__nav">
+                                    <div class="sidebar__nav-button">
+                                        Table of contents
+                                        <img src="images/icons/sidebar-nav-arrow.svg" alt="" />
+                                    </div>
+                                    <ul class="sidebar__nav-list">
+                                        @foreach ($post->blocks as $block)
+                                            <li>
+                                                <a href="#{{$block->ident}}" class="anchor-link">{{$block->name}}</a>
+                                            </li>
+                                        @endforeach
+                                        @if ($post->conclusion)
+                                            <li>
+                                                <a href="#conclusion" class="anchor-link">Conclusion</a>
+                                            </li>
+                                        @endif
+                                    </ul>
                                 </div>
-                                <ul class="sidebar__nav-list">
-                                    @foreach ($post->blocks as $block)
-                                        <li>
-                                            <a href="#{{$block->ident}}" class="anchor-link">{{$block->name}}</a>
-                                        </li>
-                                    @endforeach
-                                    @if ($post->conclusion)
-                                        <li>
-                                            <a href="#conclusion" class="anchor-link">Conclusion</a>
-                                        </li>
-                                    @endif
-                                </ul>
-                            </div>
+                            @endif
                         @endif
                         <div class="sidebar__banner">
                             <img src="/images/sidebar-banner1.webp" class="lazyload" alt="" />

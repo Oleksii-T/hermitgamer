@@ -33,6 +33,7 @@ class TagController extends Controller
         }
         $tag = Tag::create($input);
         $tag->saveTranslations($input);
+        Tag::getAllSlugs(true);
 
         return $this->jsonSuccess('Tag created successfully', [
             'redirect' => route('admin.tags.index')
@@ -49,6 +50,7 @@ class TagController extends Controller
         $input = $request->validated();
 
         $tag->update($input);
+        Tag::getAllSlugs(true);
 
         return $this->jsonSuccess('Tag updated successfully');
     }

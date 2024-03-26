@@ -19,7 +19,6 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 Route::any('dev/{action}', [\App\Http\Controllers\DevController::class, 'action']);
 
 Route::prefix('posts')->name('posts.')->group(function () {
-    Route::get('{post}', [PostController::class, 'show'])->name('show');
     Route::post('{post}/view', [PostController::class, 'view'])->name('view');
     Route::get('more', [PostController::class, 'more']);
 });
@@ -38,11 +37,12 @@ Route::get('about-us', [PageController::class, 'aboutUs'])->name('about-us');
 Route::get('privacy', [PageController::class, 'privacy'])->name('privacy');
 Route::get('terms', [PageController::class, 'terms'])->name('terms');
 
-Route::get('categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
+Route::get('{category}', [CategoryController::class, 'show'])->name('categories.show')->where('category', \App\Models\Category::getAllSlugs());
 
-Route::get('authors/{author}', [AuthorController::class, 'show'])->name('authors.show');
+Route::get('{author}', [AuthorController::class, 'show'])->name('authors.show')->where('author', \App\Models\Author::getAllSlugs());
 
-Route::get('tags/{tag}', [TagController::class, 'show'])->name('tags.show');
+Route::get('{tag}', [TagController::class, 'show'])->name('tags.show')->where('tag', \App\Models\Tag::getAllSlugs());
 
-Route::get('games/{game}', [GameController::class, 'show'])->name('games.show');
+Route::get('{game}', [GameController::class, 'show'])->name('games.show')->where('game', \App\Models\Game::getAllSlugs());
 
+Route::get('{post}', [PostController::class, 'show'])->name('posts.show');

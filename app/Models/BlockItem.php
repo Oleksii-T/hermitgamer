@@ -26,18 +26,6 @@ class BlockItem extends Model
         'translations',
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::deleting(function ($model) {
-            // foreach (self::ATTACHMENTS as $group) {
-            //     $model->purgeFiles($group);
-            // }
-            $model->purgeTranslations();
-        });
-    }
-
     public function files()
     {
         return $this->morphMany(Attachment::class, 'attachmentable');

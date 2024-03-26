@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Traits\GetAllSlugs;
 use Yajra\DataTables\DataTables;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Category extends Model
 {
+    use GetAllSlugs;
+
     protected $fillable = [
         'in_menu',
         'name',
