@@ -52,35 +52,35 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Release Date</label>
-                            <input type="number" class="form-control daterangepicker-single" name="release_date">
+                            <input type="text" class="form-control daterangepicker-single" name="release_date">
                             <span data-input="release_date" class="input-error"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Developer</label>
-                            <input type="number" class="form-control" name="developer">
+                            <input type="text" class="form-control" name="developer">
                             <span data-input="developer" class="input-error"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Publisher</label>
-                            <input type="number" class="form-control" name="publisher">
+                            <input type="text" class="form-control" name="publisher">
                             <span data-input="publisher" class="input-error"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Platforms</label>
-                            <input type="number" class="form-control" name="platforms">
+                            <input type="text" class="form-control" name="platforms">
                             <span data-input="platforms" class="input-error"></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Ganres</label>
-                            <input type="number" class="form-control" name="ganres">
+                            <input type="text" class="form-control" name="ganres">
                             <span data-input="ganres" class="input-error"></span>
                         </div>
                     </div>
@@ -101,7 +101,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>ESRB</label>
-                            <input type="number" class="form-control" name="esbr">
+                            <input type="text" class="form-control" name="esbr">
                             <span data-input="esbr" class="input-error"></span>
                         </div>
                     </div>

@@ -48,9 +48,11 @@ class BlockItem extends Model
                     $file = $this->file();
                     return [
                         'title' => $value['title'],
-                        'image' => [
+                        'file' => [
                             'id' => $file->id,
                             'original_name' => $file->original_name,
+                            'alt' => $file->alt,
+                            'title' => $file->title,
                             'url' => $file->url
                         ]
                     ];
@@ -62,6 +64,8 @@ class BlockItem extends Model
                         $files[] = [
                             'id' => $file->id,
                             'original_name' => $file->original_name,
+                            'alt' => $file->alt,
+                            'title' => $file->title,
                             'url' => $file->url
                         ];
                     }
@@ -73,9 +77,13 @@ class BlockItem extends Model
                 if (in_array($this->type->value, $simpleFileTypes)) {
                     $file = $this->file();
                     return [
-                        'id' => $file->id,
-                        'original_name' => $file->original_name,
-                        'url' => $file->url
+                        'file' => [
+                            'id' => $file->id,
+                            'original_name' => $file->original_name,
+                            'alt' => $file->alt,
+                            'title' => $file->title,
+                            'url' => $file->url
+                        ]
                     ];
                 }
 

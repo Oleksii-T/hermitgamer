@@ -84,11 +84,56 @@
                                                 </div>
                                             </template>
                                             <template v-else-if="['image', 'image-small'].includes(item.type)">
+                                                <div class="rii-wrapper">
+                                                    <input @change="fileUploaded(item, $event)" type="file" class="rii-content-input d-none" accept="image/*">
+                                                    <div class="row">
+                                                        <div class="col-4">
+                                                            <div class="rii-box" @click="imageBoxClick">
+                                                                <img v-if="item.value.file.url" :src="item.value.file.url">
+                                                                <span v-if="!item.value.file.url">
+                                                                    <br>Drag files here,<br>or click to upload
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-8">
+                                                            <table class="rii-inputs">
+                                                                <tr>
+                                                                    <td>
+                                                                        <label for="">Name:</label>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" class="rii-input form-control rii-filename" :value="item.value.file.original_name" readonly>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <label for="">Alt:</label>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" name="{{$name}}[alt]" class="rii-input form-control rii-filealt" v-model="item.value.file.alt">
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <label for="">Title:</label>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" name="{{$name}}[title]" class="rii-input form-control rii-filetitle" v-model="item.value.file.title">
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <!-- 
                                                 <div class="custom-file">
                                                     <input @change="fileUploaded(item, $event)" type="file" class="custom-file-input" accept="image/*">
                                                     <label class="custom-file-label">{{item.value.original_name ?? item.previewName ?? 'Choose file'}}</label>
                                                 </div>
-                                                <img :src="item.value.url ?? item.previewImage ?? ''" alt="" class="custom-file-preview">
+                                                <img :src="item.value.url ?? item.previewImage ?? ''" alt="" class="custom-file-preview"> 
+                                                -->
                                             </template>
                                             <template v-else-if="item.type == 'image-title'">
                                                 <input v-model="item.value.title" class="form-control" type="text" placeholder="Title">
@@ -247,14 +292,18 @@ export default {
 
             let separateImageTypes = ['image-title', 'image-text'];
 
-            if (separateImageTypes.includes(obj.type)) {
-                obj.value.image = file;
-            } else {
-                obj.value = file;
-            }
+            obj.value.file.file = file;
+            obj.value.file.original_name = file.name;
+            obj.value.file.url = URL.createObjectURL(file);
 
-            obj.previewImage = URL.createObjectURL(file);
-            obj.previewName = file.name;
+            // if (separateImageTypes.includes(obj.type)) {
+            //     obj.value.image = file;
+            // } else {
+            //     obj.value = file;
+            // }
+
+            // obj.previewImage = URL.createObjectURL(file);
+            // obj.previewName = file.name;
 
         },
         move(elems, i, direction) {
@@ -360,12 +409,16 @@ export default {
             this.group_blocks.pop();
             this.recalculateGroupBlocks();
         },
+        imageBoxClick(event) {
+            let wraper = this.helpers.findParent(event.target, '.rii-wrapper');
+            wraper.querySelector('.rii-content-input').click();
+        },
 
         // helpers
 
         getDefaultValue() {
             return {
-                
+                file: {}
             };
         },
         getMaxOrder(items=null) {
@@ -394,10 +447,11 @@ export default {
             this.group_blocks = res;
         },
         initLeaveConfirmation(val) {
+            return;
             this.someThingWasChanged++;
 
             if (this.someThingWasChanged == 1) {
-                window.onbeforeunload = function(){
+                window.onbeforeunload = function() {
                     return 'Are you sure you want to leave?';
                 };
             }

@@ -73,10 +73,6 @@ class PostController extends Controller
     {
         $blocks = $post->blocks()->with('items')->get();
         $blocksA = $blocks->toArray();
-        foreach ($blocksA as $i => $block) {
-            $blocksA[$i]['name'] = $blocks->where('id', $block['id'])->first()->name;
-        }
-
         $appData = json_encode([
             'itemTypes' => BlockItemType::all(),
             'post' => [
@@ -175,12 +171,12 @@ class PostController extends Controller
                             'value' => $value
                         ]);
                         continue;
-                    } 
-                    
+                    }
+
                     if (in_array($t, $simpleFileTypes)) {
-                        if ($v instanceof UploadedFile) {
-                            $item->addAttachment($v);
-                        }
+                        // if ($v['file'] instanceof UploadedFile) {
+                            $item->addAttachment($v['file']);
+                        // }
                         continue;
                     }
 
@@ -190,9 +186,9 @@ class PostController extends Controller
                                 'title' => $v['title']
                             ]
                         ]);
-                        if ($v['image'] instanceof UploadedFile) {
-                            $item->addAttachment($v['image']);
-                        }
+                        // if ($v['image'] instanceof UploadedFile) {
+                            $item->addAttachment($v['file']);
+                        // }
                         continue;
                     }
 
@@ -202,9 +198,9 @@ class PostController extends Controller
                                 'text' => $v['text']
                             ]
                         ]);
-                        if ($v['image'] instanceof UploadedFile) {
-                            $item->addAttachment($v['image']);
-                        }
+                        // if ($v['image'] instanceof UploadedFile) {
+                            $item->addAttachment($v['file']);
+                        // }
                         continue;
                     }
 

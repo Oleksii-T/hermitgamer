@@ -14,29 +14,64 @@ trait HasAttachments
         }
 
         $group ??= 'files';
+        $isMultiple = is_array($attachment) && !($attachment['alt']??false) && !($attachment['name']??false);
 
-        if(is_array($attachment)) {
+        if($isMultiple) {
             $attachments = $attachment;
         } else {
             $attachments = [$attachment];
-            $this->$group()->delete();
+            $deleteOldAttachment = !is_array($attachment) || (is_array($attachment) && ($attachment['file']??false));
+
+            if ($deleteOldAttachment) {
+                $this->$group()->delete();
+            }
         }
 
         foreach ($attachments as $attachment) {
-            $type = $this->determineType($attachment->extension());
-            $disk = Attachment::disk($type);
-            $og_name = $attachment->getClientOriginalName();
-            $path = $attachment->storeAs('', $og_name, $disk);
-            $alt = readable(strstr($og_name, '.', true));
+            $aBackUp = $attachment;
+            $simpleAttachment = $attachment instanceof UploadedFile;
+            $uploadedFile = $simpleAttachment ? $attachment : ($attachment['file']??null);
+            $attachmentId = $simpleAttachment ? null : ($attachment['id']??null);
 
+            // dump($attachment);
+
+            // just update alt and title in existing attachment
+            if (!$simpleAttachment && !$uploadedFile && $attachmentId) {
+                Attachment::find($attachmentId)->update([
+                    'alt' => $attachment['alt'],
+                    'title' => $attachment['title'],
+                ]);
+                return;
+            }
+
+
+            // prepare meta data for creating new attachment
+            $type = $this->determineType($uploadedFile->extension());
+            $disk = Attachment::disk($type);
+            $og_name = $uploadedFile->getClientOriginalName();
+            $path = $uploadedFile->storeAs('', $og_name, $disk);
+            if ($simpleAttachment) {
+                // dump('is simple');
+                $alt = readable(strstr($og_name, '.', true));
+                $title = $alt;
+            } else {
+                // dump('is a array');
+                $alt = $attachment['alt'];
+                $title = $attachment['title'];
+            }
+
+            // dump($alt, $title);
+            // dd('here');
+
+            // create new attachment
             $this->$group()->create([
                 'name' => $path,
-                'original_name' => $attachment->getClientOriginalName(),
+                'original_name' => $uploadedFile->getClientOriginalName(),
                 'type' => $type,
                 'alt' => $alt,
-                'title' => $alt,
+                'title' => $title,
                 'group' => $group,
-                'size' => $attachment->getSize()
+                'size' => $uploadedFile->getSize()
             ]);
         }
     }

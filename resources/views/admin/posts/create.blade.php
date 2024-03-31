@@ -98,15 +98,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group show-uploaded-file-name show-uploaded-file-preview">
-                            <label>Thumbnail</label>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="thumbnail" name="thumbnail">
-                                <label class="custom-file-label" for="thumbnail">Choose file</label>
-                            </div>
-                            <img src="" alt="" class="custom-file-preview">
-                            <span data-input="thumbnail" class="input-error"></span>
-                        </div>
+                        <x-admin.rich-image-input name="thumbnail" />
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
@@ -123,7 +115,7 @@
                     <div class="col-12">
                         <div class="form-group">
                             <label>Intro</label>
-                            <textarea name="intro" class="form-control summernote"></textarea>
+                            <textarea name="intro" class="form-control custom-summernote"></textarea>
                             <span data-input="intro" class="input-error"></span>
                         </div>
                     </div>

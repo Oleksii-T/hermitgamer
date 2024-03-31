@@ -27,13 +27,19 @@ class PostRequest extends FormRequest
     public function rules()
     {
         $model = $this->route('post');
+        $reqNull = $model ? 'nullable' : 'required';
 
         return [
             'parent_id' => ['nullable', 'exists:posts,id'],
             'title' => ['required', 'string', 'max:255'],
             'intro' => ['nullable', 'string'],
             'slug' => ['required', 'string', 'max:255'],
-            'thumbnail' => [$model ? 'nullable' : 'required', 'image', 'max:5000'],
+            // 'thumbnail' => [$model ? 'nullable' : 'required', 'image', 'max:5000'],
+            'thumbnail' => [$reqNull, 'array'],
+            'thumbnail.file' => [$reqNull, 'image', 'max:5000'],
+            'thumbnail.title' => [$reqNull, 'string', 'max:255'],
+            'thumbnail.alt' => [$reqNull, 'string', 'max:255'],
+            'thumbnail.id' => ['nullable', 'integer'],
             'status' => ['required', Rule::in(PostStatus::values())],
             'tc_style' => ['required', Rule::in(PostTCStyle::values())],
             'category_id' => ['nullable', 'exists:categories,id'],

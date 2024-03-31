@@ -58,5 +58,9 @@ export default {
           .replace(/[^a-z0-9 -]/g, '') // remove non-alphanumeric characters
           .replace(/\s+/g, '-') // replace spaces with hyphens
           .replace(/-+/g, '-'); // remove consecutive hyphens
+    },
+    findParent(el, sel) {
+        while ((el = el.parentElement) && !((el.matches || el.matchesSelector).call(el, sel)));
+        return el;
     }
 };

@@ -15,7 +15,7 @@
     max-width: 80px;
 }
 .note-editor .note-editable {
-    white-space: pre-line;
+    /* white-space: pre-line; */
 }
 .preloader{
     display: none;
@@ -114,4 +114,10 @@ body.swal2-toast-shown .swal2-container {
 }
 div:where(.swal2-container) div:where(.swal2-timer-progress-bar) {
     background: #ff7800 !important;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    background-color: #343a40 !important;
 }
