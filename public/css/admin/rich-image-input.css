@@ -1,7 +1,4 @@
-.rii-wrapper {
-
-}
-.rii-box {
+.rii-box, .v-rii-box {
     border: dashed 3px #41403E;
     text-align: center;
     transition: all 0.3s linear;
@@ -10,12 +7,12 @@
     height: 101px;
     overflow: hidden;
 }
-.rii-box img{
+.rii-box img, .v-rii-box img {
     object-fit: cover;
     width: 100%;
     height: 100%;
 }
-.rii-box:hover {
+.rii-box:hover, .v-rii-box:hover {
     border-color: #0096ff;
 }
 .rii-inputs {

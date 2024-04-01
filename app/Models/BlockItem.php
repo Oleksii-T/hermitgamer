@@ -26,6 +26,17 @@ class BlockItem extends Model
         'translations',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($model) {
+            foreach ($model->files as $file) {
+                $file->delete();
+            }
+        });
+    }
+
     public function files()
     {
         return $this->morphMany(Attachment::class, 'attachmentable');

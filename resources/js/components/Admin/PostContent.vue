@@ -1,194 +1,131 @@
 <template>
-    <div>
-        <div class="card">
-            <div class="card-header row">
-                <h5 class="m-0 col">Groups for {{ blocks.length }} blocks</h5>
-                <div class="col">
-                    <button type="button" class="btn btn-success d-block float-right" @click="addBlockGroup()">+</button>
-                    <button type="button" class="btn btn-info d-block float-right mr-2" @click="subBlockGroup()">-</button>
-                </div>
+    <div class="card">
+        <div class="card-header row">
+            <h5 class="m-0 col">Groups for {{ blocks.length }} blocks</h5>
+            <div class="col">
+                <button type="button" class="btn btn-success d-block float-right" @click="addBlockGroup()">+</button>
+                <button type="button" class="btn btn-info d-block float-right mr-2" @click="subBlockGroup()">-</button>
             </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div>
-                                <input 
-                                    v-for="(blocks_in_group, bgi) in group_blocks" 
-                                    :key="bgi" 
-                                    type="number" 
-                                    class="form-control" 
-                                    v-model="group_blocks[bgi]" 
-                                    style="max-width:55px;display:inline-block;margin-right:5px;"
-                                >
-                            </div>
-                            <span data-input="slug" class="input-error"></span>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div>
+                            <input 
+                                v-for="(blocks_in_group, bgi) in group_blocks" 
+                                :key="bgi" 
+                                type="number" 
+                                class="form-control" 
+                                v-model="group_blocks[bgi]" 
+                                style="max-width:55px;display:inline-block;margin-right:5px;"
+                            >
                         </div>
+                        <span data-input="slug" class="input-error"></span>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="card">
-            <div class="card-header row">
-                <h5 class="m-0 col">Post Blocks</h5>
-                <div class="col">
-                    <button type="button" class="btn btn-success d-block float-right" @click="addBlock()">Add Block</button>
-                    <button type="button" class="btn btn-info d-block float-right mr-2" @click="addPreset()">Add Preset</button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div v-for="(block, bi) in blocks.sort((a,b) => a.order - b.order)" :key="bi" class="card card-secondary w-100">
-                        <div class="card-header">
-                            <div class=" row">
-                                <div class="col">
-                                    <span style="font-size:1.5em">{{ bi+1 }}:</span>
-                                    <div class="tab-content" style="display:inline-block">
-                                        <input v-model="block.name" class="form-control my-block-title" @input="blockNameChanged(block)" type="text" placeholder="Block name">
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <button type="button" class="btn btn-success d-block mr-2 float-right" @click="addItem(bi)">Add Item</button>
-                                    <button v-if="blocks.length != 1" type="button" class="btn btn-warning mr-2 d-block float-right" @click="removeBlock(bi)">Remove</button>
-                                    <button v-if="bi != 0" type="button" class="btn btn-info d-block mr-2 float-right" @click="move(blocks, bi, 'up')">^</button>
-                                    <button v-if="blocks.length != 1 && blocks.length-1 != bi" type="button" class="btn btn-info d-block mr-2 float-right" @click="move(blocks, bi, 'down')">v</button>
-                                    <input type="text" class="form-control float-right mr-2 my-block-ident" v-model="block.ident" placeholder="Block anchor" @input="blockIdentChanged(block)">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body my-post-block">
-                            <div class="row block-item-wrapper">
-                                <template v-for="(item, ii) in block.items.sort((a,b) => a.order - b.order)" :key="ii">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <div class="mb-2">
-                                                {{ ii+1 }}:
-                                                <select v-model="item.type" class="form-control w-auto d-inline item-type-select">
-                                                    <option v-for="(iType, iTypeKey) in dataprops.itemTypes" :key="iTypeKey" :value="iTypeKey">
-                                                        {{iType}}
-                                                    </option>
-                                                </select>
-                                                <button v-if="item.type == 'image-gallery'" @click="addImageToSlider(item)" class="btn btn-default ml-2">
-                                                    Add image
-                                                </button>
-                                                <button v-if="block.items.length != 1" type="button" class="btn btn-warning remove-item float-right" @click="removeItem(bi, ii)">Remove</button>
-                                                <button v-if="ii != 0" type="button" class="btn btn-info d-block mr-2 float-right" @click="move(block.items, ii, 'up')">^</button>
-                                                <button v-if="block.items.length != 1 && block.items.length-1 != ii" type="button" class="btn btn-info d-block mr-2 float-right" @click="move(block.items, ii, 'down')">v</button>
-                                            </div>
-                                            <template v-if="['title-h2','title-h3','title-h4','title-h5'].includes(item.type)">
-                                                <input v-model="item.value.value" class="form-control" type="text" placeholder="Title">
-                                            </template>
-                                            <template v-if="item.type == 'text'">
-                                                <div>
-                                                    <SummernoteEditor v-model="item.value.value"/>
-                                                </div>
-                                            </template>
-                                            <template v-else-if="['image', 'image-small'].includes(item.type)">
-                                                <div class="rii-wrapper">
-                                                    <input @change="fileUploaded(item, $event)" type="file" class="rii-content-input d-none" accept="image/*">
-                                                    <div class="row">
-                                                        <div class="col-4">
-                                                            <div class="rii-box" @click="imageBoxClick">
-                                                                <img v-if="item.value.file.url" :src="item.value.file.url">
-                                                                <span v-if="!item.value.file.url">
-                                                                    <br>Drag files here,<br>or click to upload
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-8">
-                                                            <table class="rii-inputs">
-                                                                <tr>
-                                                                    <td>
-                                                                        <label for="">Name:</label>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="text" class="rii-input form-control rii-filename" :value="item.value.file.original_name" readonly>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label for="">Alt:</label>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="text" name="{{$name}}[alt]" class="rii-input form-control rii-filealt" v-model="item.value.file.alt">
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label for="">Title:</label>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input type="text" name="{{$name}}[title]" class="rii-input form-control rii-filetitle" v-model="item.value.file.title">
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                                <!-- 
-                                                <div class="custom-file">
-                                                    <input @change="fileUploaded(item, $event)" type="file" class="custom-file-input" accept="image/*">
-                                                    <label class="custom-file-label">{{item.value.original_name ?? item.previewName ?? 'Choose file'}}</label>
-                                                </div>
-                                                <img :src="item.value.url ?? item.previewImage ?? ''" alt="" class="custom-file-preview"> 
-                                                -->
-                                            </template>
-                                            <template v-else-if="item.type == 'image-title'">
-                                                <input v-model="item.value.title" class="form-control" type="text" placeholder="Title">
-                                                <div class="custom-file">
-                                                    <input @change="fileUploaded(item, $event)" type="file" class="custom-file-input" accept="image/*">
-                                                    <label class="custom-file-label">{{item.value.image?.original_name ?? item.previewName ?? 'Choose file'}}</label>
-                                                </div>
-                                                <img :src="item.value.image?.url ?? item.previewImage ?? ''" alt="" class="custom-file-preview">
-                                            </template>
-                                            <template v-else-if="item.type == 'image-text'">
-                                                <div>
-                                                    <SummernoteEditor v-model="item.value.text"/>
-                                                    <div class="custom-file">
-                                                        <input @change="fileUploaded(item, $event)" type="file" class="custom-file-input" accept="image/*">
-                                                        <label class="custom-file-label">{{item.value.image?.original_name ?? item.previewName ?? 'Choose file'}}</label>
-                                                    </div>
-                                                    <img :src="item.value.image?.url ?? item.previewImage ?? ''" alt="" class="custom-file-preview">
-                                                </div>
-                                            </template>
-                                            <template v-else-if="item.type == 'image-gallery'">
-                                                <div class="row">
-                                                    <div v-for="(image, iii) in item.value.images || []" :key="iii" class="col-6">
-                                                        <div class="custom-file">
-                                                            <input @change="fileUploaded(image, $event)" type="file" class="custom-file-input" accept="image/*">
-                                                            <label class="custom-file-label">{{image.original_name ?? image.previewName ?? 'Choose file'}}</label>
-                                                        </div>
-                                                        <img :src="image.url ?? image.previewImage ?? ''" alt="" class="custom-file-preview">
-                                                    </div>
-                                                </div>
-                                            </template>
-                                            <template v-else-if="item.type == 'youtube'">
-                                                <div>
-                                                    <input v-model="item.value.value" class="form-control" type="text" placeholder="https://youtu.be/sg20GbUrbCA?si=eeGeJcDSSTVrhPLg">
-                                                </div>
-                                            </template>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                </template>
-                                <div class="col-md-12">
-                                    <button type="button" class="btn btn-success d-block float-right" @click="addItem(bi)">Add Item</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card-footer">
+    </div>
+    <div class="card">
+        <div class="card-header row">
+            <h5 class="m-0 col">Post Blocks</h5>
+            <div class="col">
                 <button type="button" class="btn btn-success d-block float-right" @click="addBlock()">Add Block</button>
                 <button type="button" class="btn btn-info d-block float-right mr-2" @click="addPreset()">Add Preset</button>
             </div>
         </div>
-        <button type="submit" class="btn btn-success min-w-100 mr-2" @click="save()">Save</button>
-        <a href="/admin/posts" class="btn btn-outline-secondary text-dark min-w-100 mr-2">Cancel</a>
+        <div class="card-body">
+            <div class="row">
+                <div v-for="(block, bi) in blocks.sort((a,b) => a.order - b.order)" :key="bi" class="card card-secondary w-100">
+                    <div class="card-header">
+                        <div class=" row">
+                            <div class="col">
+                                <span style="font-size:1.5em">{{ bi+1 }}:</span>
+                                <div class="tab-content" style="display:inline-block">
+                                    <input v-model="block.name" class="form-control my-block-title" @input="blockNameChanged(block)" type="text" placeholder="Block name">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-success d-block mr-2 float-right" @click="addItem(bi)">Add Item</button>
+                                <button v-if="blocks.length != 1" type="button" class="btn btn-warning mr-2 d-block float-right" @click="removeBlock(bi)">Remove</button>
+                                <button v-if="bi != 0" type="button" class="btn btn-info d-block mr-2 float-right" @click="move(blocks, bi, 'up')">^</button>
+                                <button v-if="blocks.length != 1 && blocks.length-1 != bi" type="button" class="btn btn-info d-block mr-2 float-right" @click="move(blocks, bi, 'down')">v</button>
+                                <input type="text" class="form-control float-right mr-2 my-block-ident" v-model="block.ident" placeholder="Block anchor" @input="blockIdentChanged(block)">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body my-post-block">
+                        <div class="row block-item-wrapper">
+                            <template v-for="(item, ii) in block.items.sort((a,b) => a.order - b.order)" :key="ii">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="mb-2">
+                                            {{ ii+1 }}:
+                                            <select v-model="item.type" class="form-control w-auto d-inline item-type-select">
+                                                <option v-for="(iType, iTypeKey) in dataprops.itemTypes" :key="iTypeKey" :value="iTypeKey">
+                                                    {{iType}}
+                                                </option>
+                                            </select>
+                                            <button v-if="item.type == 'image-gallery'" @click="addImageToSlider(item)" class="btn btn-default ml-2">
+                                                Add image
+                                            </button>
+                                            <button v-if="block.items.length != 1" type="button" class="btn btn-warning remove-item float-right" @click="removeItem(bi, ii)">Remove</button>
+                                            <button v-if="ii != 0" type="button" class="btn btn-info d-block mr-2 float-right" @click="move(block.items, ii, 'up')">^</button>
+                                            <button v-if="block.items.length != 1 && block.items.length-1 != ii" type="button" class="btn btn-info d-block mr-2 float-right" @click="move(block.items, ii, 'down')">v</button>
+                                        </div>
+                                        <template v-if="['title-h2','title-h3','title-h4','title-h5'].includes(item.type)">
+                                            <input v-model="item.value.value" class="form-control" type="text" placeholder="Title">
+                                        </template>
+                                        <template v-if="item.type == 'text'">
+                                            <div>
+                                                <SummernoteEditor v-model="item.value.value"/>
+                                            </div>
+                                        </template>
+                                        <template v-else-if="['image', 'image-small'].includes(item.type)">
+                                            <RichImageInput :value="item.value.file" @fileChanged="item.value.file = $event"/>
+                                        </template>
+                                        <template v-else-if="item.type == 'image-title'">
+                                            <input v-model="item.value.title" class="form-control" type="text" placeholder="Title">
+                                            <RichImageInput :value="item.value.file" @fileChanged="item.value.file = $event"/>
+                                        </template>
+                                        <template v-else-if="item.type == 'image-text'">
+                                            <div>
+                                                <SummernoteEditor v-model="item.value.text"/>
+                                                <RichImageInput :value="item.value.file" @fileChanged="item.value.file = $event"/>
+                                            </div>
+                                        </template>
+                                        <template v-else-if="item.type == 'image-gallery'">
+                                            <div class="row">
+                                                <div v-for="(image, iii) in item.value.images || []" :key="iii" class="col-6">
+                                                    <RichImageInput :value="item.value.images[iii]" @fileChanged="item.value.images[iii] = $event"/>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <template v-else-if="item.type == 'youtube'">
+                                            <div>
+                                                <input v-model="item.value.value" class="form-control" type="text" placeholder="https://youtu.be/sg20GbUrbCA?si=eeGeJcDSSTVrhPLg">
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                                <hr>
+                            </template>
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-success d-block float-right" @click="addItem(bi)">Add Item</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="button" class="btn btn-success d-block float-right" @click="addBlock()">Add Block</button>
+            <button type="button" class="btn btn-info d-block float-right mr-2" @click="addPreset()">Add Preset</button>
+        </div>
     </div>
+    <button type="submit" class="btn btn-success min-w-100 mr-2" @click="save()">Save</button>
+    <a href="/admin/posts" class="btn btn-outline-secondary text-dark min-w-100 mr-2">Cancel</a>
 </template>
 
 <script>
@@ -409,10 +346,6 @@ export default {
             this.group_blocks.pop();
             this.recalculateGroupBlocks();
         },
-        imageBoxClick(event) {
-            let wraper = this.helpers.findParent(event.target, '.rii-wrapper');
-            wraper.querySelector('.rii-content-input').click();
-        },
 
         // helpers
 
@@ -447,10 +380,11 @@ export default {
             this.group_blocks = res;
         },
         initLeaveConfirmation(val) {
-            return;
+            console.log(`initLeaveConfirmation`); //! LOG
             this.someThingWasChanged++;
-
+            
             if (this.someThingWasChanged == 1) {
+                console.log(` make leave event`); //! LOG
                 window.onbeforeunload = function() {
                     return 'Are you sure you want to leave?';
                 };
@@ -465,7 +399,6 @@ export default {
         } else {
             this.group_blocks = this.dataprops.post.block_groups;
         }
-
 
         console.log('dataprops: ', this.dataprops);
     }

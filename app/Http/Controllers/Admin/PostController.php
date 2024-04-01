@@ -205,16 +205,7 @@ class PostController extends Controller
                     }
 
                     if ($t == BlockItemType::IMAGE_GALLERY->value) {
-                        $toAttach = [];
-                        foreach ($v['images'] as $sliderImage) {
-                            $val = $sliderImage['value']??null;
-                            if ($val instanceof UploadedFile) {
-                                $toAttach[] = $val;
-                            }
-                        }
-                        if ($toAttach) {
-                            $item->addAttachment($toAttach);
-                        }
+                        $item->addAttachment($v['images']);
                         continue;
                     }
 

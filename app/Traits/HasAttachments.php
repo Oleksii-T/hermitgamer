@@ -41,9 +41,8 @@ trait HasAttachments
                     'alt' => $attachment['alt'],
                     'title' => $attachment['title'],
                 ]);
-                return;
+                continue;
             }
-
 
             // prepare meta data for creating new attachment
             $type = $this->determineType($uploadedFile->extension());
