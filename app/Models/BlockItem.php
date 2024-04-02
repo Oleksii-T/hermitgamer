@@ -69,6 +69,20 @@ class BlockItem extends Model
                     ];
                 }
 
+                if ($this->type == BlockItemType::IMAGE_TEXT) {
+                    $file = $this->file();
+                    return [
+                        'text' => $value['text'],
+                        'file' => [
+                            'id' => $file->id,
+                            'original_name' => $file->original_name,
+                            'alt' => $file->alt,
+                            'title' => $file->title,
+                            'url' => $file->url
+                        ]
+                    ];
+                }
+
                 if ($this->type == BlockItemType::IMAGE_GALLERY) {
                     $files = [];
                     foreach ($this->files as $file) {

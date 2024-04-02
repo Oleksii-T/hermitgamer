@@ -45,4 +45,4 @@ Route::get('{tag}', [TagController::class, 'show'])->name('tags.show')->where('t
 
 Route::get('{game}', [GameController::class, 'show'])->name('games.show')->where('game', \App\Models\Game::getAllSlugs());
 
-Route::get('{post}', [PostController::class, 'show'])->name('posts.show');
+Route::get('{post}', [PostController::class, 'show'])->name('posts.show')->where('post', \App\Models\Post::getAllSlugs());

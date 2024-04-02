@@ -28,13 +28,15 @@ class PostRequest extends FormRequest
     {
         $model = $this->route('post');
         $reqNull = $model ? 'nullable' : 'required';
+        $modelId = $model ? "$model->id,id" : 'NULL,NULL';
 
         return [
             'parent_id' => ['nullable', 'exists:posts,id'],
             'title' => ['required', 'string', 'max:255'],
+            'meta_title' => ['required', 'string', 'max:255'],
+            'meta_description' => ['required', 'string', 'max:255'],
             'intro' => ['nullable', 'string'],
-            'slug' => ['required', 'string', 'max:255'],
-            // 'thumbnail' => [$model ? 'nullable' : 'required', 'image', 'max:5000'],
+            'slug' => ['required', 'string', 'max:255', "unique:posts,slug,$modelId,deleted_at,NULL"],
             'thumbnail' => [$reqNull, 'array'],
             'thumbnail.file' => [$reqNull, 'image', 'max:5000'],
             'thumbnail.title' => [$reqNull, 'string', 'max:255'],

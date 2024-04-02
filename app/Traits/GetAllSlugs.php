@@ -8,8 +8,6 @@ trait GetAllSlugs
     {
         $cKey = get_class() . '-slugs';
 
-        dlog("$cKey"); //! LOG
-
         if ($forget) {
             cache()->forget($cKey);
         }
@@ -18,13 +16,9 @@ trait GetAllSlugs
             return self::pluck('slug')->toArray();
         });
 
-        dlog(" slugs", $slugs); //! LOG
-
         if ($formatted) {
             $slugs = '('.implode('|', $slugs).')';
         }
-
-        dlog(" res $slugs"); //! LOG
 
         return $slugs;
     }

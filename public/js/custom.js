@@ -78,10 +78,11 @@ $(document).ready(function () {
     }
 
     // load more posts by click
-    let postsPage = 2;
     $('.show-more-posts').click(function(e) {
         e.preventDefault();
         let button = $(this);
+        let type = button.data('type');
+        let page = parseInt(button.data('page') || 2);
 
         if (button.isLocked()) {
             return;
@@ -92,7 +93,7 @@ $(document).ready(function () {
         $.ajax({
             url: button.data('url'),
             type: 'get',
-            data: {page: postsPage},
+            data: {page, type},
             success: (response)=>{
                 let wraper = button.parent().find('.guides__list');
                 
@@ -102,7 +103,7 @@ $(document).ready(function () {
                     button.before(response.data.html);
                 }
 
-                postsPage++;
+                button.data('page', page+1);
                 button.unlock();
 
                 if (!response.data.hasMore) {

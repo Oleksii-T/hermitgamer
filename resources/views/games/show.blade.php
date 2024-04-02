@@ -143,7 +143,7 @@
                             <x-post-cards-small :posts="$guides" />
                         </ul>
                         @if ($hasMoreGuides)
-                            <a href="#" class="button button-dark guides__button show-more-posts">Show More</a>
+                            <a href="#" class="button button-dark guides__button show-more-posts" data-type="guides">Show More</a>
                         @endif
                     </section>
                 @endif
@@ -153,6 +153,9 @@
                         <ul class="guides__list">
                             <x-post-cards-small :posts="$topLists" />
                         </ul>
+                        @if ($hasMoreTopLists)
+                            <a href="#" class="button button-dark guides__button show-more-posts" data-type="top_lists">Show More</a>
+                        @endif
                     </section>
                 @endif
                 <section class="section summary">

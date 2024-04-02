@@ -302,9 +302,8 @@ export default {
             )
             .then(response => {
                 app.helpers.showToast(response.data.message, response.data.success);
-                // app.helpers.showNotif(response.data.message, '', response.data.success).then(res => {
-                //     window.location.reload();
-                // });
+                window.onbeforeunload = null;
+                window.location.reload();
             })
             .catch(error => {
                 if (error.response.status == 422) {
@@ -380,11 +379,9 @@ export default {
             this.group_blocks = res;
         },
         initLeaveConfirmation(val) {
-            console.log(`initLeaveConfirmation`); //! LOG
             this.someThingWasChanged++;
-            
-            if (this.someThingWasChanged == 1) {
-                console.log(` make leave event`); //! LOG
+
+            if (this.someThingWasChanged == 2) {
                 window.onbeforeunload = function() {
                     return 'Are you sure you want to leave?';
                 };

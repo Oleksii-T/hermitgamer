@@ -51,7 +51,6 @@ class PostController extends Controller
         if ($input['status'] == PostStatus::PUBLISHED->value) {
             $input['published_at'] = now();
         }
-        $input['slug'] = makeSlug($input['slug'], Post::withTrashed()->pluck('slug')->toArray());
         $post = Post::create($input);
         $post->addAttachment($input['thumbnail']??null, 'thumbnail');
 
@@ -64,6 +63,7 @@ class PostController extends Controller
     {
         $post = Post::withTrashed()->where('slug', $id)->firstOrFail();
         $post->deleted_at = null;
+        $post->slug = makeSlug($post->slug, Post::pluck('slug')->toArray());
         $post->save();
 
         return redirect()->back();
@@ -90,11 +90,11 @@ class PostController extends Controller
     {
         $request->validate([
             'group_blocks' => ['required', 'array'],
-            'blocks' => ['required', 'array'],
-            'blocks.*.ident' => ['required', 'string', 'max:255'],
-            'blocks.*.name' => ['required', 'string', 'max:255'],
-            'blocks.*.items' => ['required', 'array'],
-            'blocks.*.items.*' => ['required', 'array'],
+            'blocks' => ['required', 'array', new \App\Rules\ValidBlocksRule],
+            // 'blocks.*.ident' => ['required', 'string', 'max:255'],
+            // 'blocks.*.name' => ['required', 'string', 'max:255'],
+            // 'blocks.*.items' => ['required', 'array'],
+            // 'blocks.*.items.*' => ['required', 'array'],
         ]);
 
         if (array_sum($request->group_blocks) != count($request->blocks)) {
@@ -392,6 +392,8 @@ class PostController extends Controller
     private function addSpans($html)
     {
         $dom = new \DOMDocument;
+        $html = str_replace('&nbsp;', '', $html);
+        $html = str_replace('<p></p>', '', $html);
         $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         
         $xpath = new \DOMXPath($dom);
@@ -419,6 +421,14 @@ class PostController extends Controller
                     $td->replaceChild($span, $child);
                 }
             }
+        }
+
+        // Wrap 'b' elements inside 'td' elements with 'span' elements
+        $bs = $xpath->query('//td/b[not(parent::span)]');
+        foreach ($bs as $b) {
+            $span = $dom->createElement('span');
+            $b->parentNode->replaceChild($span, $b);
+            $span->appendChild($b);
         }
 
         $newHtml = $dom->saveHTML();

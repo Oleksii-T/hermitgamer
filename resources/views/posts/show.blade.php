@@ -169,7 +169,9 @@
                                         @case(\App\Enums\BlockItemType::IMAGE_TEXT->value)
                                             <div class="desc">
                                                 <div>
-                                                    <img src="{{$item->file()->url}}" class="ls-is-cached lazyloaded" alt="{{$item->file()->alt}}">
+                                                    {{-- <div> --}}
+                                                        <img src="{{$item->file()->url}}" class="ls-is-cached lazyloaded" alt="{{$item->file()->alt}}">
+                                                    {{-- </div> --}}
                                                     {!!$item->value['text']!!}
                                                 </div>
                                             </div>
@@ -211,12 +213,12 @@
                                         <a href="{{route('rate')}}" class="article-rating__link">Review Policy</a>
                                     </div>
                                 </section>
-                            @else
+                            @elseif (strip_tags($post->conclusion))
                                 <section class="section article">
-                                    <blockquote>
+                                    <div class="blockquote">
                                         <h2>Conclusion</h2>
                                         {!!$post->conclusion!!}
-                                    </blockquote>
+                                    </div>
                                 </section>
                             @endif
                             @if ($post->faqs->isNotEmpty())
@@ -274,6 +276,13 @@
                                             <li>
                                                 <a href="{{$author->linkedin}}" target="_blank">
                                                     <img src="{{asset('images/icons/linkedin.svg')}}" alt="linkedin" title="linkedin"/>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if ($author->steam)
+                                            <li>
+                                                <a href="{{$author->steam}}" target="_blank">
+                                                    <img src="{{asset('images/icons/steam.svg')}}" alt="steam" title="steam"/>
                                                 </a>
                                             </li>
                                         @endif
@@ -342,12 +351,12 @@
                                         <img src="images/icons/sidebar-nav-arrow.svg" alt="" />
                                     </div>
                                     <ul class="sidebar__nav-list">
-                                        @foreach ($post->blocks as $block)
+                                        @foreach ($post->blocks->sortBy('order') as $block)
                                             <li>
                                                 <a href="#{{$block->ident}}" class="anchor-link">{{$block->name}}</a>
                                             </li>
                                         @endforeach
-                                        @if ($post->conclusion)
+                                        @if (strip_tags($post->conclusion))
                                             <li>
                                                 <a href="#conclusion" class="anchor-link">Conclusion</a>
                                             </li>

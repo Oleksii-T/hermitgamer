@@ -61,6 +61,13 @@
                                         </a>
                                     </li>
                                 @endif
+                                @if ($author->steam)
+                                    <li>
+                                        <a href="{{$author->steam}}" target="_blank">
+                                            <img src="{{asset('images/icons/steam.svg')}}" alt="steam" title="steam"/>
+                                        </a>
+                                    </li>
+                                @endif
                             </ul>
                         </div>
                     </div>

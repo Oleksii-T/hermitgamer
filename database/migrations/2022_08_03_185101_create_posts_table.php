@@ -19,10 +19,12 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('author_id')->nullable()->constrained()->onDelete('set null');
             $table->string('title');
+            $table->string('meta_title');
+            $table->string('meta_description');
             $table->string('links_group')->nullable();
             $table->text('intro')->nullable();
             $table->text('conclusion')->nullable();
-            $table->string('slug')->unique();
+            $table->string('slug'); // can not add unique cause of soft-deletes
             $table->smallInteger('status');
             $table->smallInteger('tc_style');
             $table->unsignedInteger('views')->default(0);

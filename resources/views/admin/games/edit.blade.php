@@ -3,9 +3,18 @@
 @section('title', 'Edit Game')
 
 @section('content_header')
-    <x-admin.title
-        text="Edit Game"
-    />
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <div class="float-left">
+                    <h1 class="m-0">Edit Game #{{$game->id}}</h1>
+                </div>
+                <div class="pl-3">
+                    <a href="{{route('games.show', $game)}}" class="btn" style="color: gray" target="_blank">Preview</a>
+                </div>
+            </div>
+        </div>
+    </div>
 @stop
 
 @section('content')

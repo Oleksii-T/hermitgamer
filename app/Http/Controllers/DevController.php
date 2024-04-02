@@ -20,128 +20,13 @@ use App\Facades\DumperServiceFacade as Dumper;
  */
 class DevController extends Controller
 {
-    private $d = [];
-    private $timings = [];
-    private $queryLog = false;
-    private $user;
-    private $fullStart;
-    private $start;
-
-    public function __construct()
-    {
-        $this->user = auth()->user();
-        $this->fullStart = $this->start = microtime(true);
-    }
-
-    // base method to navigate and manage testing logic
-    public function action($slug)
-    {
-        if (!method_exists($this, $slug)) {
-            dd('ERROR: action not found'); //? 404 instead
-        }
-
-        if ($slug != 'public') {
-            $this->_authorize();
-        }
-
-        $result = $this->{$slug}();
-
-        // dump query log if is set
-        if ($this->queryLog) {
-            dump('QUERY LOG', \DB::getQueryLog());
-        }
-
-        // dump $timings only if we set some
-        if ($this->timings) {
-            $this->timings['timings-finish'] = microtime(true) - $this->fullStart;
-            dump('TIMINGS', $this->timings);
-        }
-
-        // dump $d only if we set some
-        if ($this->d) {
-            dump('RESULT DUMP', $this->d);
-        }
-
-        return $result;
-    }
+    use \App\Traits\DevTrait;
 
     private function test()
     {
         $d = [];
 
-        $d[] = config('services.recaptcha.private_key');
-        $d[] = config('services.recaptcha.threshold');
-
         dd($d);
-    }
-
-    private function scrapeTest()
-    {
-        $d = [];
-
-        // $d = \App\Services\PostScraperService::make('https://www.heavyoilfieldtrucks.com/listings/')
-        //     ->post('.auto-listings-items .auto-listing')
-        //     ->postLink('.summary .title a')
-        //     ->value('title', '.listing .title')
-        //     ->value('images', '#image-gallery img', 'src', true)
-        //     ->value('price', '.price h4')
-        //     ->value('condition', '.price .condition')
-        //     ->value('short_specs', '.at-a-glance li', null, true)
-        //     ->value('description', '.description', 'html')
-        //     ->shot('details_tables', '.auto-listings-Tabs-panel--details')
-        //     ->shot('specifications_tables', '.auto-listings-Tabs-panel--specifications')
-        //     ->limit(2)
-        //     ->sleep(0)
-        //     ->debug(true)
-        //     ->scrape();
-        
-
-        dd($d);
-    }
-
-    private function showScrapedCashedFiles()
-    {
-        $files = [
-            // 'lakepetro' => storage_path('scraper_jsons/lakepetro.json'),
-            // 'oilmanchina' => storage_path('scraper_jsons/oilmanchina.json'),
-            // 'goldenman' => storage_path('scraper_jsons/goldenman.json'),
-            // 'rsdst' => storage_path('scraper_jsons/rsdst.json'),
-            // 'peddler' => storage_path('scraper_jsons/peddler.json'),
-            // 'blackdiamond' => storage_path('scraper_jsons/blackdiamond.json'),
-            'dtosupply' => storage_path('scraper_jsons/dtosupply.json'),
-        ];
-
-        foreach ($files as $author => $file) {
-            $json = file_get_contents($file);
-            $scrapedPosts = json_decode($json, true);
-
-            foreach ($scrapedPosts as $url => $p) {
-
-            }
-
-            $this->d($scrapedPosts);
-        }
-    }
-
-    private function testScrapedShotImage()
-    {
-        $name = 'test-shot.jpeg';
-        $path = storage_path('browsershot') . '/' . $name;
-        $path = '/var/www/rigmanager/storage/browsershot/specifications_tables-1707565873.jpeg';
-        $url = 'https://www.heavyoilfieldtrucks.com/listing/2006-sterling-model-lt-8500-picker-truck/';
-
-        $browserhot = \Spatie\Browsershot\Browsershot::url($url)
-            ->select('.auto-listings-Tabs-panel--specifications')
-            ->setScreenshotType('jpeg', 100)
-            ->newHeadless();
-        
-        $browserhot->setOption('addStyleTag', json_encode([
-            'content' => '.specifications_tables{display:block !important;}'
-        ]));
-
-        $browserhot->save($path);
-
-        dd('shot done.', $path);
     }
 
     private function example()
@@ -319,57 +204,5 @@ class DevController extends Controller
     private function phpinfo()
     {
         phpinfo();
-    }
-
-    // get client IP
-    private function ip()
-    {
-        $ip = request()->ip();
-
-        return "Your ip is: $ip";
-    }
-
-    // helper to store execution time
-    private function t($key=null)
-    {
-        $t = microtime(true) - $this->start;
-
-        if ($key) {
-            $this->timings[$key] = $t;
-        } else {
-            $this->timings[] = $t;
-        }
-
-        $this->start = microtime(true);
-    }
-
-    private function d($value, $key=null)
-    {
-        if ($key) {
-            $this->d[$key] = $value;
-        } else {
-            $this->d[] = $value;
-        }
-    }
-
-    // reset start time
-    private function setFullStart($key=null)
-    {
-        $this->fullStart = $this->start = microtime(true);
-    }
-
-    // authorize access to methods
-    private function _authorize()
-    {
-        $ok = true || isdev() || $this->user?->isAdmin();
-
-        abort_if(!$ok, 403);
-    }
-
-    // enable query log
-    private function enableQueryLog()
-    {
-        $this->queryLog = true;
-        \DB::connection()->enableQueryLog();
     }
 }

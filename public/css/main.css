@@ -476,10 +476,11 @@ h2 a,h3 a,h4 a,h5 a,h6 a {
     margin-right: 28px;
     -o-object-fit: cover;
     object-fit: cover;
-    width: 190px
+    width: 190px;
+    border-radius: 24px;
 }
 
-.article blockquote,article blockquote {
+.article blockquote, article blockquote, .article .blockquote {
     background: #04030f;
     border: 1px solid #6842fe;
     border-radius: 24px;

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\Viewable;
 use App\Enums\PostStatus;
 use App\Enums\PostTCStyle;
+use App\Traits\GetAllSlugs;
 use Illuminate\Support\Str;
 use App\Traits\HasAttachments;
 use Yajra\DataTables\DataTables;
@@ -15,13 +16,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
-    use HasFactory, HasAttachments, Viewable, SoftDeletes;
+    use HasFactory, HasAttachments, Viewable, SoftDeletes, GetAllSlugs;
 
     protected $fillable = [
         'parent_id',
         'game_id',
         'slug',
         'title',
+        'meta_title',
+        'meta_description',
         'category_id',
         'author_id',
         'status',
