@@ -6,7 +6,6 @@ $(document).ready(function () {
 
     $('.rii-box').click(function(e) {
         e.preventDefault();
-        console.log(`clicked box`); //! LOG
         let wraper = riiWraper(this);
         wraper.find('.rii-content-input').trigger('click');
     });
@@ -25,8 +24,6 @@ function riiWraper(el) {
 }
 
 function handleDrop(e) {
-    console.log(`handleDrop`); //! LOG
-
     e.preventDefault();
 
     let file = e.dataTransfer.items[0].getAsFile();
@@ -47,11 +44,8 @@ function handleDrop(e) {
 }
 
 function showFile(el) {
-    console.log(`showFile`); //! LOG
     let wraper = riiWraper(el);
     let input = wraper.find('.rii-content-input');
-
-    console.log(`input`, input); //! LOG
 
     // show file name
     let name = input.val().split('\\').pop();
@@ -60,6 +54,7 @@ function showFile(el) {
     // make file alt and title
     name = name.split('.');
     name = name.length==1 ? name[0] : name.slice(0, -1).join('.');
+    name = name.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     wraper.find('.rii-filealt').val(name);
     wraper.find('.rii-filetitle').val(name);
 

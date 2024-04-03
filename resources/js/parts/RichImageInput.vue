@@ -78,6 +78,9 @@ export default {
         setFile(file) {
             let alt = file.name.split('.');
             alt = alt.length==1 ? alt[0] : alt.slice(0, -1).join('.');
+            console.log(`before`, alt); //! LOG
+            alt = alt.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+            console.log(`agter`, alt); //! LOG
 
             this.file.alt = alt;
             this.file.title = alt;

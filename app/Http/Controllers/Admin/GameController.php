@@ -28,6 +28,7 @@ class GameController extends Controller
     public function store(GameRequest $request)
     {
         $input = $request->validated();
+        $input['summary'] = sanitizeHtml($input['summary']);
         $game = Game::create($input);
         $game->addAttachment($input['thumbnail'], 'thumbnail');
         $game->addAttachment($input['esbr_image'], 'esbr_image');
@@ -47,6 +48,7 @@ class GameController extends Controller
     {
         $input = $request->validated();
 
+        $input['summary'] = sanitizeHtml($input['summary']);
         $game->update($input);
         $game->addAttachment($input['thumbnail']??null, 'thumbnail');
         $game->addAttachment($input['esbr_image']??null, 'esbr_image');

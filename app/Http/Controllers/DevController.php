@@ -26,6 +26,10 @@ class DevController extends Controller
     {
         $d = [];
 
+        $d = '<p>a<span style="font-family: &quot;Source Sans Pro&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 1rem;">b</span></p><span>hello</span>';
+
+        $d = preg_replace('#<span[^>]*>(.*?)</span>#i', '$1', $d);
+
         dd($d);
     }
 

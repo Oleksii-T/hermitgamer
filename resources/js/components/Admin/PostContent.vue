@@ -224,25 +224,6 @@ export default {
                 });
             }
         },
-        fileUploaded(obj, event) {
-            let file = event.target.files[0];
-
-            let separateImageTypes = ['image-title', 'image-text'];
-
-            obj.value.file.file = file;
-            obj.value.file.original_name = file.name;
-            obj.value.file.url = URL.createObjectURL(file);
-
-            // if (separateImageTypes.includes(obj.type)) {
-            //     obj.value.image = file;
-            // } else {
-            //     obj.value = file;
-            // }
-
-            // obj.previewImage = URL.createObjectURL(file);
-            // obj.previewName = file.name;
-
-        },
         move(elems, i, direction) {
             let next = direction == 'up' ? elems[i-1] : elems[i+1];
             let curr = elems[i];
@@ -363,20 +344,22 @@ export default {
                 : 0;
         },
         recalculateGroupBlocks() {
-            let res = [];
-            let i = 1;
-            let newValOg = this.blocks.length / this.group_blocks.length;
-            this.group_blocks.forEach(val => {
-                let newVal = i == this.group_blocks.length 
-                    ? Math.ceil(newValOg) 
-                    : Math.floor(newValOg);
-                res.push(newVal);
-                i++;
-            });
+            let number = this.blocks.length;
+            let length = this.group_blocks.length;
 
-            res = res.filter(num => num !== 0);
+            // Calculate the base value for each element
+            let baseValue = Math.floor(number / length);
 
-            this.group_blocks = res;
+            // Create an array with the base value
+            let result = new Array(length).fill(baseValue);
+
+            // Distribute the remainder among the elements
+            let remainder = number % length;
+            for (let i = 0; i < remainder; i++) {
+                result[i] += 1;
+            }
+
+            this.group_blocks = result;
         },
         initLeaveConfirmation(val) {
             this.someThingWasChanged++;

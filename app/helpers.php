@@ -281,3 +281,58 @@ if (!function_exists('strposX')) {
         );
     }
 }
+
+if (!function_exists('sanitizeHtml')) {
+    function sanitizeHtml($html)
+    {
+        $html = str_replace('<br>', '', $html);
+        $html = str_replace('<p></p>', '', $html);
+        $html = preg_replace('#<span[^>]*>(.*?)</span>#i', '$1', $html);
+                            
+        if (str_contains($html, '</table>')) {
+            $dom = new \DOMDocument;
+            $html = str_replace('&nbsp;', '', $html);
+            $html = str_replace('<p></p>', '', $html);
+            $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            
+            $xpath = new \DOMXPath($dom);
+
+            $tds = $xpath->query('//td');
+
+            foreach ($tds as $td) {
+                // Remove 'br' elements
+                $brs = $td->getElementsByTagName('br');
+                for ($i = $brs->length - 1; $i >= 0; $i--) {
+                    $brs->item($i)->parentNode->removeChild($brs->item($i));
+                }
+                // Unwrap 'p' elements
+                foreach ($td->getElementsByTagName('p') as $p) {
+                    while ($p->childNodes->length > 0) {
+                        $p->parentNode->insertBefore($p->childNodes->item(0), $p);
+                    }
+                    $p->parentNode->removeChild($p);
+                }
+                // Wrap text nodes in 'span' elements
+                foreach ($td->childNodes as $child) {
+                    $nodeValue = trim($child->nodeValue);
+                    if ($child instanceof \DOMText && $nodeValue) {
+                        $span = $dom->createElement('span', $nodeValue);
+                        $td->replaceChild($span, $child);
+                    }
+                }
+            }
+
+            // Wrap 'b' elements inside 'td' elements with 'span' elements
+            $bs = $xpath->query('//td/b[not(parent::span)]');
+            foreach ($bs as $b) {
+                $span = $dom->createElement('span');
+                $b->parentNode->replaceChild($span, $b);
+                $span->appendChild($b);
+            }
+
+            $html = $dom->saveHTML();
+        }
+
+        return $html;
+    }
+}

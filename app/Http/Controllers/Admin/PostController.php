@@ -51,6 +51,7 @@ class PostController extends Controller
         if ($input['status'] == PostStatus::PUBLISHED->value) {
             $input['published_at'] = now();
         }
+        $input['intro'] = sanitizeHtml($input['intro']);
         $post = Post::create($input);
         $post->addAttachment($input['thumbnail']??null, 'thumbnail');
 
@@ -159,12 +160,7 @@ class PostController extends Controller
                         $value = $v;
 
                         if ($t == BlockItemType::TEXT->value) {
-
-                            $value = ['value' => str_replace('<br>', '', $v['value'])];
-                            
-                            if (str_contains($v['value'], '</table>')) {
-                                $value = ['value' => $this->addSpans($v['value'])];
-                            }
+                            $value = ['value' => sanitizeHtml($v['value'])];
                         }
 
                         $item->update([
@@ -174,9 +170,7 @@ class PostController extends Controller
                     }
 
                     if (in_array($t, $simpleFileTypes)) {
-                        // if ($v['file'] instanceof UploadedFile) {
-                            $item->addAttachment($v['file']);
-                        // }
+                        $item->addAttachment($v['file']);
                         continue;
                     }
 
@@ -186,9 +180,7 @@ class PostController extends Controller
                                 'title' => $v['title']
                             ]
                         ]);
-                        // if ($v['image'] instanceof UploadedFile) {
-                            $item->addAttachment($v['file']);
-                        // }
+                        $item->addAttachment($v['file']);
                         continue;
                     }
 
@@ -198,9 +190,7 @@ class PostController extends Controller
                                 'text' => $v['text']
                             ]
                         ]);
-                        // if ($v['image'] instanceof UploadedFile) {
-                            $item->addAttachment($v['file']);
-                        // }
+                        $item->addAttachment($v['file']);
                         continue;
                     }
 
@@ -229,6 +219,7 @@ class PostController extends Controller
             'answer' => ['required', 'string'],
         ]);
 
+        $data['answer'] = sanitizeHtml($data['answer']);
         $data['order'] = $post->faqs()->max('order') + 1;
 
         $post->faqs()->create($data);
@@ -245,6 +236,7 @@ class PostController extends Controller
             'answer' => ['required', 'string'],
             'order' => ['required', 'integer'],
         ]);
+        $data['answer'] = sanitizeHtml($data['answer']);
 
         $faq->update($data);
 
@@ -328,6 +320,7 @@ class PostController extends Controller
             'conclusion' => ['nullable', 'string'],
         ]);
 
+        $input['conclusion'] = sanitizeHtml($input['conclusion']);
         $post->update($input);
 
         return $this->jsonSuccess('Conclusion updated successfully', [
@@ -372,7 +365,9 @@ class PostController extends Controller
         if ($input['status'] == PostStatus::PUBLISHED->value && $post->status != PostStatus::PUBLISHED) {
             $input['published_at'] = now();
         }
-        
+
+        $input['intro'] = sanitizeHtml($input['intro']);
+
         $post->update($input);
         $post->addAttachment($input['thumbnail']??null, 'thumbnail');
         $post->addAttachment($input['css']??null, 'css');

@@ -28,6 +28,8 @@ class AuthorController extends Controller
     public function store(AuthorRequest $request)
     {
         $input = $request->validated();
+        $input['description'] = sanitizeHtml($input['description']);
+        $input['description_small'] = sanitizeHtml($input['description_small']);
         $author = Author::create($input);
         $author->addAttachment($input['avatar'], 'avatar');
         Author::getAllSlugs(true);
@@ -45,7 +47,8 @@ class AuthorController extends Controller
     public function update(AuthorRequest $request, Author $author)
     {
         $input = $request->validated();
-
+        $input['description'] = sanitizeHtml($input['description']);
+        $input['description_small'] = sanitizeHtml($input['description_small']);
         $author->update($input);
         $author->addAttachment($input['avatar']??false, 'avatar');
         Author::getAllSlugs(true);
@@ -95,7 +98,7 @@ class AuthorController extends Controller
 
             $author->paragraphs()->create([
                 'title' => $title,
-                'text' => $desc
+                'text' => sanitizeHtml($desc)
             ]);
         }
 
