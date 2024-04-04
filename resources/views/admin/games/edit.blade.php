@@ -40,6 +40,20 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
+                            <label>Meta Title</label>
+                            <input type="text" class="form-control" name="meta_title" value="{{$game->meta_title}}">
+                            <span data-input="meta_title" class="input-error"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Meta Description</label>
+                            <input type="text" class="form-control" name="meta_description" value="{{$game->meta_description}}">
+                            <span data-input="meta_description" class="input-error"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <label>Hermitgamer Rating</label>
                             <input type="number" class="form-control" name="rating" value="{{$game->rating}}">
                             <span data-input="rating" class="input-error"></span>

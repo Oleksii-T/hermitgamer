@@ -3,6 +3,7 @@
 namespace App\Rules;
 
 use Closure;
+use Illuminate\Support\Arr;
 use App\Enums\BlockItemType;
 use Illuminate\Contracts\Validation\ValidationRule;
 
@@ -15,15 +16,16 @@ class ValidBlocksRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        foreach ($value as $block) {
-            if (!$block['ident']) {
-                $fail('Block ident is required');
+        foreach ($value as $ii => $block) {
+            $i = $ii+1;
+            if (!Arr::get($block, 'ident')) {
+                $fail("Identidier for block #$i is required");
             }
-            if (!$block['name']) {
-                $fail('Block name is required');
+            if (!Arr::get($block, 'name')) {
+                $fail("Name for block #$i is required");
             }
-            if (!$block['items']) {
-                $fail('Block items is required');
+            if (!Arr::get($block, 'items')) {
+                $fail("At least one item is required in block #$i is required");
             }
 
             // foreach ($block['items']??[] as $item) {

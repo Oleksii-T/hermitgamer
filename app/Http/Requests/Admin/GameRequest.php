@@ -29,6 +29,8 @@ class GameRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'slug' => ['required', 'string', 'max:255'],
+            'meta_title' => ['required', 'string', 'max:255'],
+            'meta_description' => ['required', 'string', 'max:255'],
             'rating' => ['required', 'integer', 'min:1', 'max:5'],
             'metacritic' => ['required', 'integer', 'min:1', 'max:100'],
             'users_score' => ['required', 'numeric', 'min:1', 'max:10'],

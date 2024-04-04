@@ -97,7 +97,7 @@
                                         </template>
                                         <template v-else-if="item.type == 'image-gallery'">
                                             <div class="row">
-                                                <div v-for="(image, iii) in item.value.images || []" :key="iii" class="col-6">
+                                                <div v-for="(image, iii) in item.value.images || []" :key="iii" class="col-6 mb-2">
                                                     <RichImageInput :value="item.value.images[iii]" @fileChanged="item.value.images[iii] = $event"/>
                                                 </div>
                                             </div>
@@ -124,8 +124,17 @@
             <button type="button" class="btn btn-info d-block float-right mr-2" @click="addPreset()">Add Preset</button>
         </div>
     </div>
-    <button type="submit" class="btn btn-success min-w-100 mr-2" @click="save()">Save</button>
-    <a href="/admin/posts" class="btn btn-outline-secondary text-dark min-w-100 mr-2">Cancel</a>
+    <div v-if="saveErrors" style="color:red;margin-bottom:15px">
+        <ul v-for="(errors, field) in saveErrors" :key="field">
+            <li v-for="(error, i) in errors" :key="i">
+                {{ error }}
+            </li>
+        </ul>
+    </div>
+    <div class="pb-4">
+        <button type="submit" class="btn btn-success min-w-100 mr-2" @click="save()">Save</button>
+        <a href="/admin/posts" class="btn btn-outline-secondary text-dark min-w-100 mr-2">Cancel</a>
+    </div>
 </template>
 
 <script>
@@ -143,7 +152,8 @@ export default {
     data: () => ({
         blocks: [],
         group_blocks: [],
-        someThingWasChanged: -1
+        someThingWasChanged: -1,
+        saveErrors: null
     }),
     watch: {
         blocks: {
@@ -289,6 +299,7 @@ export default {
             .catch(error => {
                 if (error.response.status == 422) {
                     app.helpers.showError('Validation error', error.response.data.message)
+                    this.saveErrors = error.response.data.errors;
                 } else {
                     app.helpers.showError()
                 }

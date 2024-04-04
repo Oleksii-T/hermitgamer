@@ -6,12 +6,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta property="og:image" content="{{asset('images/image.jpg')}}">
+    <meta property="og:image" content="{{asset('images/icons/logo.svg')}}">
     <meta property="description" content="@yield('description', $page->meta_description)">
-    <link rel="shortcut icon" href="{{asset('images/favicon/favicon.png')}}" type="image/x-icon">
-    <link rel="apple-touch-icon" href="{{asset('images/favicon/apple-touch-icon.png')}}">
-    <link rel="apple-touch-icon" sizes="72x72" href="{{asset('images/favicon/apple-touch-icon-72x72.png')}}">
-    <link rel="apple-touch-icon" sizes="114x114" href="{{asset('images/favicon/apple-touch-icon-114x114.png')}}">
+    <link rel="shortcut icon" href="{{asset('images/icons/favicon.svg')}}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{{asset('images/icons/favicon.svg')}}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{asset('images/icons/favicon.svg')}}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{asset('images/icons/favicon.svg')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
 
     <meta name="theme-color" content="rgb(4, 3, 15)" media="(prefers-color-scheme: light)" />
@@ -49,7 +49,7 @@
     @endif
     <header class="header" id="header">
         <a class="header__logo" href="{{route('index')}}">
-            <img src="{{asset('images/logo.png')}}" alt="HermitGamer" title="HermitGamer">
+            <img src="{{asset('images/icons/logo.svg')}}" alt="HermitGamer" title="HermitGamer">
         </a>
         <button class="header__button-menu js-menu">
             <span></span>

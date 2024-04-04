@@ -53,6 +53,7 @@ class PostController extends Controller
         }
         $input['intro'] = sanitizeHtml($input['intro']);
         $post = Post::create($input);
+        Post::getAllSlugs(true);
         $post->addAttachment($input['thumbnail']??null, 'thumbnail');
 
         return $this->jsonSuccess('Post created successfully', [
@@ -369,6 +370,7 @@ class PostController extends Controller
         $input['intro'] = sanitizeHtml($input['intro']);
 
         $post->update($input);
+        Post::getAllSlugs(true);
         $post->addAttachment($input['thumbnail']??null, 'thumbnail');
         $post->addAttachment($input['css']??null, 'css');
         $post->addAttachment($input['js']??null, 'js');

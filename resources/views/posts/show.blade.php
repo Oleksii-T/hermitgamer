@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', $post->meta_title)
+@section('description', $post->meta_description)
+
 @php
     $pageClass = 'article-page';
     $bcs = [
@@ -85,7 +88,7 @@
                                 {!! $post->intro !!}
                             </section>
 
-                            @if ($category->slug == 'reviews')
+                            @if ($category->slug == 'reviews' && $post->info)
                                 <section class="section article advantages">
                                     <div class="advantages-item">
                                         <h3 class="advantages-item__title">Advantage</h3>
@@ -134,8 +137,9 @@
                         @foreach ($blocks as $block)
                             @php
                                 $items = $block->items->sortBy('order');
+                                $hasGallery = $items->where('type', \App\Enums\BlockItemType::IMAGE_GALLERY)->count();
                             @endphp
-                            <section class="section {{$items->where('type', \App\Enums\BlockItemType::IMAGE_GALLERY)->count() ? 'screens' : 'article'}}" id="{{$block->ident}}">{{-- screens --}}
+                            <section class="section article {{$hasGallery ? 'screens' : ''}}" id="{{$block->ident}}">
                                 @foreach ($items as $item)
                                     @switch($item->type->value)
                                         @case(\App\Enums\BlockItemType::TITLE_H2->value)
@@ -169,9 +173,7 @@
                                         @case(\App\Enums\BlockItemType::IMAGE_TEXT->value)
                                             <div class="desc">
                                                 <div>
-                                                    {{-- <div> --}}
-                                                        <img src="{{$item->file()->url}}" class="ls-is-cached lazyloaded" alt="{{$item->file()->alt}}">
-                                                    {{-- </div> --}}
+                                                    <img src="{{$item->file()->url}}" class="ls-is-cached lazyloaded" alt="{{$item->file()->alt}}">
                                                     {!!$item->value['text']!!}
                                                 </div>
                                             </div>
@@ -195,7 +197,7 @@
                             </section>
                         @endforeach
                         @if ($loop->last)
-                            @if ($category->slug == 'reviews')
+                            @if ($category->slug == 'reviews' && $post->info)
                                 <section class="section article article-rating" id="conclusion">
                                     <div class="article-rating__info">
                                         <h2>Conclusion</h2>

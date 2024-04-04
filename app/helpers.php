@@ -288,12 +288,12 @@ if (!function_exists('sanitizeHtml')) {
         $html = str_replace('<br>', '', $html);
         $html = str_replace('<p></p>', '', $html);
         $html = preg_replace('#<span[^>]*>(.*?)</span>#i', '$1', $html);
+        $html = preg_replace('/<table[^>]+>/', '<table>', $html);
                             
         if (str_contains($html, '</table>')) {
             $dom = new \DOMDocument;
             $html = str_replace('&nbsp;', '', $html);
-            $html = str_replace('<p></p>', '', $html);
-            $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            $dom->loadHTML('<?xml encoding="utf-8" ?>' . $html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
             
             $xpath = new \DOMXPath($dom);
 

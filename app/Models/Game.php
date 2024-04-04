@@ -22,6 +22,8 @@ class Game extends Model
         'name', 
         'slug',
         'rating',
+        'meta_title',
+        'meta_description',
         'metacritic',
         'users_score',
         'release_date',

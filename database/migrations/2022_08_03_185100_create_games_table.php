@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('games', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('meta_title');
+            $table->string('meta_description');
             $table->smallInteger('rating');
             $table->smallInteger('metacritic');
             $table->float('users_score', 3, 1);
