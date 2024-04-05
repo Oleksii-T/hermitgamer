@@ -7,7 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta property="og:image" content="{{asset('images/icons/logo.svg')}}">
-    <meta property="description" content="@yield('description', $page->meta_description)">
+    <meta property="og:title" content="@yield('title', $page->meta_title)"/>
+    <meta property="og:description" content="@yield('description', $page->meta_description)">
+    <meta name="description" content="@yield('description', $page->meta_description)"/>
     <link rel="shortcut icon" href="{{asset('images/icons/favicon.svg')}}" type="image/x-icon">
     <link rel="apple-touch-icon" href="{{asset('images/icons/favicon.svg')}}">
     <link rel="apple-touch-icon" sizes="72x72" href="{{asset('images/icons/favicon.svg')}}">

@@ -4,7 +4,7 @@ window.SUMMERNOTE_DEFAULT_CONFIGS = {
         ['style', ['style']],
         ['style', ['bold', 'italic', 'underline', 'clear']],
         ['font', ['strikethrough', 'superscript', 'subscript']],
-        ['para', ['ul', 'ol']],
+        ['para', ['ul', 'ol','link']],
         ['table', ['table']],
         ['misc', ['undo', 'redo']],
         ['admin', ['codeview', 'htmlformat', 'htmlminify']]
