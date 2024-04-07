@@ -26,6 +26,7 @@
 </head>
 
 <body>
+    <span id="page-top"></span>
     @if ($currentUser)
         @php
             $editUrl = match (Route::currentRouteName()) {

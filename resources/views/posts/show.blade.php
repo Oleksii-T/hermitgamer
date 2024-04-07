@@ -30,21 +30,23 @@
                         <div class="links__desc-caption">USEFUL LINKS</div>
                         <p class="links__desc-text">Find more useful information and about <a href="{{route('games.show', $game)}}">{{$game->name}}</a> on HermitGamer.</p>
                     </div>
-                    <ul class="links__list links__menu-list">
-                        @foreach ($sameGamePosts as $sameGamePost)
-                            <li>
-                                @if ($sameGamePost->childs->isEmpty())
-                                    <a href="{{route('posts.show', $sameGamePost)}}">
-                                        {{$sameGamePost->title}}
-                                    </a>
-                                @else
-                                    <a class="links__menu-button" data-target="{{$sameGamePost->slug}}">
-                                        {{$sameGamePost->title}}
-                                    </a>
-                                @endif
-                            </li>
-                        @endforeach
-                    </ul>
+                    <nav>
+                        <ul class="links__list links__menu-list">
+                            @foreach ($sameGamePosts as $sameGamePost)
+                                <li>
+                                    @if ($sameGamePost->childs->isEmpty())
+                                        <a href="{{route('posts.show', $sameGamePost)}}">
+                                            {{$sameGamePost->title}}
+                                        </a>
+                                    @else
+                                        <a class="links__menu-button" data-target="{{$sameGamePost->slug}}">
+                                            {{$sameGamePost->title}}
+                                        </a>
+                                    @endif
+                                </li>
+                            @endforeach
+                        </ul>
+                    </nav>
                 </div>
                 <div class="links__submenu">
                     @foreach ($sameGamePosts as $sameGamePost)
@@ -205,14 +207,52 @@
                                         {!!$post->conclusion!!}
                                     </div>
                                     <div class="article-rating__item">
-                                        <div class="article-rating__wrap" itemscope itemtype="https://schema.org/Game">
-                                            <span itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating" class="article-rating__numbers">
-                                                <span itemprop="ratingValue">{{$post->info->rating}}</span>/<span itemprop="bestRating">5</span> <meta itemprop="reviewCount" content="5" />
+                                        <div class="article-rating__wrap">
+                                            <span class="article-rating__numbers">
+                                                <span>{{$post->info->rating}}</span>/<span>5</span>
                                             </span>
-                                            <meta itemprop="name" content="https://hermitgamer.com" />
                                             <p>rating</p>
                                         </div>
                                         <a href="{{route('rate')}}" class="article-rating__link">Review Policy</a>
+                                        <script type="application/ld+json">
+                                            {
+                                                "@context": "http://schema.org/",
+                                                "@type": "Review",
+                                                "mainEntityOfPage": {
+                                                    "@type": "WebPage",
+                                                    "@id": "https://www.neognosisgames.com/stardew-valley-review/"
+                                                },
+                                                "image": "https://www.neognosisgames.com/wp-content/uploads/2024/02/stardew-valley-review.webp",
+                                                "url": "https://www.neognosisgames.com/stardew-valley-review/",
+                                                "description": "Stardew Valley is the game you won’t understand until you try. It may capture your attention for hundreds of hours and doesn't get boring.",
+                                                "itemReviewed": {
+                                                    "@type": "Game",
+                                                    "name": "{{$game->name}}"
+                                                },
+                                                "reviewRating": {
+                                                    "@type": "Rating",
+                                                    "ratingValue": "{{$post->info->rating}}",
+                                                    "worstRating": "0",
+                                                    "bestRating": "5"
+                                                },
+                                                "datePublished": "2024-02-06",
+                                                "headline": "{{$game->name}} Review",
+                                                "publisher": {
+                                                    "@type": "Organization",
+                                                    "name": "{{config('app.name')}}",
+                                                    "logo": {
+                                                    "@type": "ImageObject",
+                                                    "url": "https://www.neognosisgames.com/wp-content/uploads/2024/02/neognosisgames.webp"
+                                                    }
+                                                },
+                                                "author": {
+                                                    "@type": "Person",
+                                                    "name": "{{$author->name}}",
+                                                    "url": "{{route('authors.show', $author)}}"
+                                                },
+                                                "dateModified": "2024-02-14"
+                                            }
+                                        </script>
                                     </div>
                                 </section>
                             @elseif (strip_tags($post->conclusion))

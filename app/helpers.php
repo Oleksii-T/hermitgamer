@@ -282,6 +282,9 @@ if (!function_exists('strposX')) {
     }
 }
 
+// <ul><li>List 1<li></ul><p>First paragraph\r\n\r\nSecond p,\r\nThird paragraph\r\nFourh paragraph</p><table>...</table>
+// <ul><li>List 1<li></ul><p>First paragraph<p></p>Second p,<p></p>Third paragraph<p></p>Fourh paragraph</p><table>...</table>
+
 if (!function_exists('sanitizeHtml')) {
     function sanitizeHtml($html)
     {

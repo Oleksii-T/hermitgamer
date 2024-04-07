@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use Illuminate\Http\UploadedFile;
 use App\Models\Attachment;
+use Illuminate\Support\Facades\Storage;
 
 trait HasAttachments
 {
@@ -33,8 +34,6 @@ trait HasAttachments
             $uploadedFile = $simpleAttachment ? $attachment : ($attachment['file']??null);
             $attachmentId = $simpleAttachment ? null : ($attachment['id']??null);
 
-            // dump($attachment);
-
             // just update alt and title in existing attachment
             if (!$simpleAttachment && !$uploadedFile && $attachmentId) {
                 Attachment::find($attachmentId)->update([
@@ -48,24 +47,28 @@ trait HasAttachments
             $type = $this->determineType($uploadedFile->extension());
             $disk = Attachment::disk($type);
             $og_name = $uploadedFile->getClientOriginalName();
+            $i = 1;
+
+            while (Storage::disk($disk)->exists($og_name)) {
+                $names = explode('.', $og_name);
+                $extension = array_pop($names);
+                $og_name = implode('.', $names) . "-$i.$extension";
+                $i++;
+            }
+
             $path = $uploadedFile->storeAs('', $og_name, $disk);
             if ($simpleAttachment) {
-                // dump('is simple');
                 $alt = readable(strstr($og_name, '.', true));
                 $title = $alt;
             } else {
-                // dump('is a array');
                 $alt = $attachment['alt'];
                 $title = $attachment['title'];
             }
 
-            // dump($alt, $title);
-            // dd('here');
-
             // create new attachment
             $this->$group()->create([
                 'name' => $path,
-                'original_name' => $uploadedFile->getClientOriginalName(),
+                'original_name' => $og_name,
                 'type' => $type,
                 'alt' => $alt,
                 'title' => $title,

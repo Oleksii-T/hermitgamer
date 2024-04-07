@@ -440,7 +440,8 @@ h2 a,h3 a,h4 a,h5 a,h6 a {
 
 .article ol>li,article ol>li {
     counter-increment: ol;
-    padding-left: 20px
+    padding-left: 20px;
+    position: relative;
 }
 
 .article ol>li:before,article ol>li:before {
@@ -448,9 +449,11 @@ h2 a,h3 a,h4 a,h5 a,h6 a {
     content: counter(ol) ".";
     display: inline-block;
     font: inherit;
-    left: 0;
+    left: -1em;
     position: absolute;
-    top: 0
+    top: 0;
+    text-align: right;
+    width: 2em;
 }
 
 .article .desc h3,.article .desc h4,article .desc h3,article .desc h4 {
@@ -517,7 +520,8 @@ h2 a,h3 a,h4 a,h5 a,h6 a {
     background: #0f0f17;
     border-bottom: 1px solid rgba(197,193,242,.1);
     border-top: 1px solid rgba(197,193,242,.1);
-    padding: 10px
+    padding: 10px;
+    /* white-space: nowrap; */
 }
 
 .article tr:first-child td:first-child span,article tr:first-child td:first-child span {
