@@ -68,6 +68,13 @@
                                         </a>
                                     </li>
                                 @endif
+                                @if ($author->youtube)
+                                    <li>
+                                        <a href="{{$author->youtube}}" target="_blank">
+                                            <img src="{{asset('images/icons/youtube.svg')}}" alt="youtube" title="youtube"/>
+                                        </a>
+                                    </li>
+                                @endif
                             </ul>
                         </div>
                     </div>
@@ -104,5 +111,5 @@
 @endsection
 
 @section('scripts')
-    
+
 @endsection

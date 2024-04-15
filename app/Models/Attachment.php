@@ -84,6 +84,20 @@ class Attachment extends Model
         };
     }
 
+    public static function makeUniqueName($name, $disk)
+    { 
+        $i = 1;
+
+        while (Storage::disk($disk)->exists($name)) {
+            $names = explode('.', $name);
+            $extension = array_pop($names);
+            $name = implode('.', $names) . "-$i.$extension";
+            $i++;
+        }
+
+        return $name;
+    }
+
     public static function dataTable($query)
     {
         return DataTables::of($query)

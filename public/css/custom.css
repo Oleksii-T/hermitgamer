@@ -39,3 +39,7 @@ button {
     font-size: 150%;
     text-align: center;
 }
+.screens-slider-two {
+    display: flex;
+    gap: 12px;
+}

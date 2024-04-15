@@ -81,6 +81,7 @@ Route::middleware('is-admin')->group(function () {
     Route::resource('pages', PageController::class)->except('show');
 
     Route::prefix('attachments')->name('attachments.')->group(function () {
+        Route::post('upload', [AttachmentController::class, 'upload'])->name('upload');
         Route::get('{attachment}/download', [AttachmentController::class, 'download'])->name('download');
     });
     Route::resource('attachments', AttachmentController::class)->except('create', 'store', 'show');

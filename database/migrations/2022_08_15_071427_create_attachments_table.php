@@ -22,8 +22,8 @@ return new class extends Migration
             $table->string('type')->nullable();
             $table->double('size')->nullable();
             $table->string('group')->nullable();
-            $table->bigInteger('attachmentable_id');
-            $table->string('attachmentable_type');
+            $table->bigInteger('attachmentable_id')->nullable();
+            $table->string('attachmentable_type')->nullable();
             $table->timestamps();
         });
     }

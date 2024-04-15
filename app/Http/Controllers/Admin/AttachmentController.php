@@ -31,6 +31,36 @@ class AttachmentController extends Controller
         return view('admin.attachments.edit', compact('attachment'));
     }
 
+    public function upload(Request $request)
+    {
+        $request->validate([
+            'file' => ['required', 'image', 'max:5000']
+        ]);
+
+        $disk = 'aimages';
+        $type = 'image';
+        $file = $request->file;
+        $og_name = Attachment::makeUniqueName($file->getClientOriginalName(), $disk);
+
+        $path = $file->storeAs('', $og_name, $disk);
+        $alt = readable(strstr($og_name, '.', true));
+        $title = $alt;
+
+        // create new attachment
+        $a = Attachment::create([
+            'name' => $path,
+            'original_name' => $og_name,
+            'type' => $type,
+            'alt' => $alt,
+            'title' => $title,
+            'size' => $file->getSize()
+        ]);
+
+        return $this->jsonSuccess('', [
+            'url' => $a->url
+        ]);
+    }
+
     public function update(AttachmentRequest $request, Attachment $attachment)
     {
         $input = $request->validated();

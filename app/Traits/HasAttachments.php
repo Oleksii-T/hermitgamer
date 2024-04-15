@@ -46,15 +46,7 @@ trait HasAttachments
             // prepare meta data for creating new attachment
             $type = $this->determineType($uploadedFile->extension());
             $disk = Attachment::disk($type);
-            $og_name = $uploadedFile->getClientOriginalName();
-            $i = 1;
-
-            while (Storage::disk($disk)->exists($og_name)) {
-                $names = explode('.', $og_name);
-                $extension = array_pop($names);
-                $og_name = implode('.', $names) . "-$i.$extension";
-                $i++;
-            }
+            $og_name = Attachment::makeUniqueName($uploadedFile->getClientOriginalName(), $disk);
 
             $path = $uploadedFile->storeAs('', $og_name, $disk);
             if ($simpleAttachment) {

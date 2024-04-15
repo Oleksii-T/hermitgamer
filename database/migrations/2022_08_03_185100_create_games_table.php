@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('meta_title');
             $table->string('meta_description');
             $table->smallInteger('rating');
-            $table->smallInteger('metacritic');
+            $table->smallInteger('metacritic')->nullable();
             $table->float('users_score', 3, 1);
             $table->date('release_date');
             $table->string('developer');

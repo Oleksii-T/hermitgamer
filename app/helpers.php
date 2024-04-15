@@ -282,12 +282,11 @@ if (!function_exists('strposX')) {
     }
 }
 
-// <ul><li>List 1<li></ul><p>First paragraph\r\n\r\nSecond p,\r\nThird paragraph\r\nFourh paragraph</p><table>...</table>
-// <ul><li>List 1<li></ul><p>First paragraph<p></p>Second p,<p></p>Third paragraph<p></p>Fourh paragraph</p><table>...</table>
-
 if (!function_exists('sanitizeHtml')) {
     function sanitizeHtml($html)
     {
+        dlog("sanitizeHtml $html"); //! LOG
+        // return $html;
         $html = str_replace('<br>', '', $html);
         $html = str_replace('<p></p>', '', $html);
         $html = preg_replace('#<span[^>]*>(.*?)</span>#i', '$1', $html);
@@ -316,25 +315,30 @@ if (!function_exists('sanitizeHtml')) {
                     $p->parentNode->removeChild($p);
                 }
                 // Wrap text nodes in 'span' elements
-                foreach ($td->childNodes as $child) {
-                    $nodeValue = trim($child->nodeValue);
-                    if ($child instanceof \DOMText && $nodeValue) {
-                        $span = $dom->createElement('span', $nodeValue);
-                        $td->replaceChild($span, $child);
-                    }
-                }
+                // foreach ($td->childNodes as $child) {
+                //     $nodeValue = trim($child->nodeValue);
+                //     if ($child instanceof \DOMText && $nodeValue) {
+                //         $span = $dom->createElement('span', $nodeValue);
+                //         $td->replaceChild($span, $child);
+                //     }
+                // }
             }
 
             // Wrap 'b' elements inside 'td' elements with 'span' elements
-            $bs = $xpath->query('//td/b[not(parent::span)]');
-            foreach ($bs as $b) {
-                $span = $dom->createElement('span');
-                $b->parentNode->replaceChild($span, $b);
-                $span->appendChild($b);
-            }
+            // $bs = $xpath->query('//td/b[not(parent::span)]');
+            // foreach ($bs as $b) {
+            //     $span = $dom->createElement('span');
+            //     $b->parentNode->replaceChild($span, $b);
+            //     $span->appendChild($b);
+            // }
 
             $html = $dom->saveHTML();
         }
+
+        $html = str_replace('<?xml encoding="utf-8" ?>', '', $html);
+        $html = str_replace('<!--?xml encoding="utf-8" ?-->', '', $html);
+
+        dlog(" result: $html"); //! LOG
 
         return $html;
     }

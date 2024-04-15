@@ -181,18 +181,30 @@
                                             </div>
                                             @break
                                         @case('youtube')
-                                            {!!$item->value_simple!!}
+                                            <div class="article__video">
+                                                {!!$item->value_simple!!}
+                                            </div>
                                             @break
                                         @case(\App\Enums\BlockItemType::IMAGE_GALLERY->value)
-                                            <div class="screens-slider">
-                                                @foreach ($item->value_simple as $image)
-                                                    <div class="screens-slider__item">
-                                                        <a href="{{$image['url']}}" data-fancybox='postsgallery'>
+                                            @if (count($item->value_simple) > 2)
+                                                <div class="screens-slider">
+                                                    @foreach ($item->value_simple as $image)
+                                                        <div class="screens-slider__item">
+                                                            <a href="{{$image['url']}}" data-fancybox='postsgallery'>
+                                                                <img src="{{$image['url']}}" alt="">
+                                                            </a>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @else
+                                                <div class="screens-slider-two">
+                                                    @foreach ($item->value_simple as $image)
+                                                        <div class="screens-slider__item">
                                                             <img src="{{$image['url']}}" alt="">
-                                                        </a>
-                                                    </div>
-                                                @endforeach
-                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @endif
                                             @break
                                     @endswitch
                                 @endforeach
@@ -325,6 +337,13 @@
                                             <li>
                                                 <a href="{{$author->steam}}" target="_blank">
                                                     <img src="{{asset('images/icons/steam.svg')}}" alt="steam" title="steam"/>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if ($author->youtube)
+                                            <li>
+                                                <a href="{{$author->youtube}}" target="_blank">
+                                                    <img src="{{asset('images/icons/youtube.svg')}}" alt="youtube" title="youtube"/>
                                                 </a>
                                             </li>
                                         @endif

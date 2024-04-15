@@ -23,11 +23,6 @@ Route::prefix('posts')->name('posts.')->group(function () {
     Route::get('more', [PostController::class, 'more']);
 });
 
-Route::prefix('comments')->name('comments.')->group(function () {
-    Route::post('/', [CommentController::class, 'store'])->name('store');
-    Route::post('/like', [CommentController::class, 'like'])->name('like');
-});
-
 Route::get('/', [PageController::class, 'index'])->name('index');
 Route::get('search', [PageController::class, 'search'])->name('search');
 Route::get('rate', [PageController::class, 'rate'])->name('rate');
@@ -41,7 +36,7 @@ Route::get('{category}', [CategoryController::class, 'show'])->name('categories.
 
 Route::get('{author}', [AuthorController::class, 'show'])->name('authors.show')->where('author', \App\Models\Author::getAllSlugs());
 
-Route::get('{tag}', [TagController::class, 'show'])->name('tags.show')->where('tag', \App\Models\Tag::getAllSlugs());
+// Route::get('{tag}', [TagController::class, 'show'])->name('tags.show')->where('tag', \App\Models\Tag::getAllSlugs());
 
 Route::get('{game}', [GameController::class, 'show'])->name('games.show')->where('game', \App\Models\Game::getAllSlugs());
 

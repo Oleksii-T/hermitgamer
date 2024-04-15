@@ -192,7 +192,6 @@
 
 <script type="text/javascript">
     window.Laravel = {!!$LaravelDataForJS!!};
-    console.log(`window.Laravel`, window.Laravel); //! LOG
 </script>
 
 @yield('scripts')

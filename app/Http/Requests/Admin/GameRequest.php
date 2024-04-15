@@ -32,7 +32,7 @@ class GameRequest extends FormRequest
             'meta_title' => ['required', 'string', 'max:255'],
             'meta_description' => ['required', 'string', 'max:255'],
             'rating' => ['required', 'integer', 'min:1', 'max:5'],
-            'metacritic' => ['required', 'integer', 'min:0', 'max:100'],
+            'metacritic' => ['nullable', 'integer', 'min:0', 'max:100'],
             'users_score' => ['required', 'numeric', 'min:0', 'max:10'],
             'release_date' => ['required', 'string', 'max:255'],
             'developer' => ['required', 'string', 'max:255'],

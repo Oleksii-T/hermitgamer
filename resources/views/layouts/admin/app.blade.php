@@ -16,6 +16,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.15.1/beautify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.15.1/beautify-css.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.15.1/beautify-html.min.js"></script>
+    <script type="text/javascript">
+        window.Laravel = {!!$LaravelDataForJS!!};
+    </script>
     <script src="/js/admin/custom.js?v={{time()}}"></script>
     <script src="/js/admin/rich-image-input.js?v={{time()}}"></script>
     @stack('scripts')

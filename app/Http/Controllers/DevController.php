@@ -26,14 +26,9 @@ class DevController extends Controller
     {
         $d = [];
 
-        $games = \App\Models\Game::all();
+        $d = \Carbon\Carbon::parse('2021-09-02')->format('Y-m-d H:i');
 
-        foreach ($games as $game) {
-            $game->update([
-                'meta_title' => $game->name,
-                'meta_description' => substr(strip_tags($game->description), 0, 135) . '...',
-            ]);
-        }
+        \App\Actions\GenerateSitemap::run();
 
         dd($d);
     }

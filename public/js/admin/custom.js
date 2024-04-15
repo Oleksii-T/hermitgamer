@@ -5,7 +5,7 @@ window.SUMMERNOTE_DEFAULT_CONFIGS = {
         ['style', ['bold', 'italic', 'underline', 'clear']],
         ['font', ['strikethrough', 'superscript', 'subscript']],
         ['para', ['ul', 'ol','link']],
-        ['table', ['table']],
+        ['insert', ['picture', 'table']],
         ['misc', ['undo', 'redo']],
         ['admin', ['codeview', 'htmlformat', 'htmlminify']]
     ],
@@ -45,7 +45,25 @@ window.SUMMERNOTE_DEFAULT_CONFIGS = {
     codeviewIframeFilter: true,
     callbacks: {
         onFocus: () => $('.note-editor').addClass('focused'),
-        onBlur: () => $('.note-editor').removeClass('focused')
+        onBlur: () => $('.note-editor').removeClass('focused'),
+        onImageUpload: function(files) {
+            console.log(`FUNCTION onImageUpload`); //! LOG
+            var editor = $(this);
+            var data = new FormData();
+            data.append('file', files[0]);
+            data.append('_token', window.Laravel.csrf);
+            $.ajax({
+                url: '/admin/attachments/upload/', // your upload script
+                type: 'post',
+                data: data,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    // insert the returned image url to the editor
+                    editor.summernote('insertImage', response.data.url);
+                }
+            });
+        }
     },
     codemirror: {
         theme: 'monokai'

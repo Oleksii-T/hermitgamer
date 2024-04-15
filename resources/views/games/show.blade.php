@@ -14,7 +14,7 @@
 @section('content')
     <main class="main">
         <section class="game">
-            <div class="image game__image game__image--desc">
+            <div class="image game__image game__image--desc" >
                 <img src="{{$game->thumbnail->url}}" class="lazyload" alt="{{$game->thumbnail->alt}}" />
             </div>
             <div class="game__info">
@@ -54,7 +54,7 @@
                         <li>
                             <div class="game__rating-head">
                                 <img src="/images/game-rating2.svg" alt="" />
-                                <span>{{$game->metacritic}}</span>
+                                <span>{{$game->metacritic ?? '-'}}</span>
                                 <span>100</span>
                             </div>
                             <p class="game__rating-text">
