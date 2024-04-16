@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Game;
-use App\Http\Requests\Admin\GameRequest;
+use App\Models\Attachment;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\GameRequest;
 
 class GameController extends Controller
 {
@@ -32,6 +33,7 @@ class GameController extends Controller
         $game = Game::create($input);
         $game->addAttachment($input['thumbnail'], 'thumbnail');
         $game->addAttachment($input['esbr_image'], 'esbr_image');
+        $game->addAttachment(Attachment::formatMultipleRichInputRequest($input['screenshots']??[]), 'screenshots');
         Game::getAllSlugs(true);
 
         return $this->jsonSuccess('Game created successfully', [
@@ -49,9 +51,9 @@ class GameController extends Controller
         $input = $request->validated();
 
         $input['summary'] = sanitizeHtml($input['summary']);
-        $game->update($input);
         $game->addAttachment($input['thumbnail']??null, 'thumbnail');
         $game->addAttachment($input['esbr_image']??null, 'esbr_image');
+        $game->addAttachment(Attachment::formatMultipleRichInputRequest($input['screenshots']??[]), 'screenshots');
         Game::getAllSlugs(true);
 
         return $this->jsonSuccess('Game updated successfully');

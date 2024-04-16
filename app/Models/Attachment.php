@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Arr;
+use Yajra\DataTables\DataTables;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Yajra\DataTables\DataTables;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Attachment extends Model
 {
@@ -87,11 +88,12 @@ class Attachment extends Model
     public static function makeUniqueName($name, $disk)
     { 
         $i = 1;
+        $ogName = $name;
+        $nameParts = explode('.', $name);
+        $extension = array_pop($nameParts);
 
         while (Storage::disk($disk)->exists($name)) {
-            $names = explode('.', $name);
-            $extension = array_pop($names);
-            $name = implode('.', $names) . "-$i.$extension";
+            $name = implode('.', $nameParts) . "-$i.$extension";
             $i++;
         }
 
@@ -116,5 +118,29 @@ class Attachment extends Model
             })
             ->rawColumns(['action'])
             ->make(true);
+    }
+
+    public static function formatMultipleRichInputRequest($data)
+    {
+        $result = [];
+
+        foreach ($data['title']??[] as $i => $title) {
+            $id = Arr::get($data, "id.$i");
+            $file = Arr::get($data, "file.$i");
+            $alt = $data['alt'][$i];
+
+            if (!$id && !$file) {
+                continue;
+            }
+
+            $img = [
+                'alt' => $alt,
+                'title' => $title,
+                'id' => $id,
+                'file' => $file
+            ];
+        }
+
+        return $result;
     }
 }

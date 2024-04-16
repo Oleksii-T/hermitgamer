@@ -26,6 +26,8 @@ class GameRequest extends FormRequest
         $model = $this->route('game');
         $reqNull = $model ? 'nullable' : 'required';
 
+        // dd(request()->all());
+
         return [
             'name' => ['required', 'string', 'max:255'],
             'slug' => ['required', 'string', 'max:255'],
@@ -38,17 +40,34 @@ class GameRequest extends FormRequest
             'developer' => ['required', 'string', 'max:255'],
             'publisher' => ['nullable', 'string', 'max:255'],
             'platforms' => ['required', 'string', 'max:255'],
-            'ganres' => ['required', 'string', 'max:255'],
-            'thumbnail' => [$reqNull, 'file', 'max:5000'],
+            'ganres' => ['required', 'string'],
+            'thumbnail' => [$reqNull, 'array'],
+            'thumbnail.file' => [$reqNull, 'file', 'max:5000'],
+            'thumbnail.alt' => [$reqNull, 'string', 'max:255'],
+            'thumbnail.title' => [$reqNull, 'string', 'max:255'],
+            'thumbnail.id' => ['nullable', 'integer'],
             'description' => ['required', 'string', 'max:10000'],
             'summary' => ['required', 'string', 'max:10000'],
             'esbr' => ['required', 'string', 'max:10000'],
-            'esbr_image' => [$reqNull, 'file', 'max:5000'],
+            'esbr_image' => [$reqNull, 'array'],
+            'esbr_image.file' => [$reqNull, 'file', 'max:5000'],
+            'esbr_image.alt' => [$reqNull, 'string', 'max:255'],
+            'esbr_image.title' => [$reqNull, 'string', 'max:255'],
+            'esbr_image.id' => ['nullable', 'integer'],
             'hours' => ['required', 'array'],
             'hours.main' => ['required', 'numeric'],
             'hours.main_sides' => ['required', 'numeric'],
             'hours.completionist' => ['required', 'numeric'],
             'hours.all' => ['required', 'numeric'],
+            'screenshots' => ['nullable', 'array'],
+            'screenshots.file' => ['nullable', 'array'],
+            'screenshots.file.*' => ['nullable', 'file', 'max:5000'],
+            'screenshots.alt' => ['nullable', 'array'],
+            'screenshots.alt.*' => ['nullable', 'string', 'max:255'],
+            'screenshots.title' => ['nullable', 'array'],
+            'screenshots.title.*' => ['nullable', 'string', 'max:255'],
+            'screenshots.id' => ['nullable', 'array'],
+            'screenshots.id.*' => ['nullable', 'integer'],
         ];
     }
 }

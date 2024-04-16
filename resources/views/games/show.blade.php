@@ -106,7 +106,9 @@
                         <div class="screens-slider">
                             @foreach ($game->screenshots as $screenshot)
                                 <div class="screens-slider__item">
-                                    <img data-lazy="{{$screenshot->url}}" alt="{{$screenshot->alt}}" />
+                                    <a href="{{$screenshot->url}}" data-fancybox='postsgallery'>
+                                        <img data-lazy="{{$screenshot->url}}" alt="{{$screenshot->alt}}" />
+                                    </a>
                                 </div>
                             @endforeach
                         </div>

@@ -130,15 +130,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group show-uploaded-file-name show-uploaded-file-preview">
-                            <label>ESRB Image</label>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="esbr_image" name="esbr_image">
-                                <label class="custom-file-label" for="esbr_image">Choose file</label>
-                            </div>
-                            <img src="{{$game->esbr_image->url}}" alt="" class="custom-file-preview">
-                            <span data-input="esbr_image" class="input-error"></span>
-                        </div>
+                        <x-admin.rich-image-input name="esbr_image" :file="$game->esbr_image" />
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
@@ -168,27 +160,11 @@
                             <span data-input="hours.all" class="input-error"></span>
                         </div>
                     </div>
-                    <div class="col-md-12">
-                        <div class="form-group show-uploaded-file-name show-uploaded-file-preview">
-                            <label>Thumbnail</label>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="thumbnail" name="thumbnail">
-                                <label class="custom-file-label" for="thumbnail">Choose file</label>
-                            </div>
-                            <img src="{{$game->thumbnail->url}}" alt="" class="custom-file-preview">
-                            <span data-input="thumbnail" class="input-error"></span>
-                        </div>
+                    <div class="col-md-6">
+                        <x-admin.rich-image-input name="thumbnail" :file="$game->thumbnail" />
                     </div>
                     <div class="col-md-12">
-                        <div class="form-group show-uploaded-file-name show-uploaded-file-preview">
-                            <label>Screenshots</label>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="Screenshots" name="Screenshots">
-                                <label class="custom-file-label" for="Screenshots">Choose file</label>
-                            </div>
-                            <img src="" alt="" class="custom-file-preview">
-                            <span data-input="Screenshots" class="input-error"></span>
-                        </div>
+                        <x-admin.rich-image-input name="screenshots" :files="$game->screenshots" multiple="1" />
                     </div>
                 </div>
             </div>

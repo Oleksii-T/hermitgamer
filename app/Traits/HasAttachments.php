@@ -19,6 +19,14 @@ trait HasAttachments
 
         if($isMultiple) {
             $attachments = $attachment;
+
+            $existings = $this->$group()->get();
+            $existingIds = $existings->pluck('id')->toArray();
+            $keep = array_column($attachments, 'id');
+            $remove = array_diff($existingIds, $keep);
+            foreach ($remove as $removeId) {
+                $existings->where('id', $removeId)->first()->delete();
+            }
         } else {
             $attachments = [$attachment];
             $deleteOldAttachment = !is_array($attachment) || (is_array($attachment) && ($attachment['file']??false));

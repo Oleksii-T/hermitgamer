@@ -1,10 +1,10 @@
 $(document).ready(function () {
-    $('.rii-content-input').change(function(e) {
+    $(document).on('change', '.rii-content-input', function (e) {
         e.preventDefault();
         showFile(this);
     });
 
-    $('.rii-box').click(function(e) {
+    $(document).on('click', '.rii-box', function (e) {
         e.preventDefault();
         let wraper = riiWraper(this);
         wraper.find('.rii-content-input').trigger('click');
@@ -14,9 +14,35 @@ $(document).ready(function () {
         dropBox.addEventListener('drop', handleDrop)
     });
 
-    $('.rii-box').on('dragover', function(e) {
+    $(document).on('dragover', '.rii-box', function (e) {
         e.preventDefault();
     });
+
+    $(document).on('click', '.rii-multiple-add', function (e) {
+        e.preventDefault();
+        let wraper = $(this).parent().find('.rii-multiple-wrapper');
+        let clone = wraper.find('.rii-wrapper').first().clone();
+        clone.find('input').val(''); // clear inputs
+        clone.find('.rii-box span').removeClass('d-none'); // remove image visualization
+        clone.find('.rii-box img').addClass('d-none').attr('src', ''); // remove image visualization
+        clone.find('.rii-box').get(0).addEventListener('drop', handleDrop); // add event for drag&drop
+        wraper.append(clone);
+    })
+
+    $(document).on('click', '.rii-wrapper-multiple-remove', function (e) {
+        e.preventDefault();
+        let wraper = $(this).closest('.rii-multiple-wrapper');
+        let item = $(this).closest('.rii-wrapper');
+
+        if (wraper.find('.rii-wrapper').length > 1) {
+            item.remove();
+            return;
+        }
+
+        item.find('input').val('');
+        item.find('.rii-box span').removeClass('d-none');
+        item.find('.rii-box img').addClass('d-none').attr('src', '');
+    })
 });
 
 function riiWraper(el) {
@@ -63,7 +89,7 @@ function showFile(el) {
     if (!file) {
         return;
     }
-    el = wraper.find('.rii-box img');
+
     wraper.find('.rii-box span').addClass('d-none');
     wraper.find('.rii-box img').removeClass('d-none').attr('src', URL.createObjectURL(file));
 }

@@ -26,10 +26,6 @@ class DevController extends Controller
     {
         $d = [];
 
-        $d = \Carbon\Carbon::parse('2021-09-02')->format('Y-m-d H:i');
-
-        \App\Actions\GenerateSitemap::run();
-
         dd($d);
     }
 
