@@ -71,6 +71,7 @@
                         <div class="form-group">
                             <label>Game</label>
                             <select class="form-control select2" name="game_id">
+                                <option value="">Select Game</option>
                                 @foreach (\App\Models\Game::all() as $model)
                                     <option value="{{$model->id}}">{{$model->name}}</option>
                                 @endforeach

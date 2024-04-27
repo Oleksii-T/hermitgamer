@@ -24,15 +24,21 @@ class AuthorRequest extends FormRequest
     public function rules()
     {
         $model = $this->route('author');
+        $reqNull = $model ? 'nullable' : 'required';
 
         return [
             'name' => ['required', 'string', 'max:255'],
             'title' => ['required', 'string', 'max:255'],
-            'avatar' => [$model ? 'nullable' : 'required', 'image', 'max:5000'],
+            'avatar' => [$reqNull , 'image', 'max:5000'],
             'email' => ['nullable', 'string', 'max:255'],
             'slug' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:10000'],
             'description_small' => ['required', 'string', 'max:10000'],
+            'meta_thumbnail' => [$reqNull, 'array'],
+            'meta_thumbnail.file' => [$reqNull, 'file', 'max:5000'],
+            'meta_thumbnail.alt' => [$reqNull, 'string', 'max:255'],
+            'meta_thumbnail.title' => [$reqNull, 'string', 'max:255'],
+            'meta_thumbnail.id' => ['nullable', 'integer'],
             'meta_description' => ['required', 'string', 'max:255'],
             'meta_title' => ['required', 'string', 'max:255'],
         ];

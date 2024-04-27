@@ -57,6 +57,9 @@
                         </div>
                     </div>
                     <div class="col-md-6">
+                        <x-admin.rich-image-input name="meta_thumbnail" />
+                    </div>
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label>In Top Menu</label>
                             <div class="custom-control custom-checkbox">

@@ -22,65 +22,43 @@ class GenerateSitemap
 
     public static function run()
     {
-        // master sitemap
+        $path = public_path('sitemap.xml');
+        $staticPagesDate = Carbon::parse('2024-04-01');
+
         $sm = Sitemap::create()
-            ->add(Url::create('/')
-                ->setLastModificationDate(Carbon::parse('2024-04-01'))
-                ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
-                ->setPriority(1.0))
-            ->add(Url::create(route('rate'))
-                ->setLastModificationDate(Carbon::parse('2024-04-01'))
-                ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
-                ->setPriority(0.7))
-            ->add(Url::create(route('contact-us'))
-                ->setLastModificationDate(Carbon::parse('2024-04-01'))
-                ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
-                ->setPriority(0.7))
-            ->add(Url::create(route('about-us'))
-                ->setLastModificationDate(Carbon::parse('2024-04-01'))
-                ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
-                ->setPriority(0.7))
-            ->add(Url::create(route('privacy'))
-                ->setLastModificationDate(Carbon::parse('2024-04-01'))
-                ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
-                ->setPriority(0.7))
-            ->add(Url::create(route('terms'))
-                ->setLastModificationDate(Carbon::parse('2024-04-01'))
-                ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
-                ->setPriority(0.7));
-            // ->add(Url::create('/sitemap-posts.xml')
-            //     ->setLastModificationDate(now())
-            //     ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
-            //     ->setPriority(0.9))
+            ->add(Url::create('/')->setLastModificationDate($staticPagesDate))
+            ->add(Url::create(route('rate'))->setLastModificationDate($staticPagesDate))
+            ->add(Url::create(route('contact-us'))->setLastModificationDate($staticPagesDate))
+            ->add(Url::create(route('about-us'))->setLastModificationDate($staticPagesDate))
+            ->add(Url::create(route('privacy'))->setLastModificationDate($staticPagesDate))
+            ->add(Url::create(route('terms'))->setLastModificationDate($staticPagesDate));
 
         foreach (Post::publised()->get() as $post) {
-            $sm->add(Url::create(route('posts.show', $post))
-                ->setLastModificationDate($post->updated_at)
-                ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
-                ->setPriority(0.9));
+            $sm->add(Url::create(route('posts.show', $post))->setLastModificationDate($post->updated_at));
         }
 
         foreach (Category::all() as $category) {
-            $sm->add(Url::create(route('categories.show', $category))
-                ->setLastModificationDate($category->updated_at)
-                ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
-                ->setPriority(0.8));
+            $sm->add(Url::create(route('categories.show', $category))->setLastModificationDate($category->updated_at));
         }
 
         foreach (Author::all() as $author) {
-            $sm->add(Url::create(route('authors.show', $author))
-                ->setLastModificationDate($author->updated_at)
-                ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
-                ->setPriority(0.8));
+            $sm->add(Url::create(route('authors.show', $author))->setLastModificationDate($author->updated_at));
         }
 
         foreach (Game::all() as $game) {
-            $sm->add(Url::create(route('games.show', $game))
-                ->setLastModificationDate($game->updated_at)
-                ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
-                ->setPriority(0.8));
+            $sm->add(Url::create(route('games.show', $game))->setLastModificationDate($game->updated_at));
         }
 
-        $sm->writeToFile(public_path('sitemap.xml'));
+        $sm->writeToFile($path);
+
+        // Read the file into a string
+        $content = file_get_contents($path);
+    
+        // Remove lines containing '<priority>' using regex
+        $content = preg_replace('/.*<priority>.*\n/', '', $content);
+        $content = preg_replace('/.*<changefreq>.*\n/', '', $content);
+    
+        // Write the modified string back to the file
+        file_put_contents($path, $content);
     }
 }

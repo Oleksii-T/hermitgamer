@@ -2,6 +2,16 @@
 
 @section('title', $post->meta_title)
 @section('description', $post->meta_description)
+@section('meta-image', $post->thumbnail->url)
+@section('meta-type', 'article')
+@section('meta')
+    {{-- 2022-08-25T01:46:13Z --}}
+    <meta property="article:published_time" content="{{$post->published_at?->toIso8601ZuluString()}}"/> 
+    <meta property="article:modified_time" content="{{$post->updated_at->toIso8601ZuluString()}}"/> 
+    <meta property="article:section" content="{{$category->name}}"/> 
+    <meta property="article:author" content="{{$author->name}}"/> 
+@endsection
+
 
 @php
     $pageClass = 'article-page';
@@ -17,59 +27,61 @@
     @if ($post->status != \App\Enums\PostStatus::PUBLISHED)
         <p class="admin-only-post">The post is {{$post->status->readable()}}. Only admin can see it.</p>
     @endif
-    <div class="page__wrapper">
-        <section class="links">
-            <button class="links__button-toggle">
-                Useful Links
-                <img src="{{asset('images/icons/links-arrow-white.svg')}}" alt="" />
-            </button>
-            <div class="links__wrapper">
-                <div class="links__menu">
-                    <div class="links__desc">
-                        <button class="links__button-close"><img src="{{asset('images/icons/close.svg')}}" alt="" /></button>
-                        <div class="links__desc-caption">USEFUL LINKS</div>
-                        <p class="links__desc-text">Find more useful information and about <a href="{{route('games.show', $game)}}">{{$game->name}}</a> on HermitGamer.</p>
-                    </div>
-                    <nav>
-                        <ul class="links__list links__menu-list">
-                            @foreach ($sameGamePosts as $sameGamePost)
-                                <li>
-                                    @if ($sameGamePost->childs->isEmpty())
-                                        <a href="{{route('posts.show', $sameGamePost)}}">
-                                            {{$sameGamePost->title}}
-                                        </a>
-                                    @else
-                                        <a class="links__menu-button" data-target="{{$sameGamePost->slug}}">
-                                            {{$sameGamePost->title}}
-                                        </a>
-                                    @endif
-                                </li>
-                            @endforeach
-                        </ul>
-                    </nav>
-                </div>
-                <div class="links__submenu">
-                    @foreach ($sameGamePosts as $sameGamePost)
-                        @if ($sameGamePost->childs->isEmpty())
-                            @continue
-                        @endif
-                        <div class="links__submenu-item" id="{{$sameGamePost->slug}}">
-                            <div class="links__submenu-button">{{$sameGamePost->title}}</div>
-                            <ul class="links__list links__submenu-list">
-                                <li>
-                                    <a href="{{route('posts.show', $sameGamePost)}}">{{$sameGamePost->title}}</a>
-                                </li>
-                                @foreach ($sameGamePost->childs as $sameGameP)
+    <div class="page__wrapper {{$game ? '' : 'without-game'}}">
+        @if ($game)
+            <section class="links">
+                <button class="links__button-toggle">
+                    Useful Links
+                    <img src="{{asset('images/icons/links-arrow-white.svg')}}" alt="" />
+                </button>
+                <div class="links__wrapper">
+                    <div class="links__menu">
+                        <div class="links__desc">
+                            <button class="links__button-close"><img src="{{asset('images/icons/close.svg')}}" alt="" /></button>
+                            <div class="links__desc-caption">USEFUL LINKS</div>
+                            <p class="links__desc-text">Find more useful information about <a href="{{route('games.show', $game)}}">{{$game->name}}</a> on HermitGamer.</p>
+                        </div>
+                        <nav>
+                            <ul class="links__list links__menu-list">
+                                @foreach ($sameGamePosts as $sameGamePost)
                                     <li>
-                                        <a href="{{route('posts.show', $sameGameP)}}">{{$sameGameP->title}}</a>
+                                        @if ($sameGamePost->childs->isEmpty())
+                                            <a href="{{route('posts.show', $sameGamePost)}}">
+                                                {{$sameGamePost->title}}
+                                            </a>
+                                        @else
+                                            <a class="links__menu-button" data-target="{{$sameGamePost->slug}}">
+                                                {{$sameGamePost->title}}
+                                            </a>
+                                        @endif
                                     </li>
                                 @endforeach
                             </ul>
-                        </div>
-                    @endforeach
+                        </nav>
+                    </div>
+                    <div class="links__submenu">
+                        @foreach ($sameGamePosts as $sameGamePost)
+                            @if ($sameGamePost->childs->isEmpty())
+                                @continue
+                            @endif
+                            <div class="links__submenu-item" id="{{$sameGamePost->slug}}">
+                                <div class="links__submenu-button">{{$sameGamePost->title}}</div>
+                                <ul class="links__list links__submenu-list">
+                                    <li>
+                                        <a href="{{route('posts.show', $sameGamePost)}}">{{$sameGamePost->title}}</a>
+                                    </li>
+                                    @foreach ($sameGamePost->childs as $sameGameP)
+                                        <li>
+                                            <a href="{{route('posts.show', $sameGameP)}}">{{$sameGameP->title}}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        @endif
         <main class="main">
             <section class="hero">
                 <h1 class="hero__title">{{$post->title}}</h1>
@@ -268,7 +280,7 @@
                                     </div>
                                 </section>
                             @elseif (strip_tags($post->conclusion))
-                                <section class="section article">
+                                <section class="section article" id="conclusion">
                                     <div class="blockquote">
                                         <h2>Conclusion</h2>
                                         {!!$post->conclusion!!}
@@ -290,7 +302,9 @@
                                             </li>
                                         @endforeach
                                     </ul>
-                                    <p class="faq__additional">Interested in some additional guides or help? Check out our <a href="{{route('games.show', $game)}}">{{$game->name}}</a> page for more useful tips and guides.</p>
+                                    @if ($game)
+                                        <p class="faq__additional">Interested in some additional guides or help? Check out our <a href="{{route('games.show', $game)}}">{{$game->name}}</a> page for more useful tips and guides.</p>
+                                    @endif
                                 </section>
                             @endif
                             <section class="section editor">

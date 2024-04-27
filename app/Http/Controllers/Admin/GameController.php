@@ -32,6 +32,7 @@ class GameController extends Controller
         $input['summary'] = sanitizeHtml($input['summary']);
         $game = Game::create($input);
         $game->addAttachment($input['thumbnail'], 'thumbnail');
+        $game->addAttachment($input['meta_thumbnail'], 'meta_thumbnail');
         $game->addAttachment($input['esbr_image'], 'esbr_image');
         $game->addAttachment(Attachment::formatMultipleRichInputRequest($input['screenshots']??[]), 'screenshots');
         Game::getAllSlugs(true);
@@ -51,7 +52,9 @@ class GameController extends Controller
         $input = $request->validated();
 
         $input['summary'] = sanitizeHtml($input['summary']);
+        $game->update($input);
         $game->addAttachment($input['thumbnail']??null, 'thumbnail');
+        $game->addAttachment($input['meta_thumbnail']??null, 'meta_thumbnail');
         $game->addAttachment($input['esbr_image']??null, 'esbr_image');
         $game->addAttachment(Attachment::formatMultipleRichInputRequest($input['screenshots']??[]), 'screenshots');
         Game::getAllSlugs(true);

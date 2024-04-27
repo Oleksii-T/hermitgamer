@@ -7,6 +7,8 @@
     ];
 @endphp
 
+@section('meta-robots', 'noindex, max-image-preview:large')
+
 @section('content')
     <main class="main">
         <div class="main__wrapper">

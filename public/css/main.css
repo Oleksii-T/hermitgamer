@@ -519,7 +519,7 @@ h2 a,h3 a,h4 a,h5 a,h6 a {
 .article tr:first-child,article tr:first-child {
     background: #0f0f17;
     border: 1px solid rgba(197,193,242,.1);
-    border-radius: 8px
+    /* border-radius: 8px */
 }
 
 
@@ -529,11 +529,36 @@ h2 a,h3 a,h4 a,h5 a,h6 a {
     align-items: center;
 }
 
+.article tr:not(:first-child) td {
+    border-bottom: 1px solid rgba(233,233,255,.08);
+}
+
 .article tr:first-child td,article tr:first-child td {
     color: #6e6b86;
     font-size: 11px;
     font-weight: 600;
+    border-top: 1px solid rgba(233,233,255,.08);
+    border-bottom: 1px solid rgba(233,233,255,.08);
     padding: 10px
+}
+
+.article tr:first-child td,article tr:first-child td {
+    color: #6e6b86;
+    font-size: 11px;
+    font-weight: 600;
+    border-top: 1px solid rgba(233,233,255,.08);
+    border-bottom: 1px solid rgba(233,233,255,.08);
+    padding: 10px
+}
+.article tr:first-child td:first-child,article tr:first-child td:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-left: 1px solid rgba(233,233,255,.08);
+}
+.article tr:first-child td:last-child,article tr:first-child td:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-right: 1px solid rgba(233,233,255,.08);
 }
 
 .article td,article td {
@@ -1757,6 +1782,9 @@ p a {
 .page__wrapper .main {
     margin-left: 28px;
     width: calc(100% - 282px)
+}
+.page__wrapper.without-game .main {
+    width: auto;
 }
 
 .links {

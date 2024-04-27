@@ -26,8 +26,6 @@ class GameRequest extends FormRequest
         $model = $this->route('game');
         $reqNull = $model ? 'nullable' : 'required';
 
-        // dd(request()->all());
-
         return [
             'name' => ['required', 'string', 'max:255'],
             'slug' => ['required', 'string', 'max:255'],
@@ -46,6 +44,11 @@ class GameRequest extends FormRequest
             'thumbnail.alt' => [$reqNull, 'string', 'max:255'],
             'thumbnail.title' => [$reqNull, 'string', 'max:255'],
             'thumbnail.id' => ['nullable', 'integer'],
+            'meta_thumbnail' => [$reqNull, 'array'],
+            'meta_thumbnail.file' => [$reqNull, 'file', 'max:5000'],
+            'meta_thumbnail.alt' => [$reqNull, 'string', 'max:255'],
+            'meta_thumbnail.title' => [$reqNull, 'string', 'max:255'],
+            'meta_thumbnail.id' => ['nullable', 'integer'],
             'description' => ['required', 'string', 'max:10000'],
             'summary' => ['required', 'string', 'max:10000'],
             'esbr' => ['required', 'string', 'max:10000'],

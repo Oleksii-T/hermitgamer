@@ -24,9 +24,22 @@ class DevController extends Controller
 
     private function test()
     {
-        $d = [];
+        $path = public_path('sitemap.xml');
+    
+        // Read the file into a string
+        $content = file_get_contents($path);
+    
+        // Remove lines containing '<priority>' using regex
+        $content = preg_replace('/.*<priority>.*\n/', '', $content);
+        $content = preg_replace('/.*<changefreq>.*\n/', '', $content);
+    
+        // Write the modified string back to the file
+        file_put_contents($path, $content);
+    }
 
-        dd($d);
+    private function generateSitemap()
+    {
+        \App\Actions\GenerateSitemap::run();
     }
 
     private function example()

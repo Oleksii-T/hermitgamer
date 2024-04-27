@@ -31,6 +31,7 @@ class AuthorController extends Controller
         $input['description'] = sanitizeHtml($input['description']);
         $input['description_small'] = sanitizeHtml($input['description_small']);
         $author = Author::create($input);
+        $author->addAttachment($input['meta_thumbnail'], 'meta_thumbnail');
         $author->addAttachment($input['avatar'], 'avatar');
         Author::getAllSlugs(true);
 
@@ -51,6 +52,7 @@ class AuthorController extends Controller
         $input['description_small'] = sanitizeHtml($input['description_small']);
         $author->update($input);
         $author->addAttachment($input['avatar']??false, 'avatar');
+        $author->addAttachment($input['meta_thumbnail']??false, 'meta_thumbnail');
         Author::getAllSlugs(true);
 
         return $this->jsonSuccess('Author updated successfully');

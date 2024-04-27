@@ -68,7 +68,10 @@
                             <span data-input="title" class="input-error"></span>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-6">
+                        <x-admin.rich-image-input name="meta_thumbnail" :file="$author->meta_thumbnail" />
+                    </div>
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label>Slug</label>
                             <input type="text" class="form-control" name="slug" value="{{$author->slug}}">

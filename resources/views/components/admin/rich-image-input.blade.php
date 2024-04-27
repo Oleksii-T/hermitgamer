@@ -48,7 +48,7 @@
     @else
         <button class="btn btn-success rii-multiple-add">+</button>
         <div class="row rii-multiple-wrapper">
-            @foreach ($files->isEmpty() ? [null] : $files as $file)
+            @foreach ((!isset($files) || $files->isEmpty()) ? [null] : $files as $file)
                 <div class="col-md-6 rii-wrapper">
                     @if ($file)
                         <input type="hidden" name="{{$name}}[id][]" value="{{$file->id}}">

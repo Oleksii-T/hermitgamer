@@ -3,13 +3,18 @@
 namespace App\Models;
 
 use App\Traits\GetAllSlugs;
+use App\Traits\HasAttachments;
 use Yajra\DataTables\DataTables;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Category extends Model
 {
-    use GetAllSlugs;
+    use HasAttachments, GetAllSlugs;
+
+    const ATTACHMENTS = [
+        'meta_thumbnail'
+    ];
 
     protected $fillable = [
         'in_menu',
@@ -30,6 +35,11 @@ class Category extends Model
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function meta_thumbnail()
+    {
+        return $this->morphOne(Attachment::class, 'attachmentable')->where('group', 'meta_thumbnail');
     }
 
     public static function forHeader()

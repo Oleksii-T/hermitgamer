@@ -57,7 +57,9 @@ class AttachmentController extends Controller
         ]);
 
         return $this->jsonSuccess('', [
-            'url' => $a->url
+            'url' => $a->url,
+            'title' => $a->title,
+            'alt' => $a->alt
         ]);
     }
 

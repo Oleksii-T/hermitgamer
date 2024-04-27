@@ -60,7 +60,10 @@ window.SUMMERNOTE_DEFAULT_CONFIGS = {
                 contentType: false,
                 success: function(response) {
                     // insert the returned image url to the editor
-                    editor.summernote('insertImage', response.data.url);
+                    editor.summernote('insertImage', response.data.url, function ($image) {
+                        $image.attr('title', response.data.title);
+                        $image.attr('alt', response.data.alt);
+                    });
                 }
             });
         }

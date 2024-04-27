@@ -14,7 +14,8 @@ class Author extends Model
     use HasAttachments, Viewable, GetAllSlugs;
 
     const ATTACHMENTS = [
-        'thumbnail'
+        'avatar',
+        'meta_thumbnail'
     ];
 
     protected $fillable = [
@@ -44,6 +45,11 @@ class Author extends Model
     public function avatar()
     {
         return $this->morphOne(Attachment::class, 'attachmentable')->where('group', 'avatar');
+    }
+
+    public function meta_thumbnail()
+    {
+        return $this->morphOne(Attachment::class, 'attachmentable')->where('group', 'meta_thumbnail');
     }
 
     public function posts()

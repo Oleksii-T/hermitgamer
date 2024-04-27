@@ -153,6 +153,9 @@
                     <div class="col-md-6">
                         <x-admin.rich-image-input name="thumbnail" />
                     </div>
+                    <div class="col-md-6">
+                        <x-admin.rich-image-input name="meta_thumbnail" />
+                    </div>
                     <div class="col-md-12">
                         <x-admin.rich-image-input name="screenshots" multiple="1" />
                     </div>

@@ -32,6 +32,7 @@ class CategoryController extends Controller
             $input['order'] = Category::max('order') + 1;
         }
         $category = Category::create($input);
+        $category->addAttachment($input['meta_thumbnail'], 'meta_thumbnail');
         Category::getAllSlugs(true);
 
         return $this->jsonSuccess('Category created successfully', [
@@ -50,6 +51,7 @@ class CategoryController extends Controller
         $input['in_menu'] = $input['in_menu'] ?? false;
 
         $category->update($input);
+        $category->addAttachment($input['meta_thumbnail']??null, 'meta_thumbnail');
         Category::getAllSlugs(true);
 
         return $this->jsonSuccess('Category updated successfully');
