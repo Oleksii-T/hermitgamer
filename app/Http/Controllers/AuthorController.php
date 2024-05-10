@@ -13,10 +13,11 @@ class AuthorController extends Controller
         // $author = Author::where('slug', $slug)->firstOrFail();
         $perPage = 5;
         $posts = $author->posts()->publised()->latest()->paginate($perPage);
+        $paragraphs = $author->paragraphs;
 
         if (!$request->ajax()) {
             $page = Page::get('author');
-            return view('authors.show', compact('author', 'posts', 'page'));
+            return view('authors.show', compact('author', 'posts', 'page', 'paragraphs'));
         }
 
         return $this->jsonSuccess('', [

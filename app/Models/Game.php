@@ -16,7 +16,6 @@ class Game extends Model
         'thumbnail',
         'esbr_image',
         'screenshots',
-        'meta_thumbnail'
     ];
 
     protected $fillable = [
@@ -53,11 +52,6 @@ class Game extends Model
     public function thumbnail()
     {
         return $this->morphOne(Attachment::class, 'attachmentable')->where('group', 'thumbnail');
-    }
-
-    public function meta_thumbnail()
-    {
-        return $this->morphOne(Attachment::class, 'attachmentable')->where('group', 'meta_thumbnail');
     }
 
     public function esbr_image()

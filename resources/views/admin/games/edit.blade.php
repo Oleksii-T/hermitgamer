@@ -163,9 +163,6 @@
                     <div class="col-md-6">
                         <x-admin.rich-image-input name="thumbnail" :file="$game->thumbnail" />
                     </div>
-                    <div class="col-md-6">
-                        <x-admin.rich-image-input name="meta_thumbnail" :file="$game->meta_thumbnail" />
-                    </div>
                     <div class="col-md-12">
                         <x-admin.rich-image-input name="screenshots" :files="$game->screenshots" multiple="1" />
                     </div>

@@ -2,7 +2,7 @@
 
 @section('title', $game->meta_title)
 @section('description', $game->meta_description)
-@section('meta-image', $game->meta_thumbnail?->url)
+@section('meta-image', $game->thumbnail->url)
 
 @php
     $pageClass = 'article-page';

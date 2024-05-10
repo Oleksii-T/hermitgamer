@@ -170,7 +170,7 @@
                                             @break
                                         @case(\App\Enums\BlockItemType::IMAGE->value)
                                             <div class="image article__image">
-                                                <img src="{{$item->file()->url}}" alt="{{$item->file()->alt}}" title="{{$item->file()->title}}" class="lazyload" />
+                                                <img src="{{$item->file()->url}}" alt="{{$item->file()->alt}}" title="{{$item->file()->title}}" class="lazyload preview-image"/>
                                             </div>
                                             @break
                                         @case(\App\Enums\BlockItemType::IMAGE_SMALL->value)
@@ -212,7 +212,9 @@
                                                 <div class="screens-slider-two">
                                                     @foreach ($item->value_simple as $image)
                                                         <div class="screens-slider__item">
-                                                            <img src="{{$image['url']}}" alt="">
+                                                            <a href="{{$image['url']}}" data-fancybox='postsgallery'>
+                                                                <img src="{{$image['url']}}" alt="">
+                                                            </a>
                                                         </div>
                                                     @endforeach
                                                 </div>

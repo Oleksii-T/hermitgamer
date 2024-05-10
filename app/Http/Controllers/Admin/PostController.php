@@ -8,6 +8,7 @@ use App\Models\BlockItem;
 use App\Enums\PostStatus;
 use App\Enums\BlockItemType;
 use Illuminate\Http\Request;
+use App\Actions\GenerateSitemap;
 use Illuminate\Http\UploadedFile;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PostRequest;
@@ -53,8 +54,10 @@ class PostController extends Controller
         }
         $input['intro'] = sanitizeHtml($input['intro']);
         $post = Post::create($input);
-        Post::getAllSlugs(true);
         $post->addAttachment($input['thumbnail']??null, 'thumbnail');
+
+        Post::getAllSlugs(true);
+        GenerateSitemap::run();
 
         return $this->jsonSuccess('Post created successfully', [
             'redirect' => route('admin.posts.blocks', $post)
@@ -370,11 +373,13 @@ class PostController extends Controller
         $input['intro'] = sanitizeHtml($input['intro']);
 
         $post->update($input);
-        Post::getAllSlugs(true);
         $post->addAttachment($input['thumbnail']??null, 'thumbnail');
         $post->addAttachment($input['css']??null, 'css');
         $post->addAttachment($input['js']??null, 'js');
         $post->addAttachment($input['images']??[], 'images');
+
+        Post::getAllSlugs(true);
+        GenerateSitemap::run();
 
         return $this->jsonSuccess('Post updated successfully');
     }

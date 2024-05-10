@@ -16,6 +16,7 @@ return new class extends Migration
             $table->morphs('paragraphable');
             $table->string('title');
             $table->text('text');
+            $table->smallInteger('group')->nullable();
             $table->timestamps();
         });
     }

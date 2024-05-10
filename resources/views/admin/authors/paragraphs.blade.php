@@ -25,12 +25,23 @@
         <div class="card clone d-none">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-10">
                         <div class="form-group">
                             <label>Title</label>
                             <a href="#" class="btn btn-danger remove-parangraph" style="line-height: 0.4;padding:5px">X</a>
                             <input type="text" class="form-control" name="titles[]">
                             <span data-input="titles" class="input-error"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Group</label>
+                            <select class="form-control" name="groups[]">
+                                @foreach (\App\Enums\AuthorParagraphGroup::all() as $key => $value)
+                                    <option value="{{$key}}">{{$value}}</option>
+                                @endforeach
+                            </select>
+                            <span data-input="groups" class="input-error"></span>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -48,12 +59,23 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-10">
                                 <div class="form-group">
                                     <label>Title</label>
                                     <a href="#" class="btn btn-danger remove-parangraph" style="line-height: 0.4;padding:5px">X</a>
                                     <input type="text" class="form-control" name="titles[]" value="{{$p->title}}">
                                     <span data-input="titles" class="input-error"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Group</label>
+                                    <select class="form-control" name="groups[]">
+                                        @foreach (\App\Enums\AuthorParagraphGroup::all() as $key => $value)
+                                            <option value="{{$key}}" @selected($p->group == $key)>{{$value}}</option>
+                                        @endforeach
+                                    </select>
+                                    <span data-input="groups" class="input-error"></span>
                                 </div>
                             </div>
                             <div class="col-md-12">

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Category;
-use App\Http\Requests\Admin\CategoryRequest;
 use Illuminate\Http\Request;
+use App\Actions\GenerateSitemap;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\CategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -33,7 +34,9 @@ class CategoryController extends Controller
         }
         $category = Category::create($input);
         $category->addAttachment($input['meta_thumbnail'], 'meta_thumbnail');
+
         Category::getAllSlugs(true);
+        GenerateSitemap::run();
 
         return $this->jsonSuccess('Category created successfully', [
             'redirect' => route('admin.categories.index')
@@ -52,7 +55,9 @@ class CategoryController extends Controller
 
         $category->update($input);
         $category->addAttachment($input['meta_thumbnail']??null, 'meta_thumbnail');
+
         Category::getAllSlugs(true);
+        GenerateSitemap::run();
 
         return $this->jsonSuccess('Category updated successfully');
     }

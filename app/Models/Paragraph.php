@@ -8,7 +8,8 @@ class Paragraph extends Model
 {
     protected $fillable = [
         'title',
-        'text'
+        'text',
+        'group'
     ];
 
     public function paragraphable()

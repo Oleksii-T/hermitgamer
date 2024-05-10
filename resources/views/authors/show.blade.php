@@ -82,7 +82,14 @@
                         {!!$author->description!!}
                     </div>
                 </section>
-                @foreach ($author->paragraphs as $paragraph)
+                @foreach ($paragraphs->where('group', \App\Enums\AuthorParagraphGroup::MAIN->value) as $paragraph)
+                    <section class="section article">
+                        <h2><span>{{$paragraph->title}}</span></h2>
+                        {!!$paragraph->text!!}
+                    </section>
+                @endforeach
+                <x-our-mission />
+                @foreach ($paragraphs->where('group', \App\Enums\AuthorParagraphGroup::AFTER_MISSION->value) as $paragraph)
                     <section class="section article">
                         <h2><span>{{$paragraph->title}}</span></h2>
                         {!!$paragraph->text!!}
