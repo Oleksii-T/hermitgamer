@@ -57,9 +57,9 @@ class Author extends Model
         return $this->hasMany(Post::class);
     }
 
-    public function paragraphs()
+    public function blocks()
     {
-        return $this->morphMany(Paragraph::class, 'paragraphable');
+        return $this->morphMany(ContentBlock::class, 'blockable');
     }
 
     public static function dataTable($query)

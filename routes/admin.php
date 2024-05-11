@@ -42,9 +42,9 @@ Route::middleware('is-admin')->group(function () {
 
     Route::prefix('authors')->name('authors.')->group(function () {
         Route::get('{author}/edit/socials', [AuthorController::class, 'socials'])->name('socials');
-        Route::get('{author}/edit/paragraphs', [AuthorController::class, 'paragraphs'])->name('paragraphs');
+        Route::get('{author}/edit/boocks', [AuthorController::class, 'blocks'])->name('blocks');
         Route::put('{author}/edit/socials', [AuthorController::class, 'updateSocials'])->name('update-socials');
-        Route::put('{author}/edit/paragraphs', [AuthorController::class, 'updateParagraphs'])->name('update-paragraphs');
+        Route::post('{author}/edit/blocks', [AuthorController::class, 'updateBlocks'])->name('update-blocks');
     });
     Route::resource('authors', AuthorController::class)->except('show');
 

@@ -5,10 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
-class PostBlock extends Model
+class ContentBlock extends Model
 {
     protected $fillable = [
-        'post_id',
         'name',
         'ident',
         'order',
@@ -17,5 +16,10 @@ class PostBlock extends Model
     public function items()
     {
         return $this->hasMany(BlockItem::class, 'block_id');
+    }
+
+    public function blockable()
+    {
+        return $this->morphTo();
     }
 }

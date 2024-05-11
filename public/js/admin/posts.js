@@ -10,7 +10,7 @@ $(document).ready(function () {
 		},
         columns: [
             { data: 'id', name: 'id' },
-            { data: 'title', name: 'name' },
+            { data: 'title', name: 'title' },
             { data: 'category', name: 'category' },
             { data: 'author', name: 'author' },
             { data: 'views', name: 'views' },

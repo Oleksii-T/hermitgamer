@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('post_blocks', function (Blueprint $table) {
+        Schema::create('content_blocks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('post_id')->constrained()->onDelete('cascade');
+            $table->morphs('blockable');
             $table->string('ident');
             $table->unsignedInteger('order');
             $table->timestamps();

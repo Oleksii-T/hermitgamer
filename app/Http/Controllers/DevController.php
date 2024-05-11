@@ -24,17 +24,12 @@ class DevController extends Controller
 
     private function test()
     {
-        $path = public_path('sitemap.xml');
-    
-        // Read the file into a string
-        $content = file_get_contents($path);
-    
-        // Remove lines containing '<priority>' using regex
-        $content = preg_replace('/.*<priority>.*\n/', '', $content);
-        $content = preg_replace('/.*<changefreq>.*\n/', '', $content);
-    
-        // Write the modified string back to the file
-        file_put_contents($path, $content);
+        foreach (\App\Models\ContentBlock::all() as $block) {
+            $block->update([
+                'blockable_id' => $block->post_id,
+                'blockable_type' => \App\Models\Post::class
+            ]);
+        }
     }
 
     private function generateSitemap()

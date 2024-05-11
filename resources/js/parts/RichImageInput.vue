@@ -12,32 +12,37 @@
                 </div>
             </div>
             <div class="col-8">
-                <table class="rii-inputs">
-                    <tr>
-                        <td>
-                            <label for="">Name:</label>
-                        </td>
-                        <td>
-                            <input type="text" class="rii-input form-control rii-filename" :value="file.original_name" readonly>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="">Alt:</label>
-                        </td>
-                        <td>
-                            <input type="text" class="rii-input form-control rii-filealt" v-model="file.alt">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label for="">Title:</label>
-                        </td>
-                        <td>
-                            <input type="text" class="rii-input form-control rii-filetitle" v-model="file.title">
-                        </td>
-                    </tr>
-                </table>
+                <div :class="{'rii-wrapper-multiple-inner': canDelete}">
+                    <table class="rii-inputs">
+                        <tr>
+                            <td>
+                                <label for="">Name:</label>
+                            </td>
+                            <td>
+                                <input type="text" class="rii-input form-control rii-filename" :value="file.original_name" readonly>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="">Alt:</label>
+                            </td>
+                            <td>
+                                <input type="text" class="rii-input form-control rii-filealt" v-model="file.alt">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="">Title:</label>
+                            </td>
+                            <td>
+                                <input type="text" class="rii-input form-control rii-filetitle" v-model="file.title">
+                            </td>
+                        </tr>
+                    </table>
+                    <div v-if="canDelete" class="rii-wrapper-multiple-remove" @click="$emit('RichImageInputDeleted')">
+                        <span>X</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -45,7 +50,7 @@
 
 <script>
 export default {
-    props: ['value'],
+    props: ['value', 'canDelete'],
     inject: [
         'helpers'
     ],
@@ -57,7 +62,6 @@ export default {
     watch: {
         file: {
             handler: function(val) {
-                // console.log(`value changed`, this.file); //! LOG
                 this.$emit('fileChanged', {...this.file});
             },
             deep: true
@@ -78,9 +82,7 @@ export default {
         setFile(file) {
             let alt = file.name.split('.');
             alt = alt.length==1 ? alt[0] : alt.slice(0, -1).join('.');
-            console.log(`before`, alt); //! LOG
             alt = alt.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-            console.log(`agter`, alt); //! LOG
 
             this.file.alt = alt;
             this.file.title = alt;
@@ -89,10 +91,15 @@ export default {
             this.file.url = URL.createObjectURL(file);
         }
     },
-    mounted() {
-        // console.log('mounted'); 
+    mounted() { 
         this.$el.querySelector('.v-rii-box').addEventListener('dragover', (e) => e.preventDefault());
         this.$el.querySelector('.v-rii-box').addEventListener('drop', this.dropped);
+    },
+    updated() { 
+        // console.log(`updated`, this.value); //! LOG
+    },
+    unmounted() { 
+        // console.log(`unmounted`, this.value); //! LOG
     }
 };
 </script>

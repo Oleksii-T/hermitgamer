@@ -124,7 +124,7 @@ class Post extends Model
 
     public function blocks()
     {
-        return $this->hasMany(PostBlock::class);
+        return $this->morphMany(ContentBlock::class, 'blockable');
     }
 
     public function scopePublised($query)

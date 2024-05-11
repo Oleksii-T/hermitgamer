@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Author;
+use App\Enums\BlockItemType;
 use Illuminate\Http\Request;
 use App\Actions\GenerateSitemap;
+use App\Actions\SaveContentBlocks;
 use App\Enums\AuthorParagraphGroup;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AuthorRequest;
@@ -86,37 +88,31 @@ class AuthorController extends Controller
         return $this->jsonSuccess('Socials updated successfully');
     }
 
-    public function paragraphs(Author $author)
+    public function blocks(Author $author)
     {
-        return view('admin.authors.paragraphs', compact('author'));
-    }
-
-    public function updateParagraphs(Request $request, Author $author)
-    {
-        $data = $request->validate([
-            'titles' => ['nullable', 'array'],
-            'texts' => ['nullable', 'array'],
-            'groups' => ['nullable', 'array'],
+        $blocks = $author->blocks()->with('items')->get();
+        $blocksA = $blocks->toArray();
+        $appData = json_encode([
+            'itemTypes' => BlockItemType::all(),
+            'model' => [
+                'id' => $author->id,
+                'blocks' => $blocksA
+            ],
+            'submitUrl' => route('admin.authors.update-blocks', $author),
         ]);
 
-        $author->paragraphs()->delete();
+        return view('admin.authors.blocks', compact('appData', 'author'));
+    }
 
-        foreach ($data['titles'] as $i => $title) {
-            $desc = $data['texts'][$i] ?? '';
-            $group = $data['groups'][$i] ?? AuthorParagraphGroup::MAIN;
+    public function updateBlocks(Request $request, Author $author)
+    {
+        $request->validate([
+            'blocks' => ['required', 'array', new \App\Rules\ValidBlocksRule],
+        ]);
 
-            if (!$title || !$desc) {
-                continue;
-            }
+        \DB::transaction(fn () => SaveContentBlocks::run($author, $request));
 
-            $author->paragraphs()->create([
-                'title' => $title,
-                'text' => sanitizeHtml($desc),
-                'group' => $group
-            ]);
-        }
-
-        return $this->jsonSuccess('Socials updated successfully');
+        return $this->jsonSuccess('Author content saved successfully', $author);
     }
 
     public function destroy(Author $author)

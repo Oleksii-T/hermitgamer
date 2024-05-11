@@ -18,6 +18,7 @@ enum BlockItemType:string
     case IMAGE_TITLE = 'image-title';
     case IMAGE_TEXT = 'image-text';
     case IMAGE_GALLERY = 'image-gallery';
+    case CARDS = 'cards';
     case YOUTUBE = 'youtube';
     // case TABLE = 'table';
 
@@ -34,6 +35,7 @@ enum BlockItemType:string
             self::IMAGE_TITLE => 'Image + title',
             self::IMAGE_TEXT => 'Image + text',
             self::IMAGE_GALLERY => 'Image gallery',
+            self::CARDS => 'Cards',
             self::YOUTUBE => 'Youtube',
             // self::TABLE => 'Table',
         };

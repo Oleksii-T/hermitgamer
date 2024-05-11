@@ -2,20 +2,28 @@
 
 namespace App\Traits;
 
-use Illuminate\Http\UploadedFile;
 use App\Models\Attachment;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 trait HasAttachments
 {
+    /**
+     * Attach the file to the model.
+     * We can attach multiple or one file.
+     * If we attach multiple one file, then previous file is deleted.
+     * We may attach Illuminate\Http\UploadedFile or array.
+     * Array should contain keys: file, alt, name. It a part of rich-image-input feature.
+     */
     public function addAttachment($attachment, string $group=null)
     {
         if (!$attachment) {
-            return;
+            return [];
         }
 
         $group ??= 'files';
         $isMultiple = is_array($attachment) && !($attachment['alt']??false) && !($attachment['name']??false);
+        $savedAttachments = [];
 
         if($isMultiple) {
             $attachments = $attachment;
@@ -44,10 +52,12 @@ trait HasAttachments
 
             // just update alt and title in existing attachment
             if (!$simpleAttachment && !$uploadedFile && $attachmentId) {
-                Attachment::find($attachmentId)->update([
+                $m = Attachment::find($attachmentId);
+                $m->update([
                     'alt' => $attachment['alt'],
                     'title' => $attachment['title'],
                 ]);
+                $savedAttachments[] = $m;
                 continue;
             }
 
@@ -66,7 +76,7 @@ trait HasAttachments
             }
 
             // create new attachment
-            $this->$group()->create([
+            $savedAttachments[] = $this->$group()->create([
                 'name' => $path,
                 'original_name' => $og_name,
                 'type' => $type,
@@ -76,6 +86,8 @@ trait HasAttachments
                 'size' => $uploadedFile->getSize()
             ]);
         }
+
+        return $savedAttachments;
     }
 
     private function determineType($ext)

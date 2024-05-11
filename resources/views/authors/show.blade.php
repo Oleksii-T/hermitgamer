@@ -82,19 +82,9 @@
                         {!!$author->description!!}
                     </div>
                 </section>
-                @foreach ($paragraphs->where('group', \App\Enums\AuthorParagraphGroup::MAIN->value) as $paragraph)
-                    <section class="section article">
-                        <h2><span>{{$paragraph->title}}</span></h2>
-                        {!!$paragraph->text!!}
-                    </section>
-                @endforeach
-                <x-our-mission />
-                @foreach ($paragraphs->where('group', \App\Enums\AuthorParagraphGroup::AFTER_MISSION->value) as $paragraph)
-                    <section class="section article">
-                        <h2><span>{{$paragraph->title}}</span></h2>
-                        {!!$paragraph->text!!}
-                    </section>
-                @endforeach
+
+                <x-content-blocks :blocks="$blocks" type="1" />
+
                 <section class="section category">
                     <h2><span>Latest Articles by Yaroslav</span></h2>
                     <x-post-cards :posts="$posts" />

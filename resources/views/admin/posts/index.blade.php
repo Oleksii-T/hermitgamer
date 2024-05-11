@@ -39,7 +39,15 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-lg-6" style="text-align: right">
+                        <div class="col-lg-2">
+                            <select class="table-filter form-control" name="status">
+                                <option value="">Status filter</option>
+                                @foreach (\App\Enums\PostStatus::all() as $key => $value)
+                                    <option value="{{$key}}" @selected(request()->status == $key)>{{$value}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-lg-4" style="text-align: right">
                             <label for="trashed">Show trashed</label>
                             <input type="checkbox" id="trashed" name="trashed" value="1" class="table-filter">
                         </div>
@@ -54,7 +62,7 @@
                                 <th>Category</th>
                                 <th>Author</th>
                                 <th>Views</th>
-                                <th>Is Active</th>
+                                <th>Status</th>
                                 <th>Created_at</th>
                                 <th class="actions-column-2">Actions</th>
                             </tr>

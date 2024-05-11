@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="card" v-if="group_blocks">
         <div class="card-header row">
             <h5 class="m-0 col">Groups for {{ blocks.length }} blocks</h5>
             <div class="col">
@@ -29,7 +29,7 @@
     </div>
     <div class="card">
         <div class="card-header row">
-            <h5 class="m-0 col">Post Blocks</h5>
+            <h5 class="m-0 col">Content Blocks</h5>
             <div class="col">
                 <button type="button" class="btn btn-success d-block float-right" @click="addBlock()">Add Block</button>
                 <button type="button" class="btn btn-info d-block float-right mr-2" @click="addPreset()">Add Preset</button>
@@ -70,6 +70,9 @@
                                             <button v-if="item.type == 'image-gallery'" @click="addImageToSlider(item)" class="btn btn-default ml-2">
                                                 Add image
                                             </button>
+                                            <button v-if="item.type == 'cards'" @click="addCardToCards(item)" class="btn btn-default ml-2">
+                                                Add card
+                                            </button>
                                             <button v-if="block.items.length != 1" type="button" class="btn btn-warning remove-item float-right" @click="removeItem(bi, ii)">Remove</button>
                                             <button v-if="ii != 0" type="button" class="btn btn-info d-block mr-2 float-right" @click="move(block.items, ii, 'up')">^</button>
                                             <button v-if="block.items.length != 1 && block.items.length-1 != ii" type="button" class="btn btn-info d-block mr-2 float-right" @click="move(block.items, ii, 'down')">v</button>
@@ -98,7 +101,22 @@
                                         <template v-else-if="item.type == 'image-gallery'">
                                             <div class="row">
                                                 <div v-for="(image, iii) in item.value.images || []" :key="iii" class="col-6 mb-2">
-                                                    <RichImageInput :value="item.value.images[iii]" @fileChanged="item.value.images[iii] = $event"/>
+                                                    <RichImageInput :value="item.value.images[iii]" @fileChanged="item.value.images[iii] = $event" canDelete="1" @RichImageInputDeleted="item.value.images.splice(iii, 1)"/>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <template v-else-if="item.type == 'cards'">
+                                            <div class="row">
+                                                <div v-for="(card, iii) in item.value.cards || []" :key="iii" class="col-6 mb-2">
+                                                    <div class="form-group">        
+                                                        <RichImageInput :value="item.value.cards[iii].image" @fileChanged="item.value.cards[iii].image = $event" canDelete="1" @RichImageInputDeleted="item.value.cards.splice(iii, 1)"/>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <input v-model="item.value.cards[iii].title" class="form-control" type="text" placeholder="Title">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <textarea v-model="item.value.cards[iii].text" class="form-control"></textarea>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </template>
@@ -306,10 +324,26 @@ export default {
             });
         },
         addImageToSlider(item) {
+            let def = {};
             if (!item.value.images) {
-                item.value.images = [{}];
+                item.value.images = [def];
             } else {
-                item.value.images.push({});
+                item.value.images.push(def);
+            }
+        },
+        addCardToCards(item) {
+            console.log(`addCardToCards!`); //! LOG
+            let def = {
+                image: {},
+                title: '',
+                text: ''
+            };
+            if (!item.value.cards) {
+                console.log(` make cards array`); //! LOG
+                item.value.cards = [def];
+            } else {
+                console.log(` push card to cards array`); //! LOG
+                item.value.cards.push(def);
             }
         },
         blockNameChanged(block) {
@@ -336,6 +370,9 @@ export default {
 
             this.group_blocks.pop();
             this.recalculateGroupBlocks();
+        },
+        deleteSubItem(item, subItemIndex, nameOfSubItems) {
+            item.value[nameOfSubItems].splice(subItemIndex, 1);
         },
 
         // helpers
@@ -375,6 +412,8 @@ export default {
         initLeaveConfirmation(val) {
             this.someThingWasChanged++;
 
+            return;
+
             if (this.someThingWasChanged == 2) {
                 window.onbeforeunload = function() {
                     return 'Are you sure you want to leave?';
@@ -383,12 +422,12 @@ export default {
         }
     },
     created() {
-        this.blocks = this.dataprops.post.blocks;
+        this.blocks = this.dataprops.model.blocks;
         if (!this.blocks.length) {
             this.addBlock();
             this.group_blocks = [1];
         } else {
-            this.group_blocks = this.dataprops.post.block_groups;
+            this.group_blocks = this.dataprops.model.block_groups;
         }
 
         console.log('dataprops: ', this.dataprops);

@@ -99,6 +99,34 @@ class BlockItem extends Model
                     ];
                 }
 
+                if ($this->type == BlockItemType::CARDS) {
+                    $cards = [];
+                    $files = $this->files;
+                    foreach ($value as $c) {
+                        $file = $files->where('id', $c['attachment_id']??0)->first();
+
+                        $card = [
+                            'title' => $c['title'],
+                            'text' =>  $c['text']
+                        ];
+
+                        if ($file) {
+                            $card['image'] = [
+                                'id' => $file->id,
+                                'original_name' => $file->original_name,
+                                'alt' => $file->alt,
+                                'title' => $file->title,
+                                'url' => $file->url
+                            ];
+                        }
+
+                        $cards[] = $card;
+                    }
+                    return [
+                        'cards' => $cards
+                    ];
+                }
+
                 if (in_array($this->type->value, $simpleFileTypes)) {
                     $file = $this->file();
                     return [

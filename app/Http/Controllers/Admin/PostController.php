@@ -10,6 +10,7 @@ use App\Enums\BlockItemType;
 use Illuminate\Http\Request;
 use App\Actions\GenerateSitemap;
 use Illuminate\Http\UploadedFile;
+use App\Actions\SaveContentBlocks;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PostRequest;
 
@@ -21,20 +22,11 @@ class PostController extends Controller
             return view('admin.posts.index');
         }
 
-        $posts = Post::query();
-
-        if ($request->trashed) {
-            $posts->onlyTrashed();
-        }
-        if ($request->category !== null) {
-            $posts->where('category_id', $request->category);
-        }
-        if ($request->author !== null) {
-            $posts->where('author_id', $request->author);
-        }
-        if ($request->game !== null) {
-            $posts->where('game_id', $request->game);
-        }
+        $posts = Post::query()
+            ->when($request->trashed, fn ($q) => $q->onlyTrashed())
+            ->when($request->category, fn ($q) => $q->where('category_id', $request->category))
+            ->when($request->game, fn ($q) => $q->where('game_id', $request->game))
+            ->when($request->status, fn ($q) => $q->where('status', $request->status));
 
         return Post::dataTable($posts);
     }
@@ -80,7 +72,7 @@ class PostController extends Controller
         $blocksA = $blocks->toArray();
         $appData = json_encode([
             'itemTypes' => BlockItemType::all(),
-            'post' => [
+            'model' => [
                 'id' => $post->id,
                 'block_groups' => $post->block_groups,
                 'blocks' => $blocksA
@@ -105,108 +97,8 @@ class PostController extends Controller
         if (array_sum($request->group_blocks) != count($request->blocks)) {
             abort(422, 'Invalid groups');
         }
-        
-        \DB::transaction(function () use ($request, $post) {
-            $simpleValueTypes = BlockItemType::getSimpleTextTypes();
-            $simpleFileTypes = BlockItemType::getSimpleFileTypes();
 
-            // delete removed blocks and items
-            foreach ($post->blocks()->get() as $b) {
-                $requestBlock = collect($request->blocks)->where('id', $b->id)->first();
-
-                if (!$requestBlock) {
-                    $b->delete();
-                    continue;
-                }
-
-                foreach ($b->items as $item) {
-                    $requestItem = collect($requestBlock['items'])->where('id', $item->id)->first();
-
-                    if (!$requestItem) {
-                        $item->delete();
-                    }
-                }
-            }
-
-            // update block group
-            $post->update([
-                'block_groups' => $request->group_blocks
-            ]);
-
-            // add or update blocks and items
-            foreach ($request->blocks as $b) {
-                $block = $post->blocks()->updateOrcreate(
-                    [
-                        'id' => $b['id']??null
-                    ],
-                    [
-                        'ident' => $b['ident'],
-                        'order' => $b['order'],
-                        'name' => $b['name'],
-                    ]
-                );
-
-                foreach ($b['items'] as $i) {
-                    $t = $i['type'];
-                    $v = $i['value'];
-
-                    $item = $block->items()->updateOrCreate(
-                        [
-                            'id' => $i['id']??null
-                        ],
-                        [
-                            'type' => $t,
-                            'order' => $i['order']
-                        ]
-                    );
-
-                    if (in_array($t, $simpleValueTypes)) {
-                        $value = $v;
-
-                        if ($t == BlockItemType::TEXT->value) {
-                            $value = ['value' => sanitizeHtml($v['value'])];
-                        }
-
-                        $item->update([
-                            'value' => $value
-                        ]);
-                        continue;
-                    }
-
-                    if (in_array($t, $simpleFileTypes)) {
-                        $item->addAttachment($v['file']);
-                        continue;
-                    }
-
-                    if ($t == BlockItemType::IMAGE_TITLE->value) {
-                        $item->update([
-                            'value' => [
-                                'title' => $v['title']
-                            ]
-                        ]);
-                        $item->addAttachment($v['file']);
-                        continue;
-                    }
-
-                    if ($t == BlockItemType::IMAGE_TEXT->value) {
-                        $item->update([
-                            'value' => [
-                                'text' => $v['text']
-                            ]
-                        ]);
-                        $item->addAttachment($v['file']);
-                        continue;
-                    }
-
-                    if ($t == BlockItemType::IMAGE_GALLERY->value) {
-                        $item->addAttachment($v['images']);
-                        continue;
-                    }
-
-                    abort(404, 'type not found');
-                }
-            }
-        });
+        \DB::transaction(fn () => SaveContentBlocks::run($post, $request));
 
         return $this->jsonSuccess('Post content saved successfully', $post);
     }
