@@ -31,7 +31,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Description</label>
-                            <input type="text" class="form-control" name="description">
+                            <textarea name="description" class="form-control summernote"></textarea>
                             <span data-input="description" class="input-error"></span>
                         </div>
                     </div>

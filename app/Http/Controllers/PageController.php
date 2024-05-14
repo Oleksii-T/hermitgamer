@@ -6,6 +6,7 @@ use App\Models\Page;
 use App\Models\Post;
 use App\Models\Author;
 use App\Models\Feedback;
+use App\Enums\PageStatus;
 use App\Models\FeedbackBan;
 use Illuminate\Http\Request;
 use App\Enums\FeedbackStatus;
@@ -22,6 +23,16 @@ class PageController extends Controller
         $authors = Author::get();
 
         return view('index', compact('page', 'authors', 'latestReviews', 'latestGuides', 'latestNews'));
+    }
+
+    public function show(Request $request)
+    {
+        $page = Page::query()
+            ->where('link', \Request::path())
+            ->where('status', PageStatus::PUBLISHED)
+            ->firstOrFail();
+
+        return view('page', compact('page'));
     }
 
     public function search(Request $request)

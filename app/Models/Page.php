@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Enums\PageStatus;
 use Yajra\DataTables\DataTables;
+use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
 {
@@ -18,20 +19,13 @@ class Page extends Model
         'meta_description',
     ];
 
-    CONST STATUSES = [
-        'draft',
-        'published',
-        'static'
-    ];
-
-    CONST EDITABLE_STATUSES = [
-        'draft',
-        'published'
+    protected $casts = [
+        'status' => PageStatus::class
     ];
 
     public static function get($url)
     {
-        return self::where('link', $url)->where('status', 'static')->first();
+        return self::where('link', $url)->first();
     }
 
     public function blocks()
@@ -41,7 +35,7 @@ class Page extends Model
 
     public function isStatic()
     {
-        return $this->status == 'static';
+        return $this->status == PageStatus::STATIC || $this->status == PageStatus::ENTITY;
     }
 
     public function show($key, $default='')
@@ -55,11 +49,35 @@ class Page extends Model
             ->show($dataName, $default);
     }
 
+    public static function getAllSlugs($forget=false, $formatted=true)
+    {
+        $cKey = get_class() . '-slugs';
+
+        if ($forget) {
+            cache()->forget($cKey);
+        }
+
+        $slugs = cache()->remember($cKey, 60*60*24, function () {
+            return self::where('status', PageStatus::PUBLISHED)->pluck('link')->toArray();
+        });
+
+        if ($formatted) {
+            $slugs = '('.implode('|', $slugs).')';
+        }
+
+        return $slugs;
+    }
+
     public static function dataTable($query)
     {
         return DataTables::of($query)
             ->editColumn('link', function ($model) {
-                return '<a href="'.url($model->link).'" target="_blank">'.$model->link.'</a>';
+                return $model->status == PageStatus::ENTITY 
+                    ? $model->link
+                    : '<a href="'.url($model->link).'" target="_blank">'.$model->link.'</a>';
+            })
+            ->editColumn('status', function ($model) {
+                return $model->status->readable();
             })
             ->editColumn('created_at', function ($model) {
                 return $model->created_at->format(env('ADMIN_DATETIME_FORMAT'));

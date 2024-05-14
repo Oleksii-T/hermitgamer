@@ -2,6 +2,7 @@ $(document).ready(function () {
     let table = $('#pages-table').DataTable({
         order: [[ 0, "desc" ]],
         serverSide: true,
+        pageLength: 25,
         ajax: {
 			url: window.location.href
 		},

@@ -17,7 +17,7 @@
             <div class="content">
                 <section class="section section-head">
                     <h1>{{$category->name}}</h1>
-                    <p>{{$category->description}}</p>
+                    {!!$category->description!!}
                 </section>
 
                 <x-mobile-search-block />

@@ -2803,6 +2803,11 @@ input:-webkit-autofill,input:-webkit-autofill:focus,input:-webkit-autofill:hover
     margin: 0
 }
 
+.screens p {
+    color: #e9e9ff;
+    line-height: 162%;
+}
+
 .screens-slider__item {
     background: #04030f;
     height: 100%;

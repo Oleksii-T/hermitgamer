@@ -13,7 +13,7 @@ class PostController extends Controller
     {
         $user = auth()->user();
         abort_if($post->status != PostStatus::PUBLISHED && !$user, 404);
-        $page = Page::get('post');
+        $page = Page::get('{post}');
         $author = $post->author;
         $game = $post->game;
         $category = $post->category;

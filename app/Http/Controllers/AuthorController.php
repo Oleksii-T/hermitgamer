@@ -12,10 +12,10 @@ class AuthorController extends Controller
     {
         $perPage = 5;
         $posts = $author->posts()->publised()->latest()->paginate($perPage);
-        $blocks = $author->blocks;
+        $blocks = $author->blocks->sortBy('order');
 
         if (!$request->ajax()) {
-            $page = Page::get('author');
+            $page = Page::get('{author}');
             return view('authors.show', compact('author', 'posts', 'page', 'blocks'));
         }
 

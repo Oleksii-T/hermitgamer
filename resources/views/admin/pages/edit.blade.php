@@ -4,7 +4,7 @@
 
 @section('content_header')
     <x-admin.title
-        text="Edit Page"
+        text="Edit Page #{{$page->id}}"
         :bcRoute="['admin.pages.edit', $page]"
     />
 @stop
@@ -31,35 +31,37 @@
                             <div class="form-group">
                                 <label>Status</label>
                                 <select class="form-control" name="status">
-                                    @foreach (\App\Models\Page::EDITABLE_STATUSES as $status)
-                                        <option value="{{$status}}" @selected($page->status == $status)>{{ucfirst($status)}}</option>
+                                    @foreach (\App\Enums\PageStatus::getEditables() as $key => $value)
+                                        <option value="{{$key}}" @selected($page->status->value == $key)>{{$value}}</option>
                                     @endforeach
                                 </select>
                                 <span data-input="status" class="input-error"></span>
                             </div>
                         </div>
-                    @endif
                         <div class="col-md-6">
-                        <div class="form-group">
-                            <label>URL</label>
-                            <input name="link" type="text" class="form-control" @disabled($page->isStatic()) value="{{$page->link}}">
-                            <span data-input="link" class="input-error"></span>
+                            <div class="form-group">
+                                <label>URL</label>
+                                <input name="link" type="text" class="form-control" @disabled($page->isStatic()) value="{{$page->link}}">
+                                <span data-input="link" class="input-error"></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Meta title</label>
-                            <input name="meta_title" type="text" class="form-control" value="{{$page->meta_title}}">
-                            <span data-input="meta_title" class="input-error"></span>
+                    @endif
+                    @if ($page->status != \App\Enums\PageStatus::ENTITY)
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Meta title</label>
+                                <input name="meta_title" type="text" class="form-control" value="{{$page->meta_title}}">
+                                <span data-input="meta_title" class="input-error"></span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Meta description</label>
-                            <input name="meta_description" type="text" class="form-control" value="{{$page->meta_description}}">
-                            <span data-input="title" class="input-error"></span>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Meta description</label>
+                                <input name="meta_description" type="text" class="form-control" value="{{$page->meta_description}}">
+                                <span data-input="title" class="input-error"></span>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>

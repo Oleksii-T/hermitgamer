@@ -22,7 +22,7 @@
                                 <th>title</th>
                                 <th>URL</th>
                                 <th>Status</th>
-                                <th>Date</th>
+                                <th>Created at</th>
                                 <th class="actions-column-2">Actions</th>
                             </tr>
                         </thead>

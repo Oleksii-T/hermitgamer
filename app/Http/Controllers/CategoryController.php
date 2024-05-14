@@ -10,12 +10,12 @@ class CategoryController extends Controller
 {
     public function show(Request $request, Category $category)
     {
-        $perPage = 2;
+        $perPage = 5;
         $posts = $category->posts()->publised()->latest()->paginate($perPage);
         $hasMore = $posts->hasMorePages();
         
         if (!$request->ajax()) {
-            $page = Page::get('category');
+            $page = Page::get('{category}');
             return view('categories.show', compact('category', 'posts', 'page', 'hasMore'));
         }
 

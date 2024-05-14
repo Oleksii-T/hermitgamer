@@ -21,7 +21,7 @@ class GameController extends Controller
             ->paginate($perPage);
 
         if (!$request->ajax()) {
-            $page = Page::get('post');
+            $page = Page::get('{game}');
             $review = $game->posts()->whereRelation('category', 'slug', 'reviews')->latest()->first();
             $hasMoreGuides = $guides->hasMorePages();
             $hasMoreTopLists = $topLists->hasMorePages();

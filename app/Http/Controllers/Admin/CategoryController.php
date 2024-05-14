@@ -32,6 +32,8 @@ class CategoryController extends Controller
         if (!($input['order']??null)) {
             $input['order'] = Category::max('order') + 1;
         }
+        $input['description'] = sanitizeHtml($input['description']);
+
         $category = Category::create($input);
         $category->addAttachment($input['meta_thumbnail'], 'meta_thumbnail');
 
@@ -52,6 +54,7 @@ class CategoryController extends Controller
     {
         $input = $request->validated();
         $input['in_menu'] = $input['in_menu'] ?? false;
+        $input['description'] = sanitizeHtml($input['description']);
 
         $category->update($input);
         $category->addAttachment($input['meta_thumbnail']??null, 'meta_thumbnail');

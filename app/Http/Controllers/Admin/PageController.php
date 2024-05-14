@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Page;
 use App\Models\PageBlock;
-use App\Http\Requests\Admin\PageRequest;
 use Illuminate\Http\Request;
+use App\Actions\GenerateSitemap;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\Admin\PageRequest;
 
 class PageController extends Controller
 {
@@ -30,6 +31,9 @@ class PageController extends Controller
         $input = $request->validated();
         Page::create($input);
 
+        Page::getAllSlugs(true);
+        GenerateSitemap::run();
+
         return $this->jsonSuccess('Page created successfully', [
             'redirect' => route('admin.pages.index')
         ]);
@@ -44,6 +48,9 @@ class PageController extends Controller
     {
         $input = $request->validated();
         $page->update($input);
+
+        Page::getAllSlugs(true);
+        GenerateSitemap::run();
 
         return $this->jsonSuccess('Page updated successfully');
     }

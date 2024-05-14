@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use Carbon\Carbon;
+use App\Models\page;
 use App\Models\Post;
 use App\Models\Game;
 use App\Models\Author;
@@ -23,15 +24,16 @@ class GenerateSitemap
     public static function run()
     {
         $path = public_path('sitemap.xml');
-        $staticPagesDate = Carbon::parse('2024-04-01');
+        $pages = Page::query()
+            ->where('status', \App\Enums\PageStatus::PUBLISHED)
+            ->orWhere('status', \App\Enums\PageStatus::STATIC)
+            ->get();
 
-        $sm = Sitemap::create()
-            ->add(Url::create('/')->setLastModificationDate($staticPagesDate))
-            ->add(Url::create(route('rate'))->setLastModificationDate($staticPagesDate))
-            ->add(Url::create(route('contact-us'))->setLastModificationDate($staticPagesDate))
-            ->add(Url::create(route('about-us'))->setLastModificationDate($staticPagesDate))
-            ->add(Url::create(route('privacy'))->setLastModificationDate($staticPagesDate))
-            ->add(Url::create(route('terms'))->setLastModificationDate($staticPagesDate));
+        $sm = Sitemap::create();
+
+        foreach ($pages as $page) {
+            $sm->add(Url::create(url($page->link))->setLastModificationDate($page->created_at));
+        }
 
         foreach (Post::publised()->get() as $post) {
             $sm->add(Url::create(route('posts.show', $post))->setLastModificationDate($post->updated_at));

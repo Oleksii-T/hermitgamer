@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('pages', function (Blueprint $table) {
             $table->id();
-            $table->string('status')->default('draft');
+            $table->smallInteger('status');
             $table->string('title');
             $table->string('link')->unique();
             $table->string('template')->nullable();

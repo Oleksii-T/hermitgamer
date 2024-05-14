@@ -26,8 +26,8 @@
                         <div class="form-group">
                             <label>Status</label>
                             <select class="form-control" name="status">
-                                @foreach (\App\Models\Page::EDITABLE_STATUSES as $status)
-                                    <option value="{{$status}}">{{ucfirst($status)}}</option>
+                                @foreach (\App\Enums\PageStatus::getEditables() as $key => $value)
+                                    <option value="{{$key}}">{{$value}}</option>
                                 @endforeach
                             </select>
                             <span data-input="status" class="input-error"></span>

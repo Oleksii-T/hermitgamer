@@ -31,6 +31,8 @@ Route::post('contact-us', [PageController::class, 'contactUs'])->name('feedbacks
 Route::get('about-us', [PageController::class, 'aboutUs'])->name('about-us');
 Route::get('privacy', [PageController::class, 'privacy'])->name('privacy');
 Route::get('terms', [PageController::class, 'terms'])->name('terms');
+Route::get('{page}', [PageController::class, 'show'])->where('page', \App\Models\Page::getAllSlugs());
+
 
 Route::get('{category}', [CategoryController::class, 'show'])->name('categories.show')->where('category', \App\Models\Category::getAllSlugs());
 

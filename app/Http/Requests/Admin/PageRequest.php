@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Enums\PageStatus;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PageRequest extends FormRequest
@@ -32,12 +34,12 @@ class PageRequest extends FormRequest
                 'meta_description' => ['nullable','string','max:255'],
                 'title' => ['required','string','max:70'],
             ];
-            if ($model->status == 'static'){
+            if ($model->isStatic()){
                 return $rules;
             }
             return $rules + [
                 'link' => ['required','string','max:255'],
-                'status' => ['required','in:draft,published'],
+                'status' => ['required', Rule::in(array_keys(PageStatus::getEditables()))],
                 'content' => ['required','string','max:50000']
             ];
         }
@@ -48,7 +50,7 @@ class PageRequest extends FormRequest
             'meta_title' => ['nullable','string','max:70'],
             'meta_description' => ['nullable','string','max:255'],
             'link' => ['required','string','max:255'],
-            'status' => ['required','in:draft,published'],
+            'status' => ['required', Rule::in(array_keys(PageStatus::getEditables()))],
             'content' => ['required','string','max:50000']
         ];
     }
