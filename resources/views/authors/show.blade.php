@@ -85,15 +85,17 @@
 
                 <x-content-blocks :blocks="$blocks" type="1" />
 
-                <section class="section category">
-                    <h2><span>Latest Articles by Yaroslav</span></h2>
-                    <x-post-cards :posts="$posts" />
-                    <a
-                        href="#"
-                        class="button button-dark category__button show-more-posts"
-                        >Show More</a
-                    >
-                </section>
+                @if ($posts->isNotEmpty())
+                    <section class="section category">
+                        <h2><span>Latest Articles by {{$author->name}}</span></h2>
+                        <x-post-cards :posts="$posts" />
+                        <a
+                            href="#"
+                            class="button button-dark category__button show-more-posts"
+                            >Show More</a
+                        >
+                    </section>
+                @endif
             </div>
             <div class="sidebar">
                 <x-side-search-block />

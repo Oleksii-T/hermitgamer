@@ -26,6 +26,7 @@ class Author extends Model
         'youtube',
         'email',
         'twitter',
+        'linkedin',
         'slug',
         'description',
         'description_small',

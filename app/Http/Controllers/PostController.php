@@ -12,14 +12,24 @@ class PostController extends Controller
     public function show(Request $request, Post $post)
     {
         $user = auth()->user();
-        abort_if($post->status != PostStatus::PUBLISHED && !$user, 404);
+
+        if ($post->status == PostStatus::DRAFT && !$user) {
+            abort(404);
+        }
+
         $page = Page::get('{post}');
         $author = $post->author;
         $game = $post->game;
         $category = $post->category;
         $relatedPosts = $post->getRelatedPosts();
-        $sameGamePosts = Post::whereNull('parent_id')->where('game_id', $post->game_id)->with('childs')->latest()->get();
         $blockGroups = $post->getGroupedBlocks();
+        $sameGamePosts = Post::query()
+            ->publised()
+            ->whereNull('parent_id')
+            ->where('game_id', $post->game_id)
+            ->with('childs')
+            ->latest()
+            ->get();
 
         return view('posts.show', compact('post', 'page', 'author', 'game', 'category', 'relatedPosts', 'sameGamePosts', 'blockGroups'));
     }

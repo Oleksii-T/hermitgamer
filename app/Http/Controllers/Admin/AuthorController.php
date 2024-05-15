@@ -81,6 +81,7 @@ class AuthorController extends Controller
             'youtube' => ['nullable', 'string', 'max:255'],
             'twitter' => ['nullable', 'string', 'max:255'],
             'steam' => ['nullable', 'string', 'max:255'],
+            'linkedin' => ['nullable', 'string', 'max:255'],
         ]);
 
         $author->update($data);

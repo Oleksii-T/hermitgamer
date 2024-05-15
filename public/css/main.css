@@ -363,35 +363,35 @@ h2 a,h3 a,h4 a,h5 a,h6 a {
     border: 1px solid rgba(197,193,242,.1)
 }
 
-.article>:first-child,article>:first-child {
+.cblock>:first-child,article>:first-child {
     margin-top: 0
 }
 
-.article>*+*,.article>*+h2,.article>*+h3,.article>*+h4,article>*+*,article>*+h2,article>*+h3,article>*+h4 {
+.cblock>*+*, .cblock>*+h2, .cblock>*+h3, .cblock>*+h4, article>*+*, article>*+h2, article>*+h3, article>*+h4 {
     margin-top: 16px
 }
 
-.article>h2+*,article>h2+* {
+.cblock>h2+*,article>h2+* {
     margin-top: 0
 }
 
-.article>h3+*,.article>h4+*,article>h3+*,article>h4+* {
+.cblock>h3+*,.cblock>h4+*,cblock>h3+*,cblock>h4+* {
     margin-top: 0
 }
 
-.article li:first-child:not(.type-item),article li:first-child:not(.type-item) {
+.cblock li:first-child:not(.type-item),article li:first-child:not(.type-item) {
     padding-top: 0
 }
 
-.article p:first-child,article p:first-child {
+.cblock p:first-child,article p:first-child {
     margin-top: 0
 }
 
-.article h2,article h2 {
+.cblock h2,article h2,.cblock h2 {
     margin-bottom: 28px
 }
 
-.article h2,.article h3,.article h4,article h2,article h3,article h4 {
+.cblock h2,.cblock h3,.cblock h4,article h2,article h3,article h4 {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
@@ -460,7 +460,7 @@ h2 a,h3 a,h4 a,h5 a,h6 a {
     margin-bottom: 20px
 }
 
-.article .desc div,article .desc div {
+.article .desc > div, article .desc > div {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
@@ -805,7 +805,7 @@ p a {
 }
 
 .slick-dots {
-    bottom: -30px
+    bottom: -25px
 }
 
 .slick-dots li,.slick-dots li button {

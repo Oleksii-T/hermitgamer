@@ -57,6 +57,13 @@
                             <span data-input="steam" class="input-error"></span>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>LinkedIn</label>
+                            <input type="text" class="form-control" name="linkedin" value="{{$author->linkedin}}">
+                            <span data-input="linkedin" class="input-error"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

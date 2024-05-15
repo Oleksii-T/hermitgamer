@@ -24,7 +24,7 @@
 
 @section('content')
     <span data-sendview="{{route('posts.view', $post)}}"></span>
-    @if ($post->status != \App\Enums\PostStatus::PUBLISHED)
+    @if ($post->status == \App\Enums\PostStatus::DRAFT)
         <p class="admin-only-post">The post is {{$post->status->readable()}}. Only admin can see it.</p>
     @endif
     <div class="page__wrapper {{$game ? '' : 'without-game'}}">

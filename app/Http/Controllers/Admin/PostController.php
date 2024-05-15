@@ -26,7 +26,8 @@ class PostController extends Controller
             ->when($request->trashed, fn ($q) => $q->onlyTrashed())
             ->when($request->category, fn ($q) => $q->where('category_id', $request->category))
             ->when($request->game, fn ($q) => $q->where('game_id', $request->game))
-            ->when($request->status, fn ($q) => $q->where('status', $request->status));
+            ->when($request->status, fn ($q) => $q->where('status', $request->status))
+            ->when($request->author, fn ($q) => $q->where('author_id', $request->author));
 
         return Post::dataTable($posts);
     }
@@ -257,8 +258,9 @@ class PostController extends Controller
     public function update(PostRequest $request, Post $post)
     {
         $input = $request->validated();
-        
-        if ($input['status'] == PostStatus::PUBLISHED->value && $post->status != PostStatus::PUBLISHED) {
+        $publishedStatuses = [PostStatus::PUBLISHED->value, PostStatus::HIDDEN->value];
+
+        if (in_array($input['status'], $publishedStatuses) && !in_array($post->status, $publishedStatuses)) {
             $input['published_at'] = now();
         }
 

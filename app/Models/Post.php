@@ -143,42 +143,15 @@ class Post extends Model
 
     public function getRelatedPosts()
     {
-        return self::whereIn('id', $this->related??[])->latest()->get();
+        return self::query()
+            ->whereIn('id', $this->related??[])
+            ->latest()
+            ->get();
     }
 
     public function introCropped(): Attribute
     {
         return new Attribute(fn () => Str::limit(strip_tags($this->intro), 250));
-    }
-
-    public function getSameGamePosts()
-    {
-        $res = [];
-        $posts = self::query()
-            ->where('game_id', $this->game_id)
-            ->where('id', '!=', $this->id)
-            ->latest()
-            ->get();
-
-        foreach ($posts as $post) {
-            $group = $post->links_group;
-
-            if (!$group) {
-                $res[$post->id] = [$post];
-                continue;
-            }
-
-            // $group = Str::slug($group);
-
-            if ($res[$group] ?? false) {
-                $res[$group][] = $post;
-                continue;
-            }
-
-            $res[$group] = [$post];
-        }
-
-        return $res;
     }
 
     public function getGroupedBlocks()

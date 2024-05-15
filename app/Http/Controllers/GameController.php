@@ -12,17 +12,19 @@ class GameController extends Controller
     {
         $perPage = 4;
         $guides = $game->posts()
+            ->publised()
             ->whereHas('category', fn ($q) => $q->whereIn('slug', ['guides', 'cheats']))
             ->latest()
             ->paginate($perPage);
         $topLists = $game->posts()
+            ->publised()
             ->whereHas('category', fn ($q) => $q->whereIn('slug', ['top-lists', 'mods']))
             ->latest()
             ->paginate($perPage);
 
         if (!$request->ajax()) {
             $page = Page::get('{game}');
-            $review = $game->posts()->whereRelation('category', 'slug', 'reviews')->latest()->first();
+            $review = $game->posts()->publised()->whereRelation('category', 'slug', 'reviews')->latest()->first();
             $hasMoreGuides = $guides->hasMorePages();
             $hasMoreTopLists = $topLists->hasMorePages();
 

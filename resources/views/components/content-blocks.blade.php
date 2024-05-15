@@ -3,7 +3,7 @@
         $items = $block->items->sortBy('order');
         $hasGallery = $items->where('type', \App\Enums\BlockItemType::IMAGE_GALLERY)->count();
     @endphp
-    <section class="section {{$hasGallery ? 'screens' : 'article'}}" id="{{$block->ident}}">
+    <section class="section {{$hasGallery ? 'screens' : 'article'}} cblock" id="{{$block->ident}}">
         @foreach ($items as $item)
             @switch($item->type->value)
                 @case(\App\Enums\BlockItemType::TITLE_H2->value)
@@ -46,7 +46,9 @@
                     <div class="desc">
                         <div>
                             <img src="{{$item->file()->url}}" class="ls-is-cached lazyloaded" alt="{{$item->file()->alt}}">
-                            {!!$item->value['text']!!}
+                            <div>
+                                {!!$item->value['text']!!}
+                            </div>
                         </div>
                     </div>
                     @break
