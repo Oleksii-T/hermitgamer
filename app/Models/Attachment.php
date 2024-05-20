@@ -48,9 +48,9 @@ class Attachment extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function attachmentable()
+    public function attachmentables()
     {
-        return $this->morphTo();
+        return $this->hasMany(Attachmentable::class);
     }
 
     /**
@@ -126,6 +126,7 @@ class Attachment extends Model
 
         foreach ($data['title']??[] as $i => $title) {
             $id = Arr::get($data, "id.$i");
+            $idOld = Arr::get($data, "id_old.$i");
             $file = Arr::get($data, "file.$i");
             $alt = $data['alt'][$i];
 
@@ -133,11 +134,12 @@ class Attachment extends Model
                 continue;
             }
 
-            $img = [
+            $result[] = [
+                'id' => $id,
+                'id_old' => $idOld,
+                'file' => $file,
                 'alt' => $alt,
                 'title' => $title,
-                'id' => $id,
-                'file' => $file
             ];
         }
 

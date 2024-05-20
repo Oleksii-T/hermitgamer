@@ -130,7 +130,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <x-admin.rich-image-input name="esbr_image" :file="$game->esbr_image" />
+                        <x-admin.rich-image-input name="esbr_image" :file="$game->esbr_image()" />
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
@@ -161,7 +161,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <x-admin.rich-image-input name="thumbnail" :file="$game->thumbnail" />
+                        <x-admin.rich-image-input name="thumbnail" :file="$game->thumbnail()" />
                     </div>
                     <div class="col-md-12">
                         <x-admin.rich-image-input name="screenshots" :files="$game->screenshots" multiple="1" />

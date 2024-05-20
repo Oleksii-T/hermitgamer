@@ -82,7 +82,7 @@ class AppServiceProvider extends ServiceProvider
             return $output;
         });
 
-        // Paginator::defaultView('components.pagination');
+        Paginator::defaultView('vendor.pagination.bootstrap-5');
 
         Carbon::mixin(new class {
             public function adminFormat()

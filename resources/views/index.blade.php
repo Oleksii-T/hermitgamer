@@ -59,7 +59,7 @@
                         <li>
                             <div class="reviews-item">
                                 <a href="{{route('posts.show', $post)}}" class="image reviews-item__image">
-                                    <img src="{{$post->thumbnail->url}}" class="lazyload" alt="">
+                                    <img src="{{$post->thumbnail()->url}}" class="lazyload" alt="">
                                 </a>
                                 <div class="reviews-item__date">{{$post->created_at->format('M d, Y')}}</div>
                                 <h3 class="reviews-item__title">
@@ -78,7 +78,7 @@
                                 <li>
                                     <div class="reviews-item">
                                         <a href="{{route('posts.show', $post)}}" class="image reviews-item__image">
-                                            <img src="{{$post->thumbnail->url}}" class="lazyload" alt="">
+                                            <img src="{{$post->thumbnail()->url}}" class="lazyload" alt="">
                                         </a>
                                         <div class="reviews-item__date">{{$post->created_at->format('M d, Y')}}</div>
                                         <h3 class="reviews-item__title">
@@ -97,7 +97,7 @@
                                 <li>
                                     <div class="reviews-item">
                                         <a href="{{route('posts.show', $post)}}" class="image reviews-item__image">
-                                            <img src="{{$post->thumbnail->url}}" class="lazyload" alt="">
+                                            <img src="{{$post->thumbnail()->url}}" class="lazyload" alt="">
                                         </a>
                                         <div class="reviews-item__date">{{$post->created_at->format('M d, Y')}}</div>
                                         <h3 class="reviews-item__title">
@@ -148,7 +148,7 @@
                         <li>
                             <div class="about-item">
                                 <a href="{{route('authors.show', $author)}}" class="about-item__image">
-                                    <img src="{{$author->avatar->url}}" class="lazyload" alt="{{$author->avatar->alt}}">
+                                    <img src="{{$author->avatar()->url}}" class="lazyload" alt="{{$author->avatar()->alt}}">
                                 </a>
                                 <div class="about-item__desc">
                                     <a href="{{route('authors.show', $author)}}" class="about-item__name">

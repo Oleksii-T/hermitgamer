@@ -3,17 +3,23 @@
 @section('title', 'Edit Page Blocks')
 
 @section('content_header')
-    <x-admin.title
-        text="Edit Page Blocks"
-        :bcRoute="['admin.pages.edit-blocks', $page]"
-    />
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <div class="float-left">
+                    <h1 class="m-0">Edit Page #{{$page->id}}</h1>
+                </div>
+                <x-admin.page-nav active="template" :page="$page" />
+            </div>
+        </div>
+    </div>
 @stop
 
 @section('content')
-    <form id="blocksForm" action="{{ route('admin.pages.update-blocks', $page) }}" method="post" class="general-ajax-submit" style="padding-bottom:1.5rem">
+    <form id="blocksForm" action="{{ route('admin.pages.update-template', $page) }}" method="post" class="general-ajax-submit" style="padding-bottom:1.5rem">
         @csrf
         @method('PUT')
-        @foreach($page->blocks as $block)
+        @foreach($page->pageBlocks as $block)
             <div class="card">
                 <div class="card-header">
                     <h5 class="m-0">{{readable($block->name)}}</h5>

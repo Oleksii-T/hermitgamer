@@ -39,7 +39,7 @@ class Category extends Model
 
     public function meta_thumbnail()
     {
-        return $this->morphOne(Attachment::class, 'attachmentable')->where('group', 'meta_thumbnail');
+        return $this->morphToMany(Attachment::class, 'attachmentable')->where('group', 'meta_thumbnail')->first();
     }
 
     public static function forHeader()

@@ -19,7 +19,7 @@ class PageController extends Controller
         $q = Post::publised()->latest();
         $latestReviews = (clone $q)->whereRelation('category', 'slug', 'reviews')->limit(3)->get();
         $latestGuides = (clone $q)->whereRelation('category', 'slug', 'guides')->limit(2)->get();
-        $latestNews = (clone $q)->whereRelation('category', 'slug', 'top-lists')->limit(2)->get();
+        $latestNews = (clone $q)->whereRelation('category', 'slug', 'lists')->limit(2)->get();
         $authors = Author::get();
 
         return view('index', compact('page', 'authors', 'latestReviews', 'latestGuides', 'latestNews'));
@@ -64,8 +64,9 @@ class PageController extends Controller
     public function rate()
     {
         $page = Page::get('rate');
+        $blocks = $page->blocks->sortBy('order');
 
-        return view('rate', compact('page'));
+        return view('rate', compact('page', 'blocks'));
     }
 
     public function contactUs(Request $request)
@@ -108,22 +109,25 @@ class PageController extends Controller
     public function privacy()
     {
         $page = Page::get('privacy');
+        $blocks = $page->blocks->sortBy('order');
 
-        return view('privacy', compact('page'));
+        return view('privacy', compact('page', 'blocks'));
     }
 
     public function terms()
     {
         $page = Page::get('terms');
+        $blocks = $page->blocks->sortBy('order');
 
-        return view('terms', compact('page'));
+        return view('terms', compact('page', 'blocks'));
     }
 
     public function aboutUs()
     {
         $page = Page::get('about-us');
         $authors = Author::get();
+        $blocks = $page->blocks->sortBy('order');
 
-        return view('about-us', compact('page', 'authors'));
+        return view('about-us', compact('page', 'authors', 'blocks'));
     }
 }

@@ -75,7 +75,7 @@ class SaveContentBlocks
                 }
 
                 if (in_array($t, $simpleFileTypes)) {
-                    $item->addAttachment($v['file']);
+                    $item->addAttachment($v['file'], 'files');
                     continue;
                 }
 
@@ -85,7 +85,7 @@ class SaveContentBlocks
                             'title' => $v['title']
                         ]
                     ]);
-                    $item->addAttachment($v['file']);
+                    $item->addAttachment($v['file'], 'files');
                     continue;
                 }
 
@@ -95,12 +95,12 @@ class SaveContentBlocks
                             'text' => $v['text']
                         ]
                     ]);
-                    $item->addAttachment($v['file']);
+                    $item->addAttachment($v['file'], 'files');
                     continue;
                 }
 
                 if ($t == BlockItemType::IMAGE_GALLERY->value) {
-                    $item->addAttachment($v['images']);
+                    $item->addAttachment($v['images'], 'files');
                     continue;
                 }
 
@@ -116,7 +116,7 @@ class SaveContentBlocks
                     }
 
                     $images = array_column($v['cards'], 'image');
-                    $savedAttachments = $item->addAttachment($images);
+                    $savedAttachments = $item->addAttachment($images, 'files');
                     $value = [];
                     $withoutImage = 0;
 

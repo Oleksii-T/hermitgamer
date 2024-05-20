@@ -9,7 +9,7 @@
 
 @section('title', $author->meta_title)
 @section('description', $author->meta_description)
-@section('meta-image', $author->meta_thumbnail?->url)
+@section('meta-image', $author->meta_thumbnail()?->url)
 
 @section('content')
     <main class="main">
@@ -18,7 +18,7 @@
                 <section class="section author">
                     <div class="author__head">
                         <div class="image author__image">
-                            <img src="{{$author->avatar->url}}" class="lazyload" alt="{{$author->avatar->alt}}" />
+                            <img src="{{$author->avatar()->url}}" class="lazyload" alt="{{$author->avatar()->alt}}" />
                         </div>
                         <div class="author__info">
                             <div class="author__inner">

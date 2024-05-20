@@ -51,14 +51,8 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group show-uploaded-file-name show-uploaded-file-preview">
-                            <label>Avatar</label>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="avatar" name="avatar">
-                                <label class="custom-file-label" for="avatar">Choose file</label>
-                            </div>
-                            <img src="{{$author->avatar->url}}" alt="" class="custom-file-preview">
-                            <span data-input="avatar" class="input-error"></span>
+                        <div class="form-group">
+                            <x-admin.rich-image-input name="avatar" :file="$author->avatar()" />
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -69,7 +63,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <x-admin.rich-image-input name="meta_thumbnail" :file="$author->meta_thumbnail" />
+                        <x-admin.rich-image-input name="meta_thumbnail" :file="$author->meta_thumbnail()" />
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">

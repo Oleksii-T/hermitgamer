@@ -4,7 +4,7 @@
 
 @section('content_header')
     <x-admin.title
-        text="Edit Attachment"
+        text="Edit Attachment #{{$attachment->id}}"
     />
 @stop
 
@@ -15,28 +15,22 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label>Name</label>
                             <input type="text" class="form-control" value="{{$attachment->original_name}}" disabled>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label>Type</label>
                             <input type="text" class="form-control" value="{{$attachment->type}}" disabled>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label>Size</label>
                             <input type="text" class="form-control" value="{{$attachment->getSize()}}" disabled>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Group</label>
-                            <input type="text" class="form-control" value="{{$attachment->group}}" disabled>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -63,6 +57,42 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <table id="attachments-table" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th class="ids-column">ID</th>
+                            <th>Entity</th>
+                            <th>Group</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($resources as $r)
+                            <tr>
+                                <td>{{$r->attachmentable_id}}</td>
+                                <td>
+                                    @if ($r->attachmentable && $r->attachmentable_type == \App\Models\Author::class)
+                                        <a href="{{route('admin.authors.edit', $r->attachmentable)}}">{{$r->attachmentable->name}}</a>
+                                    @elseif ($r->attachmentable && $r->attachmentable_type == \App\Models\Post::class)
+                                        <a href="{{route('admin.posts.edit', $r->attachmentable)}}">{{$r->attachmentable->title}}</a>
+                                    @elseif ($r->attachmentable && $r->attachmentable_type == \App\Models\Category::class)
+                                        <a href="{{route('admin.categories.edit', $r->attachmentable)}}">{{$r->attachmentable->name}}</a>
+                                    @elseif ($r->attachmentable && $r->attachmentable_type == \App\Models\Game::class)
+                                        <a href="{{route('admin.games.edit', $r->attachmentable)}}">{{$r->attachmentable->name}}</a>
+                                    @elseif ($r->attachmentable && $r->attachmentable_type == \App\Models\BlockItem::class)
+                                        Block Item for {{$r->attachmentable->block->blockable_type}} #{{$r->attachmentable->block->blockable_id}} content
+                                    @else
+                                        {{$r->attachmentable_type}}
+                                    @endif
+                                </td>
+                                <td>{{$r->group}}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
         <button type="submit" class="btn btn-success min-w-100">Save</button>

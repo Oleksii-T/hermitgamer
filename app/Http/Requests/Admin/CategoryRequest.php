@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\RichImageInputRule;
 
 class CategoryRequest extends FormRequest
 {
@@ -31,11 +32,7 @@ class CategoryRequest extends FormRequest
             'order' => ['nullable', 'integer'],
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:5000'],
-            'meta_thumbnail' => [$reqNull, 'array'],
-            'meta_thumbnail.file' => [$reqNull, 'file', 'max:5000'],
-            'meta_thumbnail.alt' => [$reqNull, 'string', 'max:255'],
-            'meta_thumbnail.title' => [$reqNull, 'string', 'max:255'],
-            'meta_thumbnail.id' => ['nullable', 'integer'],
+            'meta_thumbnail' => [new RichImageInputRule],
             'meta_description' => ['required', 'string', 'max:255'],
             'meta_title' => ['required', 'string', 'max:255'],
             'slug' => ['required', 'string', 'max:255'],

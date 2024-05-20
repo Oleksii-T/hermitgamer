@@ -121,7 +121,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <x-admin.rich-image-input name="thumbnail" :file="$post->thumbnail" />
+                        <x-admin.rich-image-input name="thumbnail" :file="$post->thumbnail()" />
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">

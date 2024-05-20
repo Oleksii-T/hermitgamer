@@ -51,17 +51,17 @@ class Game extends Model
 
     public function thumbnail()
     {
-        return $this->morphOne(Attachment::class, 'attachmentable')->where('group', 'thumbnail');
+        return $this->morphToMany(Attachment::class, 'attachmentable')->where('group', 'thumbnail')->first();
     }
 
     public function esbr_image()
     {
-        return $this->morphOne(Attachment::class, 'attachmentable')->where('group', 'esbr_image');
+        return $this->morphToMany(Attachment::class, 'attachmentable')->where('group', 'esbr_image')->first();
     }
 
     public function screenshots()
     {
-        return $this->morphMany(Attachment::class, 'attachmentable')->where('group', 'screenshots');
+        return $this->morphToMany(Attachment::class, 'attachmentable')->where('group', 'screenshots');
     }
 
     public function posts()

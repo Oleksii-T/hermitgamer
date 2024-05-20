@@ -23,6 +23,13 @@
                                     <option value="file" @selected(request()->type == 'file')>File</option>
                             </select>
                         </div>
+                        <div class="col-lg-2">
+                            <select class="table-filter form-control" name="has_entity">
+                                <option value="">Has Entity filter</option>
+                                <option value="1" @selected(request()->has_entity == 1)>Yes</option>
+                                <option value="2" @selected(request()->has_entity == 2)>No</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">

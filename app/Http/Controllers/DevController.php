@@ -24,12 +24,56 @@ class DevController extends Controller
 
     private function test()
     {
-        foreach (\App\Models\ContentBlock::all() as $block) {
-            $block->update([
-                'blockable_id' => $block->post_id,
-                'blockable_type' => \App\Models\Post::class
-            ]);
+        $d = [];
+
+        $as = \App\Models\Attachment::all();
+
+        foreach ($as as $a) {
+            $abl = \App\Models\Attachmentable::query()
+                ->where('attachmentable_type', $a->attachmentable_type_)
+                ->where('attachmentable_id', $a->attachmentable_id_)
+                ->exists();
+
+            if (!$abl) {
+                $class = '\\' . $a->attachmentable_type_;
+                $model = null;
+                try {
+                    $model = $class::find($a->attachmentable_id_);
+                } catch (\Throwable $th) {}
+
+                if ($model) {
+                    \App\Models\Attachmentable::create([
+                        'attachment_id' => $a->id,
+                        'attachmentable_type' => $a->attachmentable_type_,
+                        'attachmentable_id' => $a->attachmentable_id_,
+                        'group' => $a->group_,
+                    ]);
+                }
+            }
         }
+
+        dd($d);
+    }
+
+    private function checkDeprecatedAttchmentables()
+    {
+        $d = [];
+
+        \App\Models\Attachmentable::whereNull('attachmentable_type')->delete();
+
+        $as = \App\Models\Attachmentable::all();
+
+        foreach ($as as $a) {
+            $class = '\\' . $a->attachmentable_type;
+            $model = $class::find($a->attachmentable_id);
+
+            if (!$model) {
+                $d[] = $a->toArray();
+                $a->delete();
+            }
+        }
+
+        dd($d);
     }
 
     private function generateSitemap()

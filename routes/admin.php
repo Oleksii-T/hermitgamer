@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\AuthorController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\RedirectController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\FeedbackController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -31,6 +32,7 @@ Route::get('/login', function () {
 Route::middleware('is-admin')->group(function () {
 
     Route::get('/', [DashboardController::class, 'index'])->name('index');
+    Route::view('icons', 'admin.icons');
 
     Route::resource('users', UserController::class)->except('show');
 
@@ -42,7 +44,7 @@ Route::middleware('is-admin')->group(function () {
 
     Route::prefix('authors')->name('authors.')->group(function () {
         Route::get('{author}/edit/socials', [AuthorController::class, 'socials'])->name('socials');
-        Route::get('{author}/edit/boocks', [AuthorController::class, 'blocks'])->name('blocks');
+        Route::get('{author}/edit/blocks', [AuthorController::class, 'blocks'])->name('blocks');
         Route::put('{author}/edit/socials', [AuthorController::class, 'updateSocials'])->name('update-socials');
         Route::post('{author}/edit/blocks', [AuthorController::class, 'updateBlocks'])->name('update-blocks');
     });
@@ -76,13 +78,20 @@ Route::middleware('is-admin')->group(function () {
 
     Route::resource('feedbacks', FeedbackController::class)->only('show', 'index', 'destroy', 'update');
 
-    Route::get('pages/{page}/edit-blocks', [PageController::class, 'editBlocks'])->name('pages.edit-blocks');
-    Route::put('pages/{page}/update-blocks', [PageController::class, 'updateBlocks'])->name('pages.update-blocks');
+    Route::prefix('pages')->name('pages.')->group(function () {
+        Route::get('{page}/blocks', [PageController::class, 'blocks'])->name('blocks');
+        Route::get('{page}/template', [PageController::class, 'template'])->name('template');
+        Route::put('{page}/update-template', [PageController::class, 'updateTemplate'])->name('update-template');
+        Route::post('{page}/blocks', [PageController::class, 'updateBlocks'])->name('update-blocks');
+    });
     Route::resource('pages', PageController::class)->except('show');
+    
+    Route::resource('redirects', RedirectController::class)->except('show', 'edit', 'create');
 
     Route::prefix('attachments')->name('attachments.')->group(function () {
-        Route::post('upload', [AttachmentController::class, 'upload'])->name('upload');
+        Route::get('images', [AttachmentController::class, 'images'])->name('images');
         Route::get('{attachment}/download', [AttachmentController::class, 'download'])->name('download');
+        Route::post('upload', [AttachmentController::class, 'upload'])->name('upload');
     });
     Route::resource('attachments', AttachmentController::class)->except('create', 'store', 'show');
 });

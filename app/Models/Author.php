@@ -45,12 +45,12 @@ class Author extends Model
 
     public function avatar()
     {
-        return $this->morphOne(Attachment::class, 'attachmentable')->where('group', 'avatar');
+        return $this->morphToMany(Attachment::class, 'attachmentable')->where('group', 'avatar')->first();
     }
 
     public function meta_thumbnail()
     {
-        return $this->morphOne(Attachment::class, 'attachmentable')->where('group', 'meta_thumbnail');
+        return $this->morphToMany(Attachment::class, 'attachmentable')->where('group', 'meta_thumbnail')->first();
     }
 
     public function posts()
@@ -67,7 +67,7 @@ class Author extends Model
     {
         return DataTables::of($query)
             ->editColumn('avatar', function ($model) {
-                return '<img src="'.$model->avatar->url.'" alt="">';
+                return '<img src="'.$model->avatar()->url.'" alt="">';
             })
             ->editColumn('created_at', function ($model) {
                 return $model->created_at->format(env('ADMIN_DATETIME_FORMAT'));

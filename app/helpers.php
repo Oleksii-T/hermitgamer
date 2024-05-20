@@ -285,7 +285,7 @@ if (!function_exists('strposX')) {
 if (!function_exists('sanitizeHtml')) {
     function sanitizeHtml($html)
     {
-        dlog("sanitizeHtml $html"); //! LOG
+        // dlog("sanitizeHtml $html"); //! LOG
         // return $html;
         $html = str_replace('<br>', '', $html);
         $html = str_replace('<p></p>', '', $html);
@@ -338,7 +338,7 @@ if (!function_exists('sanitizeHtml')) {
         $html = str_replace('<?xml encoding="utf-8" ?>', '', $html);
         $html = str_replace('<!--?xml encoding="utf-8" ?-->', '', $html);
 
-        dlog(" result: $html"); //! LOG
+        // dlog(" result: $html"); //! LOG
 
         return $html;
     }

@@ -3,10 +3,16 @@
 @section('title', 'Edit Page')
 
 @section('content_header')
-    <x-admin.title
-        text="Edit Page #{{$page->id}}"
-        :bcRoute="['admin.pages.edit', $page]"
-    />
+<div class="container-fluid">
+    <div class="row mb-2">
+        <div class="col-sm-12">
+            <div class="float-left">
+                <h1 class="m-0">Edit Page #{{$page->id}}</h1>
+            </div>
+            <x-admin.page-nav active="general" :page="$page" />
+        </div>
+    </div>
+</div>
 @stop
 
 @section('content')
@@ -26,7 +32,7 @@
                             <span data-input="title" class="input-error"></span>
                         </div>
                     </div>
-                    @if (!$page->isStatic())
+                    @if (!$page->notDynamic())
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Status</label>
@@ -41,7 +47,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>URL</label>
-                                <input name="link" type="text" class="form-control" @disabled($page->isStatic()) value="{{$page->link}}">
+                                <input name="link" type="text" class="form-control" @disabled($page->notDynamic()) value="{{$page->link}}">
                                 <span data-input="link" class="input-error"></span>
                             </div>
                         </div>
@@ -65,7 +71,7 @@
                 </div>
             </div>
         </div>
-        @if (!$page->isStatic())
+        @if (!$page->notDynamic())
             <div class="card card-info card-outline">
                 <div class="card-header">
                     <h5 class="m-0">Content</h5>
@@ -81,9 +87,6 @@
                     </div>
                 </div>
             </div>
-        @endif
-        @if ($page->isStatic())
-            <a href="{{route('admin.pages.edit-blocks', $page)}}" class="btn btn-info min-w-100">Edit blocks</a>
         @endif
         <button type="submit" class="btn btn-success min-w-100">Save</button>
         <a href="{{ route('admin.pages.index') }}" class="btn btn-outline-secondary text-dark min-w-100">Cancel</a>

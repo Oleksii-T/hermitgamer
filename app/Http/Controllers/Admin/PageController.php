@@ -6,6 +6,7 @@ use App\Models\Page;
 use App\Models\PageBlock;
 use Illuminate\Http\Request;
 use App\Actions\GenerateSitemap;
+use App\Actions\SaveContentBlocks;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\PageRequest;
@@ -55,12 +56,12 @@ class PageController extends Controller
         return $this->jsonSuccess('Page updated successfully');
     }
 
-    public function editBlocks(Page $page)
+    public function template(Page $page)
     {
-        return view('admin.pages.editBlocks', compact('page'));
+        return view('admin.pages.template', compact('page'));
     }
 
-    public function updateBlocks(Request $request, Page $page)
+    public function updateTemplate(Request $request, Page $page)
     {
         $disk = Storage::disk('pages');
         foreach ($request->blocks as $id => $block) {
@@ -108,9 +109,36 @@ class PageController extends Controller
         ]);
     }
 
+    public function blocks(Page $page)
+    {
+        $blocks = $page->blocks()->with('items')->get();
+        $blocksA = $blocks->toArray();
+        $appData = json_encode([
+            'itemTypes' => \App\Enums\BlockItemType::all(),
+            'model' => [
+                'id' => $page->id,
+                'blocks' => $blocksA
+            ],
+            'submitUrl' => route('admin.pages.update-blocks', $page),
+        ]);
+
+        return view('admin.pages.blocks', compact('appData', 'page'));
+    }
+
+    public function updateBlocks(Request $request, Page $page)
+    {
+        $request->validate([
+            'blocks' => ['required', 'array', new \App\Rules\ValidBlocksRule],
+        ]);
+
+        \DB::transaction(fn () => SaveContentBlocks::run($page, $request));
+
+        return $this->jsonSuccess('Page content saved successfully', $page);
+    }
+
     public function destroy(Page $page)
     {
-        if ($page->isStatic()) {
+        if ($page->notDynamic()) {
             return $this->jsonError('Can not delete static page', [], 200);
         }
 

@@ -5,6 +5,7 @@ namespace App\Http\Requests\Admin;
 use App\Enums\PostStatus;
 use App\Enums\PostTCStyle;
 use Illuminate\Validation\Rule;
+use App\Rules\RichImageInputRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PostRequest extends FormRequest
@@ -38,11 +39,7 @@ class PostRequest extends FormRequest
             'meta_description' => ['required', 'string', 'max:255'],
             'intro' => ['nullable', 'string'],
             'slug' => ['required', 'string', 'max:255', "unique:posts,slug,$modelId,deleted_at,NULL"],
-            'thumbnail' => [$reqNull, 'array'],
-            'thumbnail.file' => [$reqNull, 'image', 'max:5000'],
-            'thumbnail.title' => [$reqNull, 'string', 'max:255'],
-            'thumbnail.alt' => [$reqNull, 'string', 'max:255'],
-            'thumbnail.id' => ['nullable', 'integer'],
+            'thumbnail' => [new RichImageInputRule],
             'status' => ['required', Rule::in(PostStatus::values())],
             'tc_style' => ['required', Rule::in(PostTCStyle::values())],
             'category_id' => ['nullable', 'exists:categories,id'],

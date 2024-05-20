@@ -15,7 +15,7 @@
             @method('PUT')
             <input type="hidden" name="is_active" value="0">
             <div class="modal-header">
-                <h4 class="modal-title">Create feedback ban</h4>
+                <h4 class="modal-title">Edit feedback ban</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>

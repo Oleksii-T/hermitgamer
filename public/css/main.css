@@ -411,22 +411,30 @@ h2 a,h3 a,h4 a,h5 a,h6 a {
     line-height: 162%
 }
 
-.article ol li:not(.type-item),.article ul:not(.rate__list) li:not(.type-item),article ol li:not(.type-item),article ul:not(.rate__list) li:not(.type-item) {
+.article ol li:not(.type-item),
+.article ul:not(.rate__list) li:not(.type-item),
+article ol li:not(.type-item),
+article ul:not(.rate__list) li:not(.type-item),
+.cblock ul:not(.slick-dots) li {
     color: #e9e9ff;
     display: block;
     line-height: 162%;
-    position: relative
+    position: relative;
 }
 
 .article ol li:not(.type-item)+li,.article ul:not(.rate__list) li:not(.type-item)+li,article ol li:not(.type-item)+li,article ul:not(.rate__list) li:not(.type-item)+li {
     margin-top: 4px
 }
 
-.article ul li:not(.type-item,.rate__list li),article ul li:not(.type-item,.rate__list li) {
+.article ul li:not(.type-item,.rate__list li),
+article ul li:not(.type-item,.rate__list li),
+.cblock ul:not(.slick-dots) li {
     padding-left: 16px
 }
 
-.article ul li:not(.type-item,.rate__list li):after,article ul li:not(.type-item,.rate__list li):after {
+.article ul li:not(.type-item,.rate__list li):after,
+article ul li:not(.type-item,.rate__list li):after,
+.cblock ul:not(.slick-dots) li:after {
     background-color: #e9e9ff;
     border-radius: 100%;
     content: "";
@@ -2811,7 +2819,7 @@ input:-webkit-autofill,input:-webkit-autofill:focus,input:-webkit-autofill:hover
 .screens-slider__item {
     background: #04030f;
     height: 100%;
-    max-height: 220px
+    /* max-height: 220px */
 }
 
 .screens-slider__item img {

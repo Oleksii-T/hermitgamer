@@ -50,17 +50,6 @@ class Post extends Model
         'css'
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::deleting(function ($model) {
-            foreach (self::ATTACHMENTS as $group) {
-                $model->purgeFiles($group);
-            }
-        });
-    }
-
     // overload laravel`s method for route key generation
     public function getRouteKey()
     {
@@ -69,7 +58,7 @@ class Post extends Model
 
     public function thumbnail()
     {
-        return $this->morphOne(Attachment::class, 'attachmentable')->where('group', 'thumbnail');
+        return $this->morphToMany(Attachment::class, 'attachmentable')->where('group', 'thumbnail')->first();
     }
 
     public function js()

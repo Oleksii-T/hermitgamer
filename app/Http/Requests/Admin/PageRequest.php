@@ -34,7 +34,7 @@ class PageRequest extends FormRequest
                 'meta_description' => ['nullable','string','max:255'],
                 'title' => ['required','string','max:70'],
             ];
-            if ($model->isStatic()){
+            if ($model->notDynamic()){
                 return $rules;
             }
             return $rules + [

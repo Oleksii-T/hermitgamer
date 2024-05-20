@@ -245,11 +245,11 @@ return [
             'route'  => 'admin.categories.index',
             'icon' => 'fas fa-fw fa-sitemap',
         ],
-        [
-            'text' => 'Tags',
-            'route'  => 'admin.tags.index',
-            'icon' => 'fas fa-fw fa-tags',
-        ],
+        // [
+        //     'text' => 'Tags',
+        //     'route'  => 'admin.tags.index',
+        //     'icon' => 'fas fa-fw fa-tags',
+        // ],
         [
             'text' => 'Authors',
             'route'  => 'admin.authors.index',
@@ -260,11 +260,11 @@ return [
             'route'  => 'admin.posts.index',
             'icon' => 'fas fa-fw fa-paragraph',
         ],
-        [
-            'text' => 'Comments',
-            'route'  => 'admin.comments.index',
-            'icon' => 'fas fa-fw fa-comments',
-        ],
+        // [
+        //     'text' => 'Comments',
+        //     'route'  => 'admin.comments.index',
+        //     'icon' => 'fas fa-fw fa-comments',
+        // ],
         [
             'text' => 'Attachments',
             'route'  => 'admin.attachments.index',
@@ -279,6 +279,11 @@ return [
             'text' => 'Pages',
             'route'  => 'admin.pages.index',
             'icon' => 'fas fa-fw fa-copy',
+        ],
+        [
+            'text' => 'Redirects',
+            'route'  => 'admin.redirects.index',
+            'icon' => 'fas fa-fw fa-map-signs',
         ],
         [
             'text' => 'Return to Site',

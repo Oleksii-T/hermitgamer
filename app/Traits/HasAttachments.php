@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\Attachment;
+use App\Models\Attachmentable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,83 +12,111 @@ trait HasAttachments
     /**
      * Attach the file to the model.
      * We can attach multiple or one file.
-     * If we attach multiple one file, then previous file is deleted.
+     * If we attach single one file, then previous attachment is detached automaticaly.
      * We may attach Illuminate\Http\UploadedFile or array.
-     * Array should contain keys: file, alt, name. It a part of rich-image-input feature.
+     * Array should contain key 'file' or key 'id'.
      */
-    public function addAttachment($attachment, string $group=null)
+    public function addAttachment($attachment, string $group)
     {
+        dlog("HasAttachments@addAttachment $group | $this->id | " . self::class ); //! LOG
+
         if (!$attachment) {
+            dlog(" empty"); //! LOG
             return [];
         }
 
-        $group ??= 'files';
-        $isMultiple = is_array($attachment) && !($attachment['alt']??false) && !($attachment['name']??false);
+        $attachment = $this->transform($attachment);
+        $isMultiple = !($attachment['id']??false) && !($attachment['file']??false);
         $savedAttachments = [];
+        $existed = Attachmentable::getByModel($this, $group, false);
 
         if($isMultiple) {
+            dlog(" is mult"); //! LOG
             $attachments = $attachment;
-
-            $existings = $this->$group()->get();
-            $existingIds = $existings->pluck('id')->toArray();
-            $keep = array_column($attachments, 'id');
-            $remove = array_diff($existingIds, $keep);
-            foreach ($remove as $removeId) {
-                $existings->where('id', $removeId)->first()->delete();
-            }
+            $existed->whereNotIn('attachment_id', array_column($attachments, 'id'))->delete();
         } else {
+            dlog(" is one"); //! LOG
             $attachments = [$attachment];
-            $deleteOldAttachment = !is_array($attachment) || (is_array($attachment) && ($attachment['file']??false));
 
-            if ($deleteOldAttachment) {
-                $this->$group()->delete();
+            if (!$attachment['id'] || $attachment['id_old'] != $attachment['id']) {
+                $existed->delete();
             }
         }
 
         foreach ($attachments as $attachment) {
-            $aBackUp = $attachment;
-            $simpleAttachment = $attachment instanceof UploadedFile;
-            $uploadedFile = $simpleAttachment ? $attachment : ($attachment['file']??null);
-            $attachmentId = $simpleAttachment ? null : ($attachment['id']??null);
+            $attachmentModel = isset($attachment['id']) ? Attachment::find($attachment['id']) : null;
+            $attachmentIdOld = $attachment['id_old']??null;
 
-            // just update alt and title in existing attachment
-            if (!$simpleAttachment && !$uploadedFile && $attachmentId) {
-                $m = Attachment::find($attachmentId);
-                $m->update([
-                    'alt' => $attachment['alt'],
-                    'title' => $attachment['title'],
-                ]);
-                $savedAttachments[] = $m;
+            if ($attachmentModel && $attachmentModel->id == $attachmentIdOld) {
+                $savedAttachments[] = $attachmentModel;
+                dlog("  same id"); //! LOG
                 continue;
             }
 
-            // prepare meta data for creating new attachment
+            if ($attachmentModel && $attachmentModel->id != $attachmentIdOld) {
+                Attachmentable::create([
+                    'attachment_id' => $attachmentModel->id,
+                    'attachmentable_id' => $this->id,
+                    'attachmentable_type' => get_class($this),
+                    'group' => $group,
+                ]);
+                $savedAttachments[] = $attachmentModel;
+                dlog("  new id"); //! LOG
+                continue;
+            }
+
+            $uploadedFile = $attachment['file']??null;
             $type = $this->determineType($uploadedFile->extension());
             $disk = Attachment::disk($type);
             $og_name = Attachment::makeUniqueName($uploadedFile->getClientOriginalName(), $disk);
-
+            $attachment['alt'] ??= readable(strstr($og_name, '.', true));
+            $attachment['title'] ??= $attachment['alt'];
             $path = $uploadedFile->storeAs('', $og_name, $disk);
-            if ($simpleAttachment) {
-                $alt = readable(strstr($og_name, '.', true));
-                $title = $alt;
-            } else {
-                $alt = $attachment['alt'];
-                $title = $attachment['title'];
-            }
 
-            // create new attachment
-            $savedAttachments[] = $this->$group()->create([
+            $attachmentModel = Attachment::create([
                 'name' => $path,
                 'original_name' => $og_name,
                 'type' => $type,
-                'alt' => $alt,
-                'title' => $title,
-                'group' => $group,
+                'alt' => $attachment['alt'],
+                'title' => $attachment['title'],
                 'size' => $uploadedFile->getSize()
             ]);
+            Attachmentable::create([
+                'attachment_id' => $attachmentModel->id,
+                'attachmentable_id' => $this->id,
+                'attachmentable_type' => get_class($this),
+                'group' => $group,
+            ]);
+            $savedAttachments[] = $attachmentModel;
+            dlog("  new file"); //! LOG
         }
 
         return $savedAttachments;
+    }
+
+    private function transform($attachment)
+    {
+        if (!is_array($attachment)) {
+            // it is one attachment as UploadedFile instance
+            return ['file' => $attachment];
+        }
+
+        if (($attachment['id']??false) || ($attachment['file']??false)) {
+            // it is one attachment in array form
+            return $attachment;
+        }
+
+        if (($attachment[0]['id']??false) || ($attachment[0]['file']??false)) {
+            // it is few attachments in array form
+            return $attachment;
+        }
+
+        // it is few attachments as UploadedFile instances
+        $result = [];
+        foreach ($attachment as $a) {
+            $result[] = ['file' => $a];
+        }
+        return $result;
     }
 
     private function determineType($ext)
@@ -103,10 +132,5 @@ trait HasAttachments
         }
 
         return $type;
-    }
-
-    public function purgeFiles($group)
-    {
-        $this->$group()->delete();
     }
 }

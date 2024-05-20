@@ -58,7 +58,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <x-admin.rich-image-input name="meta_thumbnail" :file="$category->meta_thumbnail" />
+                        <x-admin.rich-image-input name="meta_thumbnail" :file="$category->meta_thumbnail()" />
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">

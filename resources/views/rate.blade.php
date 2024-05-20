@@ -11,17 +11,8 @@
     <main class="main">
         <div class="main__wrapper">
             <div class="content">
-                <section class="section section-head">
-                    <h1>{{$page->show('top:title')}}</h1>
-                    {!!$page->show('top:text')!!}
-                </section>
-                <section class="section article">
-                    <h2><span>{{$page->show('goal:title')}}</span></h2>
-                    {!!$page->show('goal:text')!!}
-                </section>
+                <x-content-blocks :blocks="$blocks" type="1" />
                 <section class="section article rate">
-                    <h2><span>{{$page->show('how:title')}}</span></h2>
-                    {!!$page->show('how:text')!!}
                     <ul class="rate__list">
                         <li>
                             <div class="rate__num">

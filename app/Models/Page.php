@@ -28,14 +28,29 @@ class Page extends Model
         return self::where('link', $url)->first();
     }
 
-    public function blocks()
+    public function pageBlocks()
     {
         return $this->hasMany(PageBlock::class);
     }
 
+    public function blocks()
+    {
+        return $this->morphMany(ContentBlock::class, 'blockable');
+    }
+
     public function isStatic()
     {
-        return $this->status == PageStatus::STATIC || $this->status == PageStatus::ENTITY;
+        return $this->status == PageStatus::STATIC;
+    }
+
+    public function isEntity()
+    {
+        return $this->status == PageStatus::ENTITY;
+    }
+
+    public function notDynamic()
+    {
+        return $this->isStatic() || $this->isEntity();
     }
 
     public function show($key, $default='')
@@ -43,7 +58,7 @@ class Page extends Model
         $explode = explode(':', $key);
         $blockName = $explode[0];
         $dataName = $explode[1];
-        return $this->blocks
+        return $this->pageBlocks
             ->where('name', $blockName)
             ->first()
             ->show($dataName, $default);
@@ -72,7 +87,7 @@ class Page extends Model
     {
         return DataTables::of($query)
             ->editColumn('link', function ($model) {
-                return $model->status == PageStatus::ENTITY 
+                return $model->status == PageStatus::ENTITY
                     ? $model->link
                     : '<a href="'.url($model->link).'" target="_blank">'.$model->link.'</a>';
             })

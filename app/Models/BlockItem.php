@@ -26,20 +26,14 @@ class BlockItem extends Model
         'translations',
     ];
 
-    protected static function boot()
+    public function block()
     {
-        parent::boot();
-
-        static::deleting(function ($model) {
-            foreach ($model->files as $file) {
-                $file->delete();
-            }
-        });
+        return $this->belongsTo(ContentBlock::class);
     }
 
     public function files()
     {
-        return $this->morphMany(Attachment::class, 'attachmentable');
+        return $this->morphToMany(Attachment::class, 'attachmentable');
     }
 
     public function file()
@@ -61,6 +55,7 @@ class BlockItem extends Model
                         'title' => $value['title'],
                         'file' => [
                             'id' => $file->id,
+                            'id_old' => $file->id,
                             'original_name' => $file->original_name,
                             'alt' => $file->alt,
                             'title' => $file->title,
@@ -75,6 +70,7 @@ class BlockItem extends Model
                         'text' => $value['text'],
                         'file' => [
                             'id' => $file->id,
+                            'id_old' => $file->id,
                             'original_name' => $file->original_name,
                             'alt' => $file->alt,
                             'title' => $file->title,
@@ -88,6 +84,7 @@ class BlockItem extends Model
                     foreach ($this->files as $file) {
                         $files[] = [
                             'id' => $file->id,
+                            'id_old' => $file->id,
                             'original_name' => $file->original_name,
                             'alt' => $file->alt,
                             'title' => $file->title,
@@ -113,6 +110,7 @@ class BlockItem extends Model
                         if ($file) {
                             $card['image'] = [
                                 'id' => $file->id,
+                                'id_old' => $file->id,
                                 'original_name' => $file->original_name,
                                 'alt' => $file->alt,
                                 'title' => $file->title,
@@ -132,6 +130,7 @@ class BlockItem extends Model
                     return [
                         'file' => [
                             'id' => $file->id,
+                            'id_old' => $file->id,
                             'original_name' => $file->original_name,
                             'alt' => $file->alt,
                             'title' => $file->title,
@@ -155,7 +154,7 @@ class BlockItem extends Model
                 if (in_array( $this->type->value, $simpleValueTypes)) {
                     return $value['value'];
                 }
-                
+
                 if ($this->type == BlockItemType::IMAGE_GALLERY) {
                     return $value['images'];
                 }

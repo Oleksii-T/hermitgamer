@@ -18,6 +18,28 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 Route::any('dev/{action}', [\App\Http\Controllers\DevController::class, 'action']);
 
+foreach (\App\Models\Redirect::getAll() as $r) {
+    Route::get("{$r->from}", function () use ($r) {
+        if (request()->getQueryString()) {
+            $r->to .= '?'.request()->getQueryString();
+        }
+
+        $r->update([
+            'last_at' => now(),
+            'hits' => $r->hits+1
+        ]);
+
+        return redirect("$r->to", $r->code);
+    });
+
+    // if (!Str::contains($r->from, '.html')) {
+    //     // Redirect .html ending too
+    //     Route::get("/{$r->from}.html", function () use ($r) {
+    //         return redirect("/{$r->to}", $r->code);
+    //     });
+    // }
+}
+
 Route::prefix('posts')->name('posts.')->group(function () {
     Route::post('{post}/view', [PostController::class, 'view'])->name('view');
     Route::get('more', [PostController::class, 'more']);

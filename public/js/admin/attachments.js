@@ -5,7 +5,7 @@ $(document).ready(function () {
         ajax: {
 			url: window.location.href,
 			data: function (filter) {
-				filter.type = $('.table-filter[name=type]').val();
+				addTableFilters(filter);
 			}
 		},
         columns: [

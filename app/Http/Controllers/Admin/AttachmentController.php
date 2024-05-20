@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Attachment;
-use App\Http\Requests\Admin\AttachmentRequest;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\Admin\AttachmentRequest;
 
 
 class AttachmentController extends Controller
@@ -23,12 +23,22 @@ class AttachmentController extends Controller
             $attachments->where('type', $request->type);
         }
 
+        if ($request->has_entity == 1) {
+            $attachments->whereHas('attachmentables');
+        }
+
+        if ($request->has_entity == 2) {
+            $attachments->whereDoesntHave('attachmentables');
+        }
+
         return Attachment::dataTable($attachments);
     }
 
     public function edit(Attachment $attachment)
     {
-        return view('admin.attachments.edit', compact('attachment'));
+        $resources = $attachment->attachmentables()->latest()->get();
+
+        return view('admin.attachments.edit', compact('attachment', 'resources'));
     }
 
     public function upload(Request $request)
@@ -77,6 +87,35 @@ class AttachmentController extends Controller
         $disk = Attachment::disk($attachment->type);
 
         return Storage::disk($disk)->download($attachment->name);
+    }
+
+    public function images(Request $request)
+    {
+        $search = $request->search;
+        $sort = $request->sort;
+        $images = Attachment::query()
+            ->where('type', 'image')
+            ->when($search, fn ($q) => 
+                $q->where('name', 'like', "%$search%")->orWhere('original_name', 'like', "%$search%")
+            )
+            ->when(true, function ($q) use ($sort) {
+                if (!$sort) {
+                    $q->latest();
+                } elseif ($sort == 1) {
+                    $q->orderBy('id');
+                } elseif ($sort == 2) {
+                    $q->orderByDesc('size');
+                } elseif ($sort == 3) {
+                    $q->orderBy('size');
+                } elseif ($sort == 4) {
+                    $q->orderBy('name');
+                }
+            })
+            ->paginate(12);
+
+        return $this->jsonSuccess('', [
+            'html' => view('components.admin.images', compact('images'))->render()
+        ]);
     }
 
     public function destroy(Request $request, Attachment $attachment)

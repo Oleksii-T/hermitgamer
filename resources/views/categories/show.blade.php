@@ -9,7 +9,7 @@
 
 @section('title', $category->meta_title)
 @section('description', $category->meta_description)
-@section('meta-image', $category->meta_thumbnail?->url)
+@section('meta-image', $category->meta_thumbnail()?->url)
 
 @section('content')
     <main class="main">

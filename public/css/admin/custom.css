@@ -1,3 +1,6 @@
+.cursor-wait {
+    cursor: wait !important;
+}
 .input-error {
     font-size: 80%;
     color: red;

@@ -2,7 +2,7 @@
 
 @section('title', $post->meta_title)
 @section('description', $post->meta_description)
-@section('meta-image', $post->thumbnail->url)
+@section('meta-image', $post->thumbnail()->url)
 @section('meta-type', 'article')
 @section('meta')
     {{-- 2022-08-25T01:46:13Z --}}
@@ -90,7 +90,7 @@
                     <li>UPDATED: {{$post->updated_at->format('M d, Y')}}</li>
                 </ul>
                 <div class="image hero__image">
-                    <img src="{{$post->thumbnail->url}}" class="lazyload" alt="{{$post->thumbnail->alt}}" />
+                    <img src="{{$post->thumbnail()->url}}" class="lazyload" alt="{{$post->thumbnail()->alt}}" />
                 </div>
             </section>
 
@@ -239,7 +239,7 @@
                                 <div class="editor__head">
                                     <div class="editor__info">
                                         <div class="editor__image">
-                                            <img src="{{$author->avatar->url}}" class="lazyload" alt="{{$author->avatar->alt}}" />
+                                            <img src="{{$author->avatar()->url}}" class="lazyload" alt="{{$author->avatar()->alt}}" />
                                         </div>
                                         <div>
                                             <a href="{{route('authors.show', $author)}}" class="editor__name">{{$author->name}}</a>

@@ -1,7 +1,12 @@
 
 <template>
-    <div class="rii-wrapper is-vue">
-        <input @change="fileUploaded" type="file" class="v-rii-content-input d-none" accept="image/*">
+    <div class="rii-wrapper is-vue" :data-uuid="uuid">
+        <input @change="fileUploaded" type="file" class="v-rii-filefile d-none" accept="image/*">
+        <input type="hidden" class="rii-file" v-model="file.id_old">
+        <input type="hidden" class="rii-file" v-model="file.id">
+        <input type="hidden" class="rii-filealt" v-model="file.alt">
+        <input type="hidden" class="rii-filetitle" v-model="file.title">
+        <!--
         <div class="row">
             <div class="col-4">
                 <div class="v-rii-box" @click="imageBoxClick">
@@ -45,6 +50,31 @@
                 </div>
             </div>
         </div>
+        -->
+        <div class="rii-content">
+            <div class="v-rii-box" @click="imageBoxClick">
+                <img v-if="file.url" :src="file.url" class="rii-filepreview">
+                <span v-if="file.original_name" class="rii-filename">{{file.original_name}}</span>
+                <span v-else>Drag files here, or click to upload</span>
+            </div>
+            <div>
+                <button type="button" class="rii-action-btn rii-action-browse" data-toggle="modal" data-target="#select-image">
+                    <i class="fas fa-fw fa-folder-open"></i>
+                </button>
+                <button type="button" class="rii-action-btn rii-action-editnew d-none" data-toggle="modal" data-target="#edit-image-meta">
+                    <i class="fas fa-fw fa-edit"></i>
+                </button>
+                <a v-if="file.id" :href="editUrl()" target="_blank" class="rii-action-btn">
+                    <i class="fas fa-fw fa-edit"></i>
+                </a>
+                <a v-if="file.url" :href="file.url" target="_blank" class="rii-action-btn">
+                    <i class="fas fa-fw fa-expand"></i>
+                </a>
+                <button v-if="canDelete" class="rii-action-btn rii-action-remove" @click="$emit('RichImageInputDeleted')">
+                    <i class="fas fa-fw fa-times"></i>
+                </button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -56,7 +86,8 @@ export default {
     ],
     data() {
         return {
-            file: {...this.value}
+            file: {...this.value},
+            uuid: null
         };
     },
     watch: {
@@ -68,9 +99,12 @@ export default {
         }
     },
     methods: {
+        editUrl() {
+            return '/admin/attachments/' + this.file.id + '/edit';
+        },
         imageBoxClick(event) {
             let wraper = this.helpers.findParent(event.target, '.rii-wrapper');
-            wraper.querySelector('.v-rii-content-input').click();
+            wraper.querySelector('.v-rii-filefile').click();
         },
         fileUploaded(event) {
             this.setFile(event.target.files[0]);
@@ -84,6 +118,7 @@ export default {
             alt = alt.length==1 ? alt[0] : alt.slice(0, -1).join('.');
             alt = alt.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 
+            this.file.id = null;
             this.file.alt = alt;
             this.file.title = alt;
             this.file.file = file;
@@ -91,14 +126,28 @@ export default {
             this.file.url = URL.createObjectURL(file);
         }
     },
-    mounted() { 
+    mounted() {
+        let _this = this;
+        _this.uuid = this.helpers.uuidv4();
         this.$el.querySelector('.v-rii-box').addEventListener('dragover', (e) => e.preventDefault());
         this.$el.querySelector('.v-rii-box').addEventListener('drop', this.dropped);
+        document.addEventListener("rii-img-selected", function (e) {
+            if (e.detail.uuid != _this.uuid) {
+                return;
+            }
+            let i = e.detail.image;
+            _this.file.id = i.id;
+            _this.file.alt = i.id;
+            _this.file.title = i.title;
+            _this.file.file = null;
+            _this.file.original_name = i.name;
+            _this.file.url = i.url;
+        });
     },
-    updated() { 
+    updated() {
         // console.log(`updated`, this.value); //! LOG
     },
-    unmounted() { 
+    unmounted() {
         // console.log(`unmounted`, this.value); //! LOG
     }
 };

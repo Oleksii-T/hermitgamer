@@ -92,7 +92,7 @@ $(document).ready(function () {
     });
 
     // general logic of ajax form submit (supports files)
-    $('form.general-ajax-submit').submit(function(e){
+    $(document).on('submit', 'form.general-ajax-submit', function (e) {
         e.preventDefault();
         loading();
         let form = $(this);
