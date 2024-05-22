@@ -1,8 +1,7 @@
 <form action="{{route('search')}}" class="search sidebar__search">
     <p class="search-title">Find More</p>
     <p class="search-text">
-        Use website search to find the required review
-        easier and faster.
+        Use search to find the required information easier and faster
     </p>
     <div class="search-field">
         <button class="search-icon" type="submit">

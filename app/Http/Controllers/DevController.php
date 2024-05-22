@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Attachment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -25,32 +26,6 @@ class DevController extends Controller
     private function test()
     {
         $d = [];
-
-        $as = \App\Models\Attachment::all();
-
-        foreach ($as as $a) {
-            $abl = \App\Models\Attachmentable::query()
-                ->where('attachmentable_type', $a->attachmentable_type_)
-                ->where('attachmentable_id', $a->attachmentable_id_)
-                ->exists();
-
-            if (!$abl) {
-                $class = '\\' . $a->attachmentable_type_;
-                $model = null;
-                try {
-                    $model = $class::find($a->attachmentable_id_);
-                } catch (\Throwable $th) {}
-
-                if ($model) {
-                    \App\Models\Attachmentable::create([
-                        'attachment_id' => $a->id,
-                        'attachmentable_type' => $a->attachmentable_type_,
-                        'attachmentable_id' => $a->attachmentable_id_,
-                        'group' => $a->group_,
-                    ]);
-                }
-            }
-        }
 
         dd($d);
     }

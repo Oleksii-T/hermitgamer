@@ -337,6 +337,7 @@ if (!function_exists('sanitizeHtml')) {
 
         $html = str_replace('<?xml encoding="utf-8" ?>', '', $html);
         $html = str_replace('<!--?xml encoding="utf-8" ?-->', '', $html);
+        $html = str_replace(' style="font-family: &quot;Source Sans Pro&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 1rem;"', '', $html);
 
         // dlog(" result: $html"); //! LOG
 

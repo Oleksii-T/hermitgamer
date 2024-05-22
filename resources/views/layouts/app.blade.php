@@ -71,7 +71,7 @@
         <nav class="header__menu">
             <div class="header__search">
                 <form action="{{route('search')}}" class="header__search-dialog">
-                    <div class="header__search-closeBtn"><img src="{{asset('images/icons/close.svg')}}" alt=""></div>
+                    <div class="header__search-closeBtn"><img src="{{asset('images/icons/close.svg')}}" alt="Close icon" title="Close icon"></div>
                     <div class="header__search-title">Search</div>
                     <p class="header__search-text">Start typing to search for a specific article on our website</p>
                     <div class="header__search-field">
@@ -101,7 +101,7 @@
                 <div class="header__menu-copy">2024 © hermitgamer.com. All Rights Reserved</div>
             </div>
         </nav>
-        <button type="button" class="header__search-button"><img src="{{asset('images/icons/search-white.svg')}}" alt=""></button>
+        <button type="button" class="header__search-button"><img src="{{asset('images/icons/search-white.svg')}}" alt="Search icon" title="Search icon"></button>
     </header>
     @if ($bcs??false)
         <ul class="breadcrumbs" itemscope itemtype="https://schema.org/BreadcrumbList">
@@ -123,8 +123,7 @@
         <div class="footer__content">
             <div class="footer__info">
                 <div class="footer__logo"><img src="{{asset('images/logo.png')}}" alt="HermitGamer" title="HermitGamer"></div>
-                <p class="footer__text">HermitGamer is the world’s leading independent online gaming authority,
-                    providing trusted video games reviews and guides.</p>
+                <p class="footer__text">HermitGamer is an independent website about video games, providing reviews, guides, walkthroughs, and more!</p>
                 <ul class="socials footer__socials">
                     <li>
                         <a href="#"><img src="{{asset('images/icons/facebook.svg')}}" alt="Facebook" title="facebook"></a>
@@ -166,21 +165,11 @@
                 <div class="footer__menu-item">
                     <p>Explore</p>
                     <ul>
-                        <li>
-                            <a href="{{route('categories.show', 'reviews')}}">Reviews</a>
-                        </li>
-                        <li>
-                            <a href="{{route('categories.show', 'cheats')}}">Cheats</a>
-                        </li>
-                        <li>
-                            <a href="{{route('categories.show', 'guides')}}">Guides</a>
-                        </li>
-                        <li>
-                            <a href="{{route('categories.show', 'mods')}}">Mods</a>
-                        </li>
-                        <li>
-                            <a href="{{route('categories.show', 'top-lists')}}">Top Lists</a>
-                        </li>
+                        @foreach (\App\Models\Category::forHeader() as $category)
+                            <li>
+                                <a href="{{route('categories.show', $category)}}">{{$category->name}}</a>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>

@@ -8,7 +8,7 @@
     <main class="main">
         <section class="cover prime">
             <div class="background prime__background">
-                <img src="{{asset('images/prime-bg.webp')}}" class="lazyload" alt="">
+                <img src="{{asset('images/prime-bg.webp')}}" class="lazyload" alt="Main background" title="Main background">
             </div>
             <div class="prime__info">
                 <h1 class="prime__title">
@@ -22,25 +22,25 @@
             <ul class="prime__nav">
                 <li>
                     <a href="{{route('categories.show', 'reviews')}}" class="prime__nav-item">
-                        <img src="{{asset('images/icons/prime-nav1.svg')}}" alt="">
+                        <img src="{{asset('images/icons/prime-nav1.svg')}}" alt="Games Review icon" title="Games Review icon">
                         <span>Games Review</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{route('categories.show', 'guides')}}" class="prime__nav-item">
-                        <img src="{{asset('images/icons/prime-nav2.svg')}}" alt="">
+                        <img src="{{asset('images/icons/prime-nav2.svg')}}" alt="Games Guides icon" title="Games Guides icon">
                         <span>Games Guides</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{route('categories.show', 'top-lists')}}" class="prime__nav-item">
-                        <img src="{{asset('images/icons/prime-nav3.svg')}}" alt="">
+                        <img src="{{asset('images/icons/prime-nav3.svg')}}" alt="Top Lists icon" title="Top Lists icon">
                         <span>Top Lists</span>
                     </a>
                 </li>
                 <li>
                     <a href="{{route('categories.show', 'mods')}}" class="prime__nav-item">
-                        <img src="{{asset('images/icons/prime-nav4.svg')}}" alt="">
+                        <img src="{{asset('images/icons/prime-nav4.svg')}}" alt="Video Games Mods icon" title="Video Games Mods icon">
                         <span>Video Games Mods</span>
                     </a>
                 </li>
@@ -59,7 +59,7 @@
                         <li>
                             <div class="reviews-item">
                                 <a href="{{route('posts.show', $post)}}" class="image reviews-item__image">
-                                    <img src="{{$post->thumbnail()->url}}" class="lazyload" alt="">
+                                    <img src="{{$post->thumbnail()->url}}" class="lazyload" alt="{{$post->thumbnail()->alt}}" title="{{$post->thumbnail()->title}}">
                                 </a>
                                 <div class="reviews-item__date">{{$post->created_at->format('M d, Y')}}</div>
                                 <h3 class="reviews-item__title">
@@ -72,13 +72,15 @@
                 <div class="reviews__wrap">
                     <div class="reviews__inner">
                         <h2><span>{{$page->show('guides:title')}}</span></h2>
-                        {!!$page->show('guides:text')!!}
+                        <div class="reviews__inner-text">
+                            {!!$page->show('guides:text')!!}
+                        </div>
                         <ul class="reviews__list">
                             @foreach ($latestGuides as $post)
                                 <li>
                                     <div class="reviews-item">
                                         <a href="{{route('posts.show', $post)}}" class="image reviews-item__image">
-                                            <img src="{{$post->thumbnail()->url}}" class="lazyload" alt="">
+                                            <img src="{{$post->thumbnail()->url}}" class="lazyload" alt="{{$post->thumbnail()->alt}}" title="{{$post->thumbnail()->title}}">
                                         </a>
                                         <div class="reviews-item__date">{{$post->created_at->format('M d, Y')}}</div>
                                         <h3 class="reviews-item__title">
@@ -91,13 +93,15 @@
                     </div>
                     <div class="reviews__inner">
                         <h2><span>{{$page->show('top-lists:title')}}</span></h2>
-                        {!!$page->show('top-lists:text')!!}
+                        <div class="reviews__inner-text">
+                            {!!$page->show('top-lists:text')!!}
+                        </div>
                         <ul class="reviews__list">
                             @foreach ($latestNews as $post)
                                 <li>
                                     <div class="reviews-item">
                                         <a href="{{route('posts.show', $post)}}" class="image reviews-item__image">
-                                            <img src="{{$post->thumbnail()->url}}" class="lazyload" alt="">
+                                            <img src="{{$post->thumbnail()->url}}" class="lazyload" alt="{{$post->thumbnail()->alt}}" title="{{$post->thumbnail()->title}}">
                                         </a>
                                         <div class="reviews-item__date">{{$post->created_at->format('M d, Y')}}</div>
                                         <h3 class="reviews-item__title">
@@ -118,21 +122,21 @@
                 <ul class="type-list reasons__list">
                     <li class="type-item">
                         <div class="type-item__image">
-                            <img src="{{asset('images/reasons1.svg')}}" alt="">
+                            <img src="{{asset('images/reasons1.svg')}}" alt="Reason icon" title="Reason icon">
                         </div>
                         <div class="type-item__title">{{$page->show('reasons:block-1-title')}}</div>
                         <p class="type-item__text ">{{$page->show('reasons:block-1-text')}}</p>
                     </li>
                     <li class="type-item">
                         <div class="type-item__image">
-                            <img src="{{asset('images/reasons2.svg')}}" alt="">
+                            <img src="{{asset('images/reasons2.svg')}}" alt="Reason icon" title="Reason icon">
                         </div>
                         <div class="type-item__title">{{$page->show('reasons:block-2-title')}}</div>
                         <p class="type-item__text ">{{$page->show('reasons:block-2-text')}}</p>
                     </li>
                     <li class="type-item">
                         <div class="type-item__image">
-                            <img src="{{asset('images/reasons3.svg')}}" alt="">
+                            <img src="{{asset('images/reasons3.svg')}}" alt="Reason icon" title="Reason icon">
                         </div>
                         <div class="type-item__title">{{$page->show('reasons:block-3-title')}}</div>
                         <p class="type-item__text ">{{$page->show('reasons:block-3-text')}}</p>
@@ -148,7 +152,7 @@
                         <li>
                             <div class="about-item">
                                 <a href="{{route('authors.show', $author)}}" class="about-item__image">
-                                    <img src="{{$author->avatar()->url}}" class="lazyload" alt="{{$author->avatar()->alt}}">
+                                    <img src="{{$author->avatar()->url}}" class="lazyload" alt="{{$author->avatar()->alt}}" title="{{$author->avatar()->title}}">
                                 </a>
                                 <div class="about-item__desc">
                                     <a href="{{route('authors.show', $author)}}" class="about-item__name">

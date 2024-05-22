@@ -2,7 +2,7 @@
 
 @section('title', $game->meta_title)
 @section('description', $game->meta_description)
-@section('meta-image', $game->thumbnail->url)
+@section('meta-image', $game->thumbnail()->url)
 
 @php
     $pageClass = 'article-page';
@@ -16,7 +16,7 @@
     <main class="main">
         <section class="game">
             <div class="image game__image game__image--desc" >
-                <img src="{{$game->thumbnail->url}}" class="lazyload" alt="{{$game->thumbnail->alt}}" />
+                <img src="{{$game->thumbnail()->url}}" class="lazyload" alt="{{$game->thumbnail()->alt}}" title="{{$game->thumbnail()->title}}" />
             </div>
             <div class="game__info">
                 <h1 class="game__title">{{$game->name}}</h1>
@@ -24,7 +24,7 @@
                     {{$game->description}}
                 </p>
                 <div class="image game__image game__image--mob">
-                    <img src="{{$game->thumbnail->url}}" class="lazyload" alt="{{$game->thumbnail->alt}}" />
+                    <img src="{{$game->thumbnail()->url}}" class="lazyload" alt="{{$game->thumbnail()->alt}}" title="{{$game->thumbnail()->title}}" />
                 </div>
                 <div class="game__desc">
                     <ul class="game__requirements">
@@ -44,7 +44,7 @@
                     <ul class="game__rating">
                         <li>
                             <div class="game__rating-head">
-                                <img src="/images/game-rating1.svg" alt="" />
+                                <img src="/images/game-rating1.svg" alt="Rating icon" title="Rating icon" />
                                 <span>{{$game->rating}}/5</span>
                             </div>
                             <p class="game__rating-text">
@@ -54,7 +54,7 @@
                         </li>
                         <li>
                             <div class="game__rating-head">
-                                <img src="/images/game-rating2.svg" alt="" />
+                                <img src="/images/game-rating2.svg" alt="Rating icon" title="Rating icon" />
                                 <span>{{$game->metacritic ?? '-'}}</span>
                                 <span>100</span>
                             </div>
@@ -65,8 +65,8 @@
                         </li>
                         <li>
                             <div class="game__rating-head">
-                                <img src="/images/game-rating3.svg" alt="" />
-                                <span>{{$game->users_score}}</span>
+                                <img src="/images/game-rating3.svg" alt="Rating icon" title="Rating icon" />
+                                <span>{{$game->users_score ?? '-'}}</span>
                                 <span>10</span>
                             </div>
                             <p class="game__rating-text">
@@ -108,7 +108,7 @@
                             @foreach ($game->screenshots as $screenshot)
                                 <div class="screens-slider__item">
                                     <a href="{{$screenshot->url}}" data-fancybox='postsgallery'>
-                                        <img data-lazy="{{$screenshot->url}}" alt="{{$screenshot->alt}}" />
+                                        <img data-lazy="{{$screenshot->url}}" alt="{{$screenshot->alt}}" title="{{$screenshot->title}}" />
                                     </a>
                                 </div>
                             @endforeach
@@ -170,7 +170,7 @@
                         <div class="summary__text">
                             {!!$game->summary!!}
                             <div class="summary__text-desc">
-                                <img src="{{$game->esbr_image->url}}" alt="{{$game->esbr_image->alt}}" />
+                                <img src="{{$game->esbr_image()->url}}" alt="{{$game->esbr_image()->alt}}" title="{{$game->esbr_image()->title}}" />
                                 <p>
                                     <strong>ESRB Rating:</strong>
                                     {{$game->esbr}}

@@ -94,6 +94,7 @@ $(document).ready(function () {
             rii.find('.rii-box img').attr('src', image.url);
             rii.find('.rii-filename').text(image.name);
             rii.find('.rii-fileid').val(image.id);
+            rii.find('.rii-filefile').val('');
             rii.find('.rii-box img').removeClass('d-none');
             rii.find('.rii-action-editnew').addClass('d-none');
         }
@@ -171,6 +172,7 @@ function showFile(el) {
     name = name.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     wraper.find('.rii-filealt').val(name);
     wraper.find('.rii-filetitle').val(name);
+    wraper.find('.rii-fileid').val('');
 
     // show btn to edit file_alt and file_title
     wraper.find('.rii-action-editnew').removeClass('d-none');

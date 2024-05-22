@@ -79,7 +79,7 @@
                             <li>
                                 <div class="about-item">
                                     <a href="{{route('authors.show', $author)}}" class="about-item__image">
-                                        <img src="{{$author->avatar->url}}" class="lazyload" alt="{{$author->avatar->alt}}">
+                                        <img src="{{$author->avatar()->url}}" class="lazyload" alt="{{$author->avatar()->alt}}">
                                     </a>
                                     <div class="about-item__desc">
                                         <a href="{{route('authors.show', $author)}}" class="about-item__name">

@@ -18,6 +18,8 @@ class Post extends Model
 {
     use HasFactory, HasAttachments, Viewable, SoftDeletes, GetAllSlugs;
 
+    private $thumbnail = null;
+
     protected $fillable = [
         'parent_id',
         'game_id',
@@ -58,7 +60,11 @@ class Post extends Model
 
     public function thumbnail()
     {
-        return $this->morphToMany(Attachment::class, 'attachmentable')->where('group', 'thumbnail')->first();
+        if (!$this->thumbnail) {
+            $this->thumbnail = $this->morphToMany(Attachment::class, 'attachmentable')->where('group', 'thumbnail')->first();
+        }
+
+        return $this->thumbnail;
     }
 
     public function js()

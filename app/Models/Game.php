@@ -18,6 +18,9 @@ class Game extends Model
         'screenshots',
     ];
 
+    private $thumbnail = null;
+    private $esbr_image = null;
+
     protected $fillable = [
         'name', 
         'slug',
@@ -51,12 +54,20 @@ class Game extends Model
 
     public function thumbnail()
     {
-        return $this->morphToMany(Attachment::class, 'attachmentable')->where('group', 'thumbnail')->first();
+        if (!$this->thumbnail) {
+            $this->thumbnail = $this->morphToMany(Attachment::class, 'attachmentable')->where('group', 'thumbnail')->first();
+        }
+
+        return $this->thumbnail;
     }
 
     public function esbr_image()
     {
-        return $this->morphToMany(Attachment::class, 'attachmentable')->where('group', 'esbr_image')->first();
+        if (!$this->esbr_image) {
+            $this->esbr_image = $this->morphToMany(Attachment::class, 'attachmentable')->where('group', 'esbr_image')->first();
+        }
+
+        return $this->esbr_image;
     }
 
     public function screenshots()

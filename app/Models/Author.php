@@ -18,6 +18,9 @@ class Author extends Model
         'meta_thumbnail'
     ];
 
+    private $avatar = null;
+    private $meta_thumbnail = null;
+
     protected $fillable = [
         'name',
         'title',
@@ -45,12 +48,20 @@ class Author extends Model
 
     public function avatar()
     {
-        return $this->morphToMany(Attachment::class, 'attachmentable')->where('group', 'avatar')->first();
+        if (!$this->avatar) {
+            $this->avatar = $this->morphToMany(Attachment::class, 'attachmentable')->where('group', 'avatar')->first();
+        }
+
+        return $this->avatar;
     }
 
     public function meta_thumbnail()
     {
-        return $this->morphToMany(Attachment::class, 'attachmentable')->where('group', 'meta_thumbnail')->first();
+        if (!$this->meta_thumbnail) {
+            $this->meta_thumbnail = $this->morphToMany(Attachment::class, 'attachmentable')->where('group', 'meta_thumbnail')->first();
+        }
+
+        return $this->meta_thumbnail;
     }
 
     public function posts()

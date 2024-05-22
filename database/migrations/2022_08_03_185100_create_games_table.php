@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('meta_description');
             $table->smallInteger('rating');
             $table->smallInteger('metacritic')->nullable();
-            $table->float('users_score', 3, 1);
+            $table->float('users_score', 3, 1)->nullable();
             $table->date('release_date');
             $table->string('developer');
             $table->string('publisher')->nullable();

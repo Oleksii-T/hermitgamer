@@ -68,6 +68,8 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
+        Category::getAllSlugs(true);
+        GenerateSitemap::run();
 
         return $this->jsonSuccess('Category deleted successfully');
     }

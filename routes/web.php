@@ -31,13 +31,6 @@ foreach (\App\Models\Redirect::getAll() as $r) {
 
         return redirect("$r->to", $r->code);
     });
-
-    // if (!Str::contains($r->from, '.html')) {
-    //     // Redirect .html ending too
-    //     Route::get("/{$r->from}.html", function () use ($r) {
-    //         return redirect("/{$r->to}", $r->code);
-    //     });
-    // }
 }
 
 Route::prefix('posts')->name('posts.')->group(function () {
@@ -47,12 +40,12 @@ Route::prefix('posts')->name('posts.')->group(function () {
 
 Route::get('/', [PageController::class, 'index'])->name('index');
 Route::get('search', [PageController::class, 'search'])->name('search');
-Route::get('rate', [PageController::class, 'rate'])->name('rate');
-Route::get('contact-us', [PageController::class, 'contactUs'])->name('contact-us');
+Route::get('how-we-review', [PageController::class, 'rate'])->name('rate');
+Route::get('contact', [PageController::class, 'contactUs'])->name('contact-us');
 Route::post('contact-us', [PageController::class, 'contactUs'])->name('feedbacks.store')->middleware('recaptcha');
-Route::get('about-us', [PageController::class, 'aboutUs'])->name('about-us');
-Route::get('privacy', [PageController::class, 'privacy'])->name('privacy');
-Route::get('terms', [PageController::class, 'terms'])->name('terms');
+Route::get('about', [PageController::class, 'aboutUs'])->name('about-us');
+Route::get('privacy-policy', [PageController::class, 'privacy'])->name('privacy');
+Route::get('terms-of-service', [PageController::class, 'terms'])->name('terms');
 Route::get('{page}', [PageController::class, 'show'])->where('page', \App\Models\Page::getAllSlugs());
 
 

@@ -63,7 +63,7 @@ class PageController extends Controller
 
     public function rate()
     {
-        $page = Page::get('rate');
+        $page = Page::get('how-we-review');
         $blocks = $page->blocks->sortBy('order');
 
         return view('rate', compact('page', 'blocks'));
@@ -72,7 +72,7 @@ class PageController extends Controller
     public function contactUs(Request $request)
     {
         if (!$request->ajax()) {
-            $page = Page::get('contact-us');
+            $page = Page::get('contact');
             
             return view('contact-us', compact('page'));
         }
@@ -108,7 +108,7 @@ class PageController extends Controller
 
     public function privacy()
     {
-        $page = Page::get('privacy');
+        $page = Page::get('privacy-policy');
         $blocks = $page->blocks->sortBy('order');
 
         return view('privacy', compact('page', 'blocks'));
@@ -116,7 +116,7 @@ class PageController extends Controller
 
     public function terms()
     {
-        $page = Page::get('terms');
+        $page = Page::get('terms-of-service');
         $blocks = $page->blocks->sortBy('order');
 
         return view('terms', compact('page', 'blocks'));
@@ -124,7 +124,7 @@ class PageController extends Controller
 
     public function aboutUs()
     {
-        $page = Page::get('about-us');
+        $page = Page::get('about');
         $authors = Author::get();
         $blocks = $page->blocks->sortBy('order');
 

@@ -32,12 +32,12 @@
             <section class="links">
                 <button class="links__button-toggle">
                     Useful Links
-                    <img src="{{asset('images/icons/links-arrow-white.svg')}}" alt="" />
+                    <img src="{{asset('images/icons/links-arrow-white.svg')}}" alt="Arrow icon" title="Arrow icon" />
                 </button>
                 <div class="links__wrapper">
                     <div class="links__menu">
                         <div class="links__desc">
-                            <button class="links__button-close"><img src="{{asset('images/icons/close.svg')}}" alt="" /></button>
+                            <button class="links__button-close"><img src="{{asset('images/icons/close.svg')}}" alt="Close icon" title="Close icon" /></button>
                             <div class="links__desc-caption">USEFUL LINKS</div>
                             <p class="links__desc-text">Find more useful information about <a href="{{route('games.show', $game)}}">{{$game->name}}</a> on HermitGamer.</p>
                         </div>
@@ -90,7 +90,7 @@
                     <li>UPDATED: {{$post->updated_at->format('M d, Y')}}</li>
                 </ul>
                 <div class="image hero__image">
-                    <img src="{{$post->thumbnail()->url}}" class="lazyload" alt="{{$post->thumbnail()->alt}}" />
+                    <img src="{{$post->thumbnail()->url}}" class="lazyload" alt="{{$post->thumbnail()->alt}}" alt="{{$post->thumbnail()->title}}" />
                 </div>
             </section>
 
@@ -109,7 +109,7 @@
                                         <ul>
                                             @foreach ($post->info->advantages??[] as $adv)
                                                 <li>
-                                                    <img src="{{asset('images/icons/advantages.svg')}}" alt="" />
+                                                    <img src="{{asset('images/icons/advantages.svg')}}" alt="Advantage icon" title="Advantage icon" />
                                                     {{$adv}}
                                                 </li>
                                             @endforeach
@@ -120,7 +120,7 @@
                                         <ul>
                                             @foreach ($post->info->disadvantages??[] as $disadv)
                                                 <li>
-                                                    <img src="{{asset('images/icons/disadvantages.svg')}}" alt="" />
+                                                    <img src="{{asset('images/icons/disadvantages.svg')}}" alt="Disadvantage icon" title="Disadvantage icon" />
                                                     {{$disadv}}
                                                 </li>
                                             @endforeach
@@ -239,7 +239,7 @@
                                 <div class="editor__head">
                                     <div class="editor__info">
                                         <div class="editor__image">
-                                            <img src="{{$author->avatar()->url}}" class="lazyload" alt="{{$author->avatar()->alt}}" />
+                                            <img src="{{$author->avatar()->url}}" class="lazyload" alt="{{$author->avatar()->alt}}" title="{{$author->avatar()->title}}" />
                                         </div>
                                         <div>
                                             <a href="{{route('authors.show', $author)}}" class="editor__name">{{$author->name}}</a>
@@ -301,7 +301,7 @@
                                             <li>
                                                 <div class="related-item">
                                                     <a href="{{route('posts.show', $relPost)}}" class="image related-item__image">
-                                                        <img src="{{$relPost->thumbnail->url}}" class="lazyload" alt="" />
+                                                        <img src="{{$relPost->thumbnail()->url}}" class="lazyload" alt="{{$relPost->thumbnail()->alt}}" title="{{$relPost->thumbnail()->title}}" />
                                                     </a>
                                                     <div class="related-item__desc">
                                                         <a href="{{route('games.show', $relPost->game)}}" class="related-item__subtitle">{{$relPost->game->name}}</a>
@@ -325,7 +325,7 @@
                                 <div class="sidebar__details">
                                     <div class="sidebar__details-button">
                                         Game Details
-                                        <img src="{{asset('images/icons/sidebar-nav-arrow.svg')}}" alt="" />
+                                        <img src="{{asset('images/icons/sidebar-nav-arrow.svg')}}" alt="Details icon" title="Details icon" />
                                     </div>
                                     <ul class="sidebar__details-list">
                                         <li>
@@ -351,7 +351,7 @@
                                 <div class="sidebar__nav">
                                     <div class="sidebar__nav-button">
                                         Table of contents
-                                        <img src="images/icons/sidebar-nav-arrow.svg" alt="" />
+                                        <img src="/images/icons/sidebar-nav-arrow.svg" alt="Arrow icon" title="Arrow icon" />
                                     </div>
                                     <ul class="sidebar__nav-list">
                                         @foreach ($post->blocks->sortBy('order') as $block)

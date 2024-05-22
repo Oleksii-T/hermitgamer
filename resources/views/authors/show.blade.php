@@ -18,7 +18,7 @@
                 <section class="section author">
                     <div class="author__head">
                         <div class="image author__image">
-                            <img src="{{$author->avatar()->url}}" class="lazyload" alt="{{$author->avatar()->alt}}" />
+                            <img src="{{$author->avatar()->url}}" class="lazyload" alt="{{$author->avatar()->alt}}" title="{{$author->avatar()->title}}" />
                         </div>
                         <div class="author__info">
                             <div class="author__inner">

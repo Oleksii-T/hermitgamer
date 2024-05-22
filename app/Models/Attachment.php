@@ -87,15 +87,21 @@ class Attachment extends Model
 
     public static function makeUniqueName($name, $disk)
     { 
+        dlog(" Attachment@makeUniqueName"); //! LOG
         $i = 1;
         $ogName = $name;
         $nameParts = explode('.', $name);
         $extension = array_pop($nameParts);
 
+        dlog("  check name $name"); //! LOG
+        
         while (Storage::disk($disk)->exists($name)) {
             $name = implode('.', $nameParts) . "-$i.$extension";
+            dlog("  check name $name"); //! LOG
             $i++;
         }
+
+        dlog("  OK: $name"); //! LOG
 
         return $name;
     }

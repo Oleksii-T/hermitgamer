@@ -3,7 +3,7 @@
 @php
     $bcs = [
         ['Home', route('index')],
-        ['Terms & Conditions']
+        [$page->show('top:bc')]
     ];
 @endphp
 
@@ -11,6 +11,9 @@
     <main class="main">
         <div class="main__wrapper">
             <div class="content">
+                <section class="section section-head" style="padding-bottom: 0px">
+                    <h1>{{$page->show('top:title')}}</h1>
+                </section>
                 <x-content-blocks :blocks="$blocks" type="1" />
             </div>
             <div class="sidebar">
