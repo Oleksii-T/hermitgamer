@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('block_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('block_id')->constrained('post_blocks')->onDelete('cascade');
+            $table->foreignId('block_id')->constrained('content_blocks')->onDelete('cascade');
             $table->unsignedInteger('order');
             $table->string('type');
             $table->text('value')->nullable();
