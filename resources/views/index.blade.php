@@ -33,7 +33,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('categories.show', 'top-lists')}}" class="prime__nav-item">
+                    <a href="{{route('categories.show', 'lists')}}" class="prime__nav-item">
                         <img src="{{asset('images/icons/prime-nav3.svg')}}" alt="Top Lists icon" title="Top Lists icon">
                         <span>Top Lists</span>
                     </a>
@@ -122,21 +122,21 @@
                 <ul class="type-list reasons__list">
                     <li class="type-item">
                         <div class="type-item__image">
-                            <img src="{{asset('images/reasons1.svg')}}" alt="Reason icon" title="Reason icon">
+                            <img src="{{asset('images/reasons1.svg')}}" alt="People icon" title="People icon">
                         </div>
                         <div class="type-item__title">{{$page->show('reasons:block-1-title')}}</div>
                         <p class="type-item__text ">{{$page->show('reasons:block-1-text')}}</p>
                     </li>
                     <li class="type-item">
                         <div class="type-item__image">
-                            <img src="{{asset('images/reasons2.svg')}}" alt="Reason icon" title="Reason icon">
+                            <img src="{{asset('images/reasons2.svg')}}" alt="Community" title="Community">
                         </div>
                         <div class="type-item__title">{{$page->show('reasons:block-2-title')}}</div>
                         <p class="type-item__text ">{{$page->show('reasons:block-2-text')}}</p>
                     </li>
                     <li class="type-item">
                         <div class="type-item__image">
-                            <img src="{{asset('images/reasons3.svg')}}" alt="Reason icon" title="Reason icon">
+                            <img src="{{asset('images/reasons3.svg')}}" alt="Experienced Specialists" title="Experienced Specialists">
                         </div>
                         <div class="type-item__title">{{$page->show('reasons:block-3-title')}}</div>
                         <p class="type-item__text ">{{$page->show('reasons:block-3-text')}}</p>

@@ -49,28 +49,28 @@
                     <ul class="type-list contacts__list">
                         <li class="type-item">
                             <div class="type-item__image">
-                                <img src="{{asset('images/reasons8.svg')}}" alt="" />
+                                <img src="{{asset('images/reasons8.svg')}}" alt="General Issues" title="General Issues" />
                             </div>
                             <div class="type-item__title">{{$page->show('we-offer:block-1-title')}}</div>
                             <p class="type-item__text">{{$page->show('we-offer:block-1-text')}}</p>
                         </li>
                         <li class="type-item">
                             <div class="type-item__image">
-                                <img src="{{asset('images/reasons9.svg')}}" alt="" />
+                                <img src="{{asset('images/reasons9.svg')}}" alt="Expert Advice" title="Expert Advice" />
                             </div>
                             <div class="type-item__title">{{$page->show('we-offer:block-2-title')}}</div>
                             <p class="type-item__text">{{$page->show('we-offer:block-2-text')}}</p>
                         </li>
                         <li class="type-item">
                             <div class="type-item__image">
-                                <img src="{{asset('images/reasons10.svg')}}" alt="" />
+                                <img src="{{asset('images/reasons10.svg')}}" alt="Press Office" title="Press Office" />
                             </div>
                             <div class="type-item__title">{{$page->show('we-offer:block-3-title')}}</div>
                             <p class="type-item__text">{{$page->show('we-offer:block-3-text')}}</p>
                         </li>
                         <li class="type-item">
                             <div class="type-item__image">
-                                <img src="{{asset('images/reasons11.svg')}}" alt="" />
+                                <img src="{{asset('images/reasons11.svg')}}" alt="People icon" title="People icon" />
                             </div>
                             <div class="type-item__title">{{$page->show('we-offer:block-4-title')}}</div>
                             <p class="type-item__text">{{$page->show('we-offer:block-4-text')}}</p>

@@ -43,46 +43,71 @@ class BlockItem extends Model
 
     public function value(): Attribute
     {
-        return new Attribute(
-            get: function ($value) {
-                $simpleValueTypes = BlockItemType::getSimpleTextTypes();
-                $simpleFileTypes = BlockItemType::getSimpleFileTypes();
-                $value = json_decode($value, true);
+        return new Attribute(function ($value) {
+            $simpleValueTypes = BlockItemType::getSimpleTextTypes();
+            $simpleFileTypes = BlockItemType::getSimpleFileTypes();
+            $value = json_decode($value, true);
 
-                if ($this->type == BlockItemType::IMAGE_TITLE) {
-                    $file = $this->file();
-                    return [
-                        'title' => $value['title'],
-                        'file' => [
-                            'id' => $file->id,
-                            'id_old' => $file->id,
-                            'original_name' => $file->original_name,
-                            'alt' => $file->alt,
-                            'title' => $file->title,
-                            'url' => $file->url
-                        ]
+            if ($this->type == BlockItemType::IMAGE_TITLE) {
+                $file = $this->file();
+                return [
+                    'title' => $value['title'],
+                    'file' => [
+                        'id' => $file->id,
+                        'id_old' => $file->id,
+                        'original_name' => $file->original_name,
+                        'alt' => $file->alt,
+                        'title' => $file->title,
+                        'url' => $file->url
+                    ]
+                ];
+            }
+
+            if ($this->type == BlockItemType::IMAGE_TEXT) {
+                $file = $this->file();
+                return [
+                    'text' => $value['text'],
+                    'file' => [
+                        'id' => $file->id,
+                        'id_old' => $file->id,
+                        'original_name' => $file->original_name,
+                        'alt' => $file->alt,
+                        'title' => $file->title,
+                        'url' => $file->url
+                    ]
+                ];
+            }
+
+            if ($this->type == BlockItemType::IMAGE_GALLERY) {
+                $files = [];
+                foreach ($this->files as $file) {
+                    $files[] = [
+                        'id' => $file->id,
+                        'id_old' => $file->id,
+                        'original_name' => $file->original_name,
+                        'alt' => $file->alt,
+                        'title' => $file->title,
+                        'url' => $file->url
                     ];
                 }
+                return [
+                    'images' => $files
+                ];
+            }
 
-                if ($this->type == BlockItemType::IMAGE_TEXT) {
-                    $file = $this->file();
-                    return [
-                        'text' => $value['text'],
-                        'file' => [
-                            'id' => $file->id,
-                            'id_old' => $file->id,
-                            'original_name' => $file->original_name,
-                            'alt' => $file->alt,
-                            'title' => $file->title,
-                            'url' => $file->url
-                        ]
+            if ($this->type == BlockItemType::CARDS) {
+                $cards = [];
+                $files = $this->files;
+                foreach ($value as $c) {
+                    $file = $files->where('id', $c['attachment_id']??0)->first();
+
+                    $card = [
+                        'title' => $c['title'],
+                        'text' =>  $c['text']
                     ];
-                }
 
-                if ($this->type == BlockItemType::IMAGE_GALLERY) {
-                    $files = [];
-                    foreach ($this->files as $file) {
-                        $files[] = [
+                    if ($file) {
+                        $card['image'] = [
                             'id' => $file->id,
                             'id_old' => $file->id,
                             'original_name' => $file->original_name,
@@ -91,57 +116,30 @@ class BlockItem extends Model
                             'url' => $file->url
                         ];
                     }
-                    return [
-                        'images' => $files
-                    ];
+
+                    $cards[] = $card;
                 }
+                return [
+                    'cards' => $cards
+                ];
+            }
 
-                if ($this->type == BlockItemType::CARDS) {
-                    $cards = [];
-                    $files = $this->files;
-                    foreach ($value as $c) {
-                        $file = $files->where('id', $c['attachment_id']??0)->first();
+            if (in_array($this->type->value, $simpleFileTypes)) {
+                $file = $this->file();
+                return [
+                    'file' => [
+                        'id' => $file->id,
+                        'id_old' => $file->id,
+                        'original_name' => $file->original_name,
+                        'alt' => $file->alt,
+                        'title' => $file->title,
+                        'url' => $file->url
+                    ]
+                ];
+            }
 
-                        $card = [
-                            'title' => $c['title'],
-                            'text' =>  $c['text']
-                        ];
-
-                        if ($file) {
-                            $card['image'] = [
-                                'id' => $file->id,
-                                'id_old' => $file->id,
-                                'original_name' => $file->original_name,
-                                'alt' => $file->alt,
-                                'title' => $file->title,
-                                'url' => $file->url
-                            ];
-                        }
-
-                        $cards[] = $card;
-                    }
-                    return [
-                        'cards' => $cards
-                    ];
-                }
-
-                if (in_array($this->type->value, $simpleFileTypes)) {
-                    $file = $this->file();
-                    return [
-                        'file' => [
-                            'id' => $file->id,
-                            'id_old' => $file->id,
-                            'original_name' => $file->original_name,
-                            'alt' => $file->alt,
-                            'title' => $file->title,
-                            'url' => $file->url
-                        ]
-                    ];
-                }
-
-                return $value;
-            },
-        );
+            return $value;
+        });
     }
 
     public function valueSimple(): Attribute

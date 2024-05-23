@@ -41,7 +41,7 @@ if (!function_exists('isdev')) {
         }
 
         $ips = [
-            '213.174.29.197',
+            '213.174.29.65', // AT
             '127.0.0.1',
         ];
 
@@ -186,10 +186,10 @@ if (!function_exists('infoForActivityLog')) {
             try {
                 // Get the current log level
                 // $originalLogLevel = \Illuminate\Support\Facades\Log::getLogger()->getHandlers()[0]->getLevel();
-        
+
                 // Set the log level to emergency to suppress all other log levels
                 // \Illuminate\Support\Facades\Log::getLogger()->getHandlers()[0]->setLevel(\Monolog\Logger::EMERGENCY);
-        
+
                 $location = config('location.testing.enabled')
                     ? null
                     : \Stevebauman\Location\Facades\Location::get($ip)->countryCode;
@@ -291,12 +291,12 @@ if (!function_exists('sanitizeHtml')) {
         $html = str_replace('<p></p>', '', $html);
         $html = preg_replace('#<span[^>]*>(.*?)</span>#i', '$1', $html);
         $html = preg_replace('/<table[^>]+>/', '<table>', $html);
-                            
+
         if (str_contains($html, '</table>')) {
             $dom = new \DOMDocument;
             $html = str_replace('&nbsp;', '', $html);
             $dom->loadHTML('<?xml encoding="utf-8" ?>' . $html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-            
+
             $xpath = new \DOMXPath($dom);
 
             $tds = $xpath->query('//td');

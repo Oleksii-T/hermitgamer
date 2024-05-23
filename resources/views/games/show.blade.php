@@ -121,7 +121,7 @@
                         <div class="review__inner">
                             <div>
                                 <div class="review__author">
-                                    Reviewed by: 
+                                    Reviewed by:
                                     <a href="{{route('authors.show', $review->author)}}">
                                         {{$review->author->name}}
                                     </a>
@@ -204,7 +204,7 @@
             </div>
             <div class="sidebar">
                 <div class="sidebar__banner">
-                    <img src="/images/sidebar-banner1.webp" class="lazyload" alt="" />
+                    <x-ad-vertical />
                 </div>
             </div>
         </div>

@@ -78,7 +78,7 @@
                             @foreach ($item->value_simple as $image)
                                 <div class="screens-slider__item">
                                     <a href="{{$image['url']}}" data-fancybox='postsgallery'>
-                                        <img src="{{$image['url']}}" alt="">
+                                        <img src="{{$image['url']}}" alt="{{$image['alt']}}" title="{{$image['title']}}">
                                     </a>
                                 </div>
                             @endforeach
@@ -88,7 +88,7 @@
                             @foreach ($item->value_simple as $image)
                                 <div class="screens-slider__item">
                                     <a href="{{$image['url']}}" data-fancybox='postsgallery'>
-                                        <img src="{{$image['url']}}" alt="">
+                                        <img src="{{$image['url']}}" alt="{{$image['alt']}}" title="{{$image['title']}}">
                                     </a>
                                 </div>
                             @endforeach

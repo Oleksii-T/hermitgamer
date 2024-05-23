@@ -2,8 +2,9 @@
     <button class="links__button-toggle">
         Useful Links
         <img
-            src="images/icons/links-arrow-white.svg"
-            alt=""
+            src="{{asset('images/icons/links-arrow-white.svg')}}"
+            alt="Arrow icon"
+            title="Arrow icon"
         />
     </button>
     <div class="links__wrapper">
@@ -11,8 +12,9 @@
             <div class="links__desc">
                 <button class="links__button-close">
                     <img
-                        src="images/icons/close.svg"
-                        alt=""
+                        src="{{asset('images/icons/close.svg')}}"
+                        alt="Clsoe icon"
+                        title="Clsoe icon"
                     />
                 </button>
                 <div class="links__desc-caption">

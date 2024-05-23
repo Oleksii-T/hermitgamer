@@ -85,7 +85,7 @@ ins {
 }
 
 ins,mark {
-    background-color: #ff9;
+    background: transparent;
     color: #000
 }
 
@@ -415,11 +415,17 @@ h2 a,h3 a,h4 a,h5 a,h6 a {
 .article ul:not(.rate__list) li:not(.type-item),
 article ol li:not(.type-item),
 article ul:not(.rate__list) li:not(.type-item),
-.cblock ul:not(.slick-dots) li {
+.cblock ul:not(.slick-dots) li{
     color: #e9e9ff;
     display: block;
     line-height: 162%;
     position: relative;
+}
+.cblock ol:not(.slick-dots) li {
+    color: #e9e9ff;
+    line-height: 162%;
+    position: relative;
+    list-style: decimal inside;
 }
 
 .article ol li:not(.type-item)+li,.article ul:not(.rate__list) li:not(.type-item)+li,article ol li:not(.type-item)+li,article ul:not(.rate__list) li:not(.type-item)+li {

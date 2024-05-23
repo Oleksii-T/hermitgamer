@@ -25,28 +25,28 @@
                     <ul class="type-list mission__list">
                         <li class="type-item">
                             <div class="type-item__image">
-                                <img src="{{asset('images/reasons4.svg')}}" alt="" />
+                                <img src="{{asset('images/reasons4.svg')}}" alt="Experience" title="Experience" />
                             </div>
                             <div class="type-item__title">{{$page->show('mission:block-1-title')}}</div>
                             <p class="type-item__text">{{$page->show('mission:block-1-text')}}</p>
                         </li>
                         <li class="type-item">
                             <div class="type-item__image">
-                                <img src="{{asset('images/reasons5.svg')}}" alt="" />
+                                <img src="{{asset('images/reasons5.svg')}}" alt="Expertise" title="Expertise" />
                             </div>
                             <div class="type-item__title">{{$page->show('mission:block-2-title')}}</div>
                             <p class="type-item__text">{{$page->show('mission:block-2-text')}}</p>
                         </li>
                         <li class="type-item">
                             <div class="type-item__image">
-                                <img src="{{asset('images/reasons6.svg')}}" alt="" />
+                                <img src="{{asset('images/reasons6.svg')}}" alt="Authoritativeness" title="Authoritativeness" />
                             </div>
                             <div class="type-item__title">{{$page->show('mission:block-3-title')}}</div>
                             <p class="type-item__text">{{$page->show('mission:block-3-text')}}</p>
                         </li>
                         <li class="type-item">
                             <div class="type-item__image">
-                                <img src="{{asset('images/reasons7.svg')}}" alt="" />
+                                <img src="{{asset('images/reasons7.svg')}}" alt="Trustworthiness" title="Trustworthiness" />
                             </div>
                             <div class="type-item__title">{{$page->show('mission:block-4-title')}}</div>
                             <p class="type-item__text">{{$page->show('mission:block-4-text')}}</p>

@@ -6,10 +6,10 @@
 @section('meta-type', 'article')
 @section('meta')
     {{-- 2022-08-25T01:46:13Z --}}
-    <meta property="article:published_time" content="{{$post->published_at?->toIso8601ZuluString()}}"/> 
-    <meta property="article:modified_time" content="{{$post->updated_at->toIso8601ZuluString()}}"/> 
-    <meta property="article:section" content="{{$category->name}}"/> 
-    <meta property="article:author" content="{{$author->name}}"/> 
+    <meta property="article:published_time" content="{{$post->published_at?->toIso8601ZuluString()}}"/>
+    <meta property="article:modified_time" content="{{$post->updated_at->toIso8601ZuluString()}}"/>
+    <meta property="article:section" content="{{$category->name}}"/>
+    <meta property="article:author" content="{{$author->name}}"/>
 @endsection
 
 
@@ -129,11 +129,11 @@
                                 </section>
                             @endif
                         @endif
-                        
+
                         @if ($post->tc_style == \App\Enums\PostTCStyle::WIDE)
                             <section class="article">
                                 <table>
-                                    <tbody>    
+                                    <tbody>
                                         @foreach ($post->blocks->chunk(3) as $blocksChunk)
                                             <tr>
                                                 @foreach ($blocksChunk as $block)
@@ -369,7 +369,7 @@
                             @endif
                         @endif
                         <div class="sidebar__banner">
-                            <img src="/images/sidebar-banner1.webp" class="lazyload" alt="" />
+                            <x-ad-vertical />
                         </div>
                     </div>
                 </div>

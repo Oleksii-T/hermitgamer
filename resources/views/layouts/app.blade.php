@@ -5,7 +5,7 @@
     <title>@yield('title', $page?->meta_title)</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
     <meta property="og:image" content="@yield('meta-image', asset('images/icons/logo.svg'))">
     <meta property="og:title" content="@yield('title', $page?->meta_title)"/>
     <meta property="og:description" content="@yield('description', $page?->meta_description)">
@@ -191,6 +191,18 @@
 <script type="text/javascript">
     window.Laravel = {!!$LaravelDataForJS!!};
 </script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{env('GA_MEASUREMENT_ID')}}"></script>
+@if (app('env') != 'local')
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', "{{env('GA_MEASUREMENT_ID')}}");
+    </script>
+@endif
 
 @yield('scripts')
 

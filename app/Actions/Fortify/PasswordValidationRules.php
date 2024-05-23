@@ -11,8 +11,8 @@ trait PasswordValidationRules
      *
      * @return array
      */
-    protected function passwordRules()
+    protected function passwordRules($required=true)
     {
-        return ['required', 'string', new Password, 'confirmed'];
+        return [$required ? 'required' : 'nullable', 'string', new Password, 'confirmed'];
     }
 }

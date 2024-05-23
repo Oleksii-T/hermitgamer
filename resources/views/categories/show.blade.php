@@ -34,11 +34,7 @@
             <div class="sidebar">
                 <x-side-search-block />
                 <div class="sidebar__banner">
-                    <img
-                        src="images/sidebar-banner1.webp"
-                        class="lazyload"
-                        alt=""
-                    />
+                    <x-ad-vertical />
                 </div>
             </div>
         </div>

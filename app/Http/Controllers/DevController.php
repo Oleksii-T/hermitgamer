@@ -30,6 +30,29 @@ class DevController extends Controller
         dd($d);
     }
 
+    private function fixRichTextLinks()
+    {
+        $d = [];
+        // $old = 'https://hermit.rigmanagers.com/';
+        $old = 'https://www.hermitgamer.com//';
+        $new = 'https://www.hermitgamer.com/';
+
+        foreach (\App\Models\BlockItem::all() as $block) {
+            $value = $block->getRawOriginal('value');
+
+            if (!str_contains($value, $old)) {
+                continue;
+            }
+
+            $value = str_replace($old, $new, $value);
+            $block->value = $value;
+            $block->save();
+            $d[] = $block->toArray();
+        }
+
+        dd($d);
+    }
+
     private function checkDeprecatedAttchmentables()
     {
         $d = [];
