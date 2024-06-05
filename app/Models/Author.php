@@ -84,10 +84,7 @@ class Author extends Model
                 return $model->created_at->format(env('ADMIN_DATETIME_FORMAT'));
             })
             ->addColumn('action', function ($model) {
-                return view('components.admin.actions', [
-                    'model' => $model,
-                    'name' => 'authors'
-                ])->render();
+                return view('admin.authors.actions', compact('model'))->render();
             })
             ->rawColumns(['avatar', 'action'])
             ->make(true);

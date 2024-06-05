@@ -98,10 +98,7 @@ class Page extends Model
                 return $model->created_at->format(env('ADMIN_DATETIME_FORMAT'));
             })
             ->addColumn('action', function ($model) {
-                return view('components.admin.actions', [
-                    'model' => $model,
-                    'name' => 'pages'
-                ])->render();
+                return view('admin.pages.actions', compact('model'))->render();
             })
             ->rawColumns(['link', 'action'])
             ->make(true);

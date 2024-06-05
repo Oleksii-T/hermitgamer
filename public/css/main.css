@@ -506,48 +506,48 @@ article ul li:not(.type-item,.rate__list li):after,
     padding: 22px 28px
 }
 
-.article table,article table {
+.cblock table,article table {
     display: table;
     width: 100%
 }
 
-.article tbody,article tbody {
+.cblock tbody,article tbody {
     width: 100%
 }
 
-.article tr,article tr {
+.cblock tr,article tr {
     /* display: -webkit-box; */
     /* display: -ms-flexbox; */
     /* display: flex; */
     width: 100%
 }
 
-.article tr:not(:first-child),article tr:not(:first-child) {
+.cblock tr:not(:first-child),article tr:not(:first-child) {
     border-bottom: 1px solid rgba(233,233,255,.08)
 }
 
-.article tr:last-child,article tr:last-child {
+.cblock tr:last-child,article tr:last-child {
     border: none
 }
 
-.article tr:first-child,article tr:first-child {
+.cblock tr:first-child,article tr:first-child {
     background: #0f0f17;
     border: 1px solid rgba(197,193,242,.1);
     /* border-radius: 8px */
 }
 
 
-.article tr:not(:first-child) td:first-child {
+.cblock tr:not(:first-child) td:first-child {
     /* display: flex; */
     /* flex-direction: column; */
     /* align-items: center; */
 }
 
-.article tr:not(:first-child) td {
+.cblock tr:not(:first-child) td {
     border-bottom: 1px solid rgba(233,233,255,.08);
 }
 
-.article tr:first-child td,article tr:first-child td {
+.cblock tr:first-child td,article tr:first-child td {
     color: #6e6b86;
     font-size: 11px;
     font-weight: 600;
@@ -556,7 +556,7 @@ article ul li:not(.type-item,.rate__list li):after,
     padding: 10px
 }
 
-.article tr:first-child td,article tr:first-child td {
+.cblock tr:first-child td,article tr:first-child td {
     color: #6e6b86;
     font-size: 11px;
     font-weight: 600;
@@ -564,18 +564,18 @@ article ul li:not(.type-item,.rate__list li):after,
     border-bottom: 1px solid rgba(233,233,255,.08);
     padding: 10px
 }
-.article tr:first-child td:first-child,article tr:first-child td:first-child {
+.cblock tr:first-child td:first-child,article tr:first-child td:first-child {
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
     border-left: 1px solid rgba(233,233,255,.08);
 }
-.article tr:first-child td:last-child,article tr:first-child td:last-child {
+.cblock tr:first-child td:last-child,article tr:first-child td:last-child {
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
     border-right: 1px solid rgba(233,233,255,.08);
 }
 
-.article td,article td {
+.cblock td,article td {
     /* -webkit-box-orient: vertical; */
     /* -webkit-box-direction: normal; */
     /* -webkit-box-align: center; */
@@ -595,12 +595,12 @@ article ul li:not(.type-item,.rate__list li):after,
     vertical-align: middle;
 }
 
-.article td img,article td img {
+.cblock td img,article td img {
     display: inline-block;
     margin: 0 0 4px
 }
 
-.article td span,article td span {
+.cblock td span,article td span {
     display: block;
     height: 100%
 }

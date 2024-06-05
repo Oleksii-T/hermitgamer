@@ -14,7 +14,7 @@
         <div class="main__wrapper">
             <div class="content">
                 <section class="section section-head">
-                    <h1>{{$page->show('top:title')}}{{request()->search}}</h1>
+                    <h1>{{$page->show('top:title')}} {{request()->search}}</h1>
                     {!!$page->show('top:text')!!}
                 </section>
 

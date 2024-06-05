@@ -4,8 +4,6 @@ namespace App\Traits;
 
 use App\Models\Attachment;
 use App\Models\Attachmentable;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 
 trait HasAttachments
 {
@@ -18,10 +16,10 @@ trait HasAttachments
      */
     public function addAttachment($attachment, string $group)
     {
-        dlog("HasAttachments@addAttachment $group | $this->id | " . self::class ); //! LOG
+        // dlog("HasAttachments@addAttachment $group | $this->id | " . self::class . ': ' . json_encode($attachment) ); //! LOG
 
         if (!$attachment) {
-            dlog(" empty"); //! LOG
+            // dlog(" empty"); //! LOG
             return [];
         }
 
@@ -31,11 +29,14 @@ trait HasAttachments
         $existed = Attachmentable::getByModel($this, $group, false);
 
         if($isMultiple) {
-            dlog(" is mult"); //! LOG
+            // dlog(" is mult"); //! LOG
             $attachments = $attachment;
             $existed->whereNotIn('attachment_id', array_column($attachments, 'id'))->delete();
         } else {
-            dlog(" is one"); //! LOG
+            // dlog(" is one"); //! LOG
+            $attachment['id'] = $attachment['id'] ?? false;
+            $attachment['file'] = $attachment['file'] ?? false;
+            $attachment['id_old'] = $attachment['id_old'] ?? false;
             $attachments = [$attachment];
 
             if (!$attachment['id'] || $attachment['id_old'] != $attachment['id']) {
@@ -43,13 +44,16 @@ trait HasAttachments
             }
         }
 
-        foreach ($attachments as $attachment) {
+        // dlog(' Attachments: ', $attachment); //! LOG
+
+        foreach ($attachments as $i => $attachment) {
+            // dlog("  $i"); //! LOG
             $attachmentModel = isset($attachment['id']) ? Attachment::find($attachment['id']) : null;
             $attachmentIdOld = $attachment['id_old']??null;
 
             if ($attachmentModel && $attachmentModel->id == $attachmentIdOld) {
                 $savedAttachments[] = $attachmentModel;
-                dlog("  same id"); //! LOG
+                // dlog("  same id"); //! LOG
                 continue;
             }
 
@@ -61,11 +65,11 @@ trait HasAttachments
                     'group' => $group,
                 ]);
                 $savedAttachments[] = $attachmentModel;
-                dlog("  new id"); //! LOG
+                // dlog("  new id"); //! LOG
                 continue;
             }
 
-            $uploadedFile = $attachment['file']??null;
+            $uploadedFile = $attachment['file'];
             $type = $this->determineType($uploadedFile->extension());
             $disk = Attachment::disk($type);
             $og_name = Attachment::makeUniqueName($uploadedFile->getClientOriginalName(), $disk);
@@ -88,7 +92,7 @@ trait HasAttachments
                 'group' => $group,
             ]);
             $savedAttachments[] = $attachmentModel;
-            dlog("  new file"); //! LOG
+            // dlog("  new file"); //! LOG
         }
 
         return $savedAttachments;

@@ -25,6 +25,7 @@ class Post extends Model
         'game_id',
         'slug',
         'title',
+        'links_title',
         'meta_title',
         'meta_description',
         'category_id',
@@ -147,6 +148,11 @@ class Post extends Model
     public function introCropped(): Attribute
     {
         return new Attribute(fn () => Str::limit(strip_tags($this->intro), 250));
+    }
+
+    public function linksTitle(): Attribute
+    {
+        return new Attribute(fn ($value) => $value ?: $this->title);
     }
 
     public function getGroupedBlocks()

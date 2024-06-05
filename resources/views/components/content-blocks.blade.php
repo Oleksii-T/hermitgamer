@@ -77,7 +77,7 @@
                         <div class="screens-slider">
                             @foreach ($item->value_simple as $image)
                                 <div class="screens-slider__item">
-                                    <a href="{{$image['url']}}" data-fancybox='postsgallery'>
+                                    <a href="{{$image['url']}}" data-fancybox="group" data-group="{{$item->id}}">
                                         <img src="{{$image['url']}}" alt="{{$image['alt']}}" title="{{$image['title']}}">
                                     </a>
                                 </div>
@@ -87,7 +87,7 @@
                         <div class="screens-slider-two">
                             @foreach ($item->value_simple as $image)
                                 <div class="screens-slider__item">
-                                    <a href="{{$image['url']}}" data-fancybox='postsgallery'>
+                                    <a href="{{$image['url']}}" data-fancybox="group" data-group="item-{{$item->id}}">
                                         <img src="{{$image['url']}}" alt="{{$image['alt']}}" title="{{$image['title']}}">
                                     </a>
                                 </div>

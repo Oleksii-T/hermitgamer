@@ -47,11 +47,11 @@
                                     <li>
                                         @if ($sameGamePost->childs->isEmpty())
                                             <a href="{{route('posts.show', $sameGamePost)}}">
-                                                {{$sameGamePost->title}}
+                                                {{$sameGamePost->links_title}}
                                             </a>
                                         @else
                                             <a class="links__menu-button" data-target="{{$sameGamePost->slug}}">
-                                                {{$sameGamePost->title}}
+                                                {{$sameGamePost->links_title}}
                                             </a>
                                         @endif
                                     </li>
@@ -68,11 +68,15 @@
                                 <div class="links__submenu-button">{{$sameGamePost->title}}</div>
                                 <ul class="links__list links__submenu-list">
                                     <li>
-                                        <a href="{{route('posts.show', $sameGamePost)}}">{{$sameGamePost->title}}</a>
+                                        <a href="{{route('posts.show', $sameGamePost)}}">
+                                            {{$sameGamePost->links_title}}
+                                        </a>
                                     </li>
                                     @foreach ($sameGamePost->childs as $sameGameP)
                                         <li>
-                                            <a href="{{route('posts.show', $sameGameP)}}">{{$sameGameP->title}}</a>
+                                            <a href="{{route('posts.show', $sameGameP)}}">
+                                                {{$sameGameP->links_title}}
+                                            </a>
                                         </li>
                                     @endforeach
                                 </ul>

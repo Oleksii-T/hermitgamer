@@ -35,6 +35,7 @@ class PostRequest extends FormRequest
             'parent_id' => ['nullable', 'exists:posts,id'],
             'is_hidden' => ['nullable', 'boolean'],
             'title' => ['required', 'string', 'max:255'],
+            'links_title' => ['nullable', 'string', 'max:255'],
             'meta_title' => ['required', 'string', 'max:255'],
             'meta_description' => ['required', 'string', 'max:255'],
             'intro' => ['nullable', 'string'],

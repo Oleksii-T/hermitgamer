@@ -1,6 +1,7 @@
 User-agent: *
 Disallow: /search/
 Disallow: /admin/
+Disallow: *?cat=*
 
 User-agent: GPTBot
 Disallow: /

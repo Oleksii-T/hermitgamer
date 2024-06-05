@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('author_id')->nullable()->constrained()->onDelete('set null');
             $table->string('title');
+            $table->string('links_title')->nullable();
             $table->string('meta_title');
             $table->string('meta_description');
             $table->string('links_group')->nullable();

@@ -39,6 +39,17 @@
                             <span data-input="slug" class="input-error"></span>
                         </div>
                     </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Title For Links</label>
+                                    <input type="text" class="form-control" name="links_title" value="{{$post->getRawOriginal('links_title')}}">
+                                    <span data-input="links_title" class="input-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Meta Title</label>

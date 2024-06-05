@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if ($('.screens-slider').length) {
         $('.screens-slider').slick({
-            infinite: true,
+            infinite: false,
             lazyLoad: 'ondemand',
             slidesToShow: 3,
             slidesToScroll: 1,

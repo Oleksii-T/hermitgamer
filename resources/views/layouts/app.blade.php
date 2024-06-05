@@ -19,10 +19,10 @@
     <meta property="og:image:height" content="844"/>
     @yield('meta')
     <link rel="canonical" href="https://www.hermitgamer.com{{request()->getRequestUri()}}" />
-    <link rel="shortcut icon" href="{{asset('images/icons/favicon.svg')}}" type="image/x-icon">
-    <link rel="apple-touch-icon" href="{{asset('images/icons/favicon.svg')}}">
-    <link rel="apple-touch-icon" sizes="72x72" href="{{asset('images/icons/favicon.svg')}}">
-    <link rel="apple-touch-icon" sizes="114x114" href="{{asset('images/icons/favicon.svg')}}">
+    <link rel="shortcut icon" href="{{asset('images/icons/favicon.webp')}}" type="image/x-icon">
+    <link rel="apple-touch-icon" href="{{asset('images/icons/favicon.webp')}}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{asset('images/icons/favicon.webp')}}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{asset('images/icons/favicon.webp')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
 
     <meta name="theme-color" content="rgb(4, 3, 15)" media="(prefers-color-scheme: light)" />
@@ -185,8 +185,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
 <script src="{{asset('js/lazysizes.min.js')}}"></script>
 <script src="{{asset('js/slick.min.js')}}"></script>
-<script src="{{asset('js/scripts.js')}}"></script>
-<script src="{{asset('js/custom.js')}}?v={{time()}}"></script>
+<script src="{{asset('js/common.js')}}"></script>
+<script src="{{asset('js/custom.js')}}"></script>
 
 <script type="text/javascript">
     window.Laravel = {!!$LaravelDataForJS!!};

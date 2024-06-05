@@ -25,6 +25,17 @@ $.fn.toggleClassIf = function(className, condition) {
 }
 
 $(document).ready(function () {
+    // Fancybox.bind(document.querySelectorAll("[data-fancybox='postsgallery']"));
+    let fancyBoxGroupsInitted = [];
+    $("[data-fancybox='group']").each(function(index) {
+        let group = $(this).data('group');
+        if (group && !fancyBoxGroupsInitted.includes(group)) {
+            console.log(`init fancy box with`, `[data-fancybox='group'][data-group='${group}']`); //! LOG
+            Fancybox.bind(`[data-fancybox='group'][data-group='${group}']`);
+            fancyBoxGroupsInitted.push(group);
+        }
+    });
+    console.log(`fancyBoxGroups`, fancyBoxGroupsInitted); //! LOG
     Fancybox.bind("[data-fancybox='postsgallery']");
     Fancybox.bind('.preview-image', {
         groupAttr: false,
@@ -97,7 +108,7 @@ $(document).ready(function () {
             data: {page, type},
             success: (response)=>{
                 let wraper = button.parent().find('.guides__list');
-                
+
                 if (wraper.length) {
                     wraper.append(response.data.html);
                 } else {
@@ -116,7 +127,7 @@ $(document).ready(function () {
                 button.unlock();
             }
         });
-    }) 
+    })
 
     $('.feedback-form').submit(async function(e) {
         e.preventDefault();
@@ -146,7 +157,7 @@ $(document).ready(function () {
                     showPopUp(null, response.message, false);
                     return;
                 }
-                
+
                 showPopUp(null, response.message);
                 form.find('[name="name"]').val('');
                 form.find('[name="email"]').val('');
