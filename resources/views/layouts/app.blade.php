@@ -7,26 +7,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
     <meta property="og:image" content="@yield('meta-image', asset('images/icons/logo.svg'))">
-    <meta property="og:title" content="@yield('title', $page?->meta_title)"/>
+    <meta property="og:title" content="@yield('title', $page?->meta_title)">
     <meta property="og:description" content="@yield('description', $page?->meta_description)">
-    <meta name="description" content="@yield('description', $page?->meta_description)"/>
-    <meta name="robots" content="@yield('meta-robots', 'index, follow, max-image-preview:large')"/>
-    <meta property="og:url" content="https://www.hermitgamer.com{{request()->getRequestUri()}}"/>
-    <meta property="og:site_name" content="HermitGamer"/>
-    <meta property="og:type" content="@yield('meta-type', 'website')"/>
-    <meta property="og:locale" content="en_US"/>
-    <meta property="og:image:width" content="1500"/>
-    <meta property="og:image:height" content="844"/>
+    <meta name="description" content="@yield('description', $page?->meta_description)">
+    <meta name="robots" content="@yield('meta-robots', 'index, follow, max-image-preview:large')">
+    <meta property="og:url" content="https://www.hermitgamer.com{{request()->getRequestUri()}}">
+    <meta property="og:site_name" content="HermitGamer">
+    <meta property="og:type" content="@yield('meta-type', 'website')">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image:width" content="1500">
+    <meta property="og:image:height" content="844">
     @yield('meta')
-    <link rel="canonical" href="https://www.hermitgamer.com{{request()->getRequestUri()}}" />
+    <link rel="canonical" href="https://www.hermitgamer.com{{request()->getRequestUri()}}">
     <link rel="shortcut icon" href="{{asset('images/icons/favicon.webp')}}" type="image/x-icon">
     <link rel="apple-touch-icon" href="{{asset('images/icons/favicon.webp')}}">
     <link rel="apple-touch-icon" sizes="72x72" href="{{asset('images/icons/favicon.webp')}}">
     <link rel="apple-touch-icon" sizes="114x114" href="{{asset('images/icons/favicon.webp')}}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css">
 
-    <meta name="theme-color" content="rgb(4, 3, 15)" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="rgb(4, 3, 15)" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="rgb(4, 3, 15)" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="rgb(4, 3, 15)" media="(prefers-color-scheme: dark)">
 
     <link rel="stylesheet" href="{{asset('css/slick.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/main.css')}}">
@@ -188,7 +188,7 @@
 <script src="{{asset('js/common.js')}}"></script>
 <script src="{{asset('js/custom.js')}}"></script>
 
-<script type="text/javascript">
+<script>
     window.Laravel = {!!$LaravelDataForJS!!};
 </script>
 

@@ -10,10 +10,10 @@ class CategoryController extends Controller
 {
     public function show(Request $request, Category $category)
     {
-        $perPage = 5;
+        $perPage = 10;
         $posts = $category->posts()->publised()->latest()->paginate($perPage);
         $hasMore = $posts->hasMorePages();
-        
+
         if (!$request->ajax()) {
             $page = Page::get('{category}');
             return view('categories.show', compact('category', 'posts', 'page', 'hasMore'));
@@ -21,7 +21,7 @@ class CategoryController extends Controller
 
         return $this->jsonSuccess('', [
             'hasMore' => $hasMore,
-            'html' => view('components.post-cards', compact('posts'))->render()
+            'html' => view('components.post-cards-with-pages', compact('posts'))->render()
         ]);
     }
 }

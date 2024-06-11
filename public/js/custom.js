@@ -89,6 +89,44 @@ $(document).ready(function () {
         });
     }
 
+    // ajax pagination
+    $(document).on('click', '.pagination a', function (e) {
+        e.preventDefault();
+        let url = $(this).attr('href');
+        let button = $(this);
+        let wraper = $('.pagination-content');
+
+        if (!url) {
+            return;
+        }
+
+        if (wraper.isLocked()) {
+            return;
+        }
+
+        wraper.lock();
+
+        const offsetTop = document.querySelector('.pagination-content').getBoundingClientRect().top + document.documentElement.scrollTop - 20;
+
+        scroll({
+            top: offsetTop,
+            behavior: "smooth"
+        });
+
+        $.ajax({
+            url,
+            type: 'get',
+            success: (response) => {
+                wraper.html(response.data.html);
+                wraper.unlock();
+            },
+            error: function(response) {
+                showServerError(response);
+                wraper.unlock();
+            }
+        });
+    });
+
     // load more posts by click
     $('.show-more-posts').click(function(e) {
         e.preventDefault();

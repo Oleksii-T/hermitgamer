@@ -289,6 +289,8 @@ if (!function_exists('sanitizeHtml')) {
         // return $html;
         $html = str_replace('<br>', '', $html);
         $html = str_replace('<p></p>', '', $html);
+        $html = str_replace(' style="font-family: &quot;Source Sans Pro&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 1rem;"', '', $html);
+        $html = str_replace(' style="font-family: &quot;Source Sans Pro&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 1rem; font-weight: bolder;"', '', $html);
         $html = preg_replace('#<span[^>]*>(.*?)</span>#i', '$1', $html);
         $html = preg_replace('/<table[^>]+>/', '<table>', $html);
 

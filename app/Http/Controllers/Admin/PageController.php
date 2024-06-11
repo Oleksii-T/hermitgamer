@@ -96,6 +96,8 @@ class PageController extends Controller
                     $block[$item_name]['value'] = isset($item['value'])
                         ? $disk->putFile("", $item['value'])
                         : $item['value_old'];
+                } else if ($item['type'] == 'editor') {
+                    $block[$item_name]['value'] = sanitizeHtml($block[$item_name]['value']);
                 }
             }
 

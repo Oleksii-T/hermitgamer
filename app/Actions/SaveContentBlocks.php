@@ -92,7 +92,7 @@ class SaveContentBlocks
                 if ($t == BlockItemType::IMAGE_TEXT->value) {
                     $item->update([
                         'value' => [
-                            'text' => $v['text']
+                            'text' => sanitizeHtml($v['text'])
                         ]
                     ]);
                     $item->addAttachment($v['file'], 'files');

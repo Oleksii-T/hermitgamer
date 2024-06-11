@@ -176,11 +176,11 @@
                                                 "@type": "Review",
                                                 "mainEntityOfPage": {
                                                     "@type": "WebPage",
-                                                    "@id": "https://www.neognosisgames.com/stardew-valley-review/"
+                                                    "@id": "{{route('posts.show', $post)}}"
                                                 },
-                                                "image": "https://www.neognosisgames.com/wp-content/uploads/2024/02/stardew-valley-review.webp",
-                                                "url": "https://www.neognosisgames.com/stardew-valley-review/",
-                                                "description": "Stardew Valley is the game you won’t understand until you try. It may capture your attention for hundreds of hours and doesn't get boring.",
+                                                "image": "{{$post->thumbnail()->url}}",
+                                                "url": "{{route('posts.show', $post)}}",
+                                                "description": "{{$game->description}}",
                                                 "itemReviewed": {
                                                     "@type": "Game",
                                                     "name": "{{$game->name}}"
@@ -191,14 +191,14 @@
                                                     "worstRating": "0",
                                                     "bestRating": "5"
                                                 },
-                                                "datePublished": "2024-02-06",
+                                                "datePublished": "{{$post->published_at->format('Y-m-d')}}",
                                                 "headline": "{{$game->name}} Review",
                                                 "publisher": {
                                                     "@type": "Organization",
                                                     "name": "{{config('app.name')}}",
                                                     "logo": {
                                                     "@type": "ImageObject",
-                                                    "url": "https://www.neognosisgames.com/wp-content/uploads/2024/02/neognosisgames.webp"
+                                                    "url": "{{asset('images/icons/logo.svg')}}"
                                                     }
                                                 },
                                                 "author": {
@@ -206,7 +206,7 @@
                                                     "name": "{{$author->name}}",
                                                     "url": "{{route('authors.show', $author)}}"
                                                 },
-                                                "dateModified": "2024-02-14"
+                                                "dateModified": "{{$post->updated_at->format('Y-m-d')}}"
                                             }
                                         </script>
                                     </div>

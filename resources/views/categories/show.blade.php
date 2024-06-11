@@ -22,13 +22,8 @@
 
                 <x-mobile-search-block />
 
-                <section class="section category">
-                    <x-post-cards :posts="$posts" />
-                    @if ($hasMore)
-                        <a href="#" class="button button-dark category__button show-more-posts">
-                            Show More
-                        </a>
-                    @endif
+                <section class="section category pagination-content">
+                    <x-post-cards-with-pages :posts="$posts" />
                 </section>
             </div>
             <div class="sidebar">
