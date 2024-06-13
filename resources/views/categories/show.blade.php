@@ -23,7 +23,7 @@
                 <x-mobile-search-block />
 
                 <section class="section category pagination-content">
-                    <x-post-cards-with-pages :posts="$posts" />
+                    <x-post-cards-with-pages :posts="$posts" :category="$category" />
                 </section>
             </div>
             <div class="sidebar">

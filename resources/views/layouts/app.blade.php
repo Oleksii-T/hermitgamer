@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-    <meta property="og:image" content="@yield('meta-image', asset('images/icons/logo.svg'))">
+    <meta property="og:image" content="@yield('meta-image', asset('images/icons/og-image.jpg'))">
     <meta property="og:title" content="@yield('title', $page?->meta_title)">
     <meta property="og:description" content="@yield('description', $page?->meta_description)">
     <meta name="description" content="@yield('description', $page?->meta_description)">

@@ -147,7 +147,7 @@ class Post extends Model
 
     public function introCropped(): Attribute
     {
-        return new Attribute(fn () => Str::limit(strip_tags($this->intro), 250));
+        return new Attribute(fn () => Str::limit(strip_tags($this->intro), 155));
     }
 
     public function linksTitle(): Attribute

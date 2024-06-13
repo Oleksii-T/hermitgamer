@@ -3046,8 +3046,8 @@ input:-webkit-autofill,input:-webkit-autofill:focus,input:-webkit-autofill:hover
 
 .category-item__image {
     border-radius: 14px;
-    padding-bottom: 23%;
-    width: 430px
+    padding-bottom: 17%;
+    width: 330px
 }
 
 .category-item__desc {
@@ -3065,9 +3065,13 @@ input:-webkit-autofill,input:-webkit-autofill:focus,input:-webkit-autofill:hover
     width: calc(100% - 430px)
 }
 
+.category-item .category-item__desc a {
+    font-size: 26px;
+}
+
 .category-item__date {
     color: #5f5d74;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 500;
     margin: 0 0 12px
 }

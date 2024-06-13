@@ -1,3 +1,3 @@
 <x-post-cards :posts="$posts" />
 
-{!!$posts->onEachSide(2)->links('vendor.pagination.default')!!}
+{!!$posts->links('vendor.pagination.category-posts', compact('category'))!!}

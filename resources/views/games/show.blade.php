@@ -132,7 +132,7 @@
                             <div class="review__rating article-rating__item">
                                 <div class="article-rating__wrap" itemscope itemtype="https://schema.org/Game">
                                     <span itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating" class="article-rating__numbers">
-                                        <span itemprop="ratingValue">{{$review->info->rating ?? 0}}</span>/<span itemprop="bestRating">5</span> <meta itemprop="reviewCount" content="5" />
+                                        <span itemprop="ratingValue">{{$review->info->rating ?? 0}}</span>/<span itemprop="bestRating">5</span>
                                     </span>
                                     <meta itemprop="name" content="https://hermitgamer.com" />
                                     <p>rating</p>

@@ -75,27 +75,30 @@ button {
 .pagination a.pagination-side:hover {
     color: #6842fe;
 }
-.pagination .pagination-side:first-child {
+.pagination li:first-child {
     padding-right: 10px;
 }
-.pagination .pagination-side:last-child {
+.pagination li:last-child {
     padding-left: 10px;
 }
 @media screen and (max-width: 800px) {
     .pagination {
-        gap: 10px;
+        gap: 8px;
     }
     .pagination .pagination-number {
         padding: 7px 12px;
         font-size: 14px;
     }
+    .pagination li:first-child {
+        padding-right: 7px;
+    }
+    .pagination li:last-child {
+        padding-left: 7px;
+    }
     .pagination .pagination-side {
         font-size: 14px;
     }
     .pagination .pagination-side span {
-        display: none;
-    }
-    .pagination .pagination-separator {
         display: none;
     }
 }

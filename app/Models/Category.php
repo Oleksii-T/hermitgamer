@@ -42,6 +42,16 @@ class Category extends Model
         return $this->morphToMany(Attachment::class, 'attachmentable')->where('group', 'meta_thumbnail')->first();
     }
 
+    public function paginationLink($page)
+    {
+        $page = "page-$page";
+
+        return route('categories.show', [
+            'category' => $this,
+            'page' => $page
+        ]);
+    }
+
     public static function forHeader()
     {
         return self::where('in_menu', true)->orderBy('order')->get();
