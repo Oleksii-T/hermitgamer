@@ -179,8 +179,9 @@ class Post extends Model
             ->addColumn('author', function ($model) {
                 return $model->author->name;
             })
-            ->addColumn('views', function ($model) {
-                return $model->views()->count();
+            ->addColumn('views_stats', function ($model) {
+                $stats = array_values($model->viewsStats());
+                return implode(' / ', $stats);
             })
             ->editColumn('status', function ($model) {
                 return $model->status->readable();

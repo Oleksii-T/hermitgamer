@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Str;
+
 // generale unique slug based on provided array
 if (!function_exists('makeSlug')) {
     function makeSlug($str, $check = [])
@@ -41,7 +43,7 @@ if (!function_exists('isdev')) {
         }
 
         $ips = [
-            '194.44.179.126', // AT
+            '213.174.29.101', // AT
             '127.0.0.1',
         ];
 

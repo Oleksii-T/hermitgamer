@@ -13,7 +13,7 @@ $(document).ready(function () {
             { data: 'title', name: 'title' },
             { data: 'category', name: 'category' },
             { data: 'author', name: 'author' },
-            { data: 'views', name: 'views' },
+            { data: 'views_stats', name: 'views_stats' },
             { data: 'status', name: 'status' },
             { data: 'created_at', name: 'created_at', searchable: false },
             { data: 'action', name: 'action', orderable: false, searchable: false }

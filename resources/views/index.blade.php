@@ -52,6 +52,25 @@
 
         <div class="content">
             <section class="section reviews">
+                @if ($latestNews->isNotEmpty())
+                    <h2><span>{{$page->show('news:title')}}</span></h2>
+                    {!!$page->show('news:text')!!}
+                    <ul class="reviews__list">
+                        @foreach ($latestNews as $post)
+                            <li>
+                                <div class="reviews-item">
+                                    <a href="{{route('posts.show', $post)}}" class="image reviews-item__image">
+                                        <img src="{{$post->thumbnail()->url}}" class="lazyload" alt="{{$post->thumbnail()->alt}}" title="{{$post->thumbnail()->title}}">
+                                    </a>
+                                    <div class="reviews-item__date">{{$post->created_at->format('M d, Y')}}</div>
+                                    <h3 class="reviews-item__title">
+                                        <a href="{{route('posts.show', $post)}}">{{$post->title}}</a>
+                                    </h3>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
                 <h2><span>{{$page->show('reviews:title')}}</span></h2>
                 {!!$page->show('reviews:text')!!}
                 <ul class="reviews__list">
@@ -97,7 +116,7 @@
                             {!!$page->show('top-lists:text')!!}
                         </div>
                         <ul class="reviews__list">
-                            @foreach ($latestNews as $post)
+                            @foreach ($latestLists as $post)
                                 <li>
                                     <div class="reviews-item">
                                         <a href="{{route('posts.show', $post)}}" class="image reviews-item__image">

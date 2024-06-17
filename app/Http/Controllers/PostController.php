@@ -23,6 +23,7 @@ class PostController extends Controller
         $category = $post->category;
         $relatedPosts = $post->getRelatedPosts();
         $blockGroups = $post->getGroupedBlocks();
+        $newsTemplate = $category->slug == 'news';
         $sameGamePosts = Post::query()
             ->publised()
             ->whereNull('parent_id')
@@ -31,7 +32,7 @@ class PostController extends Controller
             ->latest()
             ->get();
 
-        return view('posts.show', compact('post', 'page', 'author', 'game', 'category', 'relatedPosts', 'sameGamePosts', 'blockGroups'));
+        return view('posts.show', compact('newsTemplate', 'post', 'page', 'author', 'game', 'category', 'relatedPosts', 'sameGamePosts', 'blockGroups'));
     }
 
     public function view(Request $request, Post $post)

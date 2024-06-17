@@ -27,7 +27,7 @@
     @if ($post->status == \App\Enums\PostStatus::DRAFT)
         <p class="admin-only-post">The post is {{$post->status->readable()}}. Only admin can see it.</p>
     @endif
-    <div class="page__wrapper {{$game ? '' : 'without-game'}}">
+    <div class="page__wrapper {{!$newsTemplate && !$game ? 'without-game' : ''}}">
         @if ($game)
             <section class="links">
                 <button class="links__button-toggle">
@@ -86,6 +86,13 @@
                 </div>
             </section>
         @endif
+        @if ($newsTemplate)
+            <section class="links">
+                <div class="sidebar__banner">
+                    <x-ad-vertical />
+                </div>
+            </section>
+        @endif
         <main class="main">
             <section class="hero">
                 <h1 class="hero__title">{{$post->title}}</h1>
@@ -134,7 +141,7 @@
                             @endif
                         @endif
 
-                        @if ($post->tc_style == \App\Enums\PostTCStyle::WIDE)
+                        @if (!$newsTemplate && $post->tc_style == \App\Enums\PostTCStyle::WIDE)
                             <section class="article">
                                 <table>
                                     <tbody>
@@ -351,7 +358,7 @@
                                     </ul>
                                 </div>
                             @endif
-                            @if ($post->tc_style == \App\Enums\PostTCStyle::R_SIDEBAR)
+                            @if (!$newsTemplate && $post->tc_style == \App\Enums\PostTCStyle::R_SIDEBAR)
                                 <div class="sidebar__nav">
                                     <div class="sidebar__nav-button">
                                         Table of contents

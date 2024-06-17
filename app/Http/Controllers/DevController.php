@@ -27,6 +27,8 @@ class DevController extends Controller
     {
         $d = [];
 
+        $d = Post::find(129)->viewsStats();
+
         dd($d);
     }
 
@@ -117,99 +119,6 @@ class DevController extends Controller
     {
         $t = request()->type;
         $email = request()->email;
-
-        if ($t == 'welcome') {
-            $user = User::find(1);
-            $mail = new \App\Mail\WelcomeMail($user);
-        }
-        if ($t == 'password-reset') {
-            $url = url('');
-            $mail = new \App\Mail\PasswordReset($url);
-        }
-        if ($t == 'verify') {
-            $url = url('');
-            $mail = new \App\Mail\TmpMail($url);
-        };
-        if ($t == 'mailer') {
-            $posts = Post::inRandomOrder()->limit(4)->get();
-            $mailer = \App\Models\Mailer::first();
-            $mail = new \App\Mail\MailerPostFound($mailer, $posts);
-        };
-        if ($t == 'tba-non-reg') {
-            $user = User::find(12);
-            $post = Post::find(371);
-            $mail = new \App\Mail\PostTbaForNonReg($post, $user, 'test message');
-        };
-        if ($t == 'sub-created') {
-            $cycle = \App\Models\SubscriptionCycle::find(12);
-            $mail = new \App\Mail\Subscriptions\Created($cycle);
-        };
-        if ($t == 'sub-canceled-cause-new') {
-            $sub = \App\Models\Subscription::find(13);
-            $group = \App\Enums\NotificationGroup::SUB_CANCELED_TERMINATED_CAUSE_NEW;
-            $group = \App\Enums\NotificationGroup::SUB_TERMINATED_CAUSE_NEW;
-            $mail = new \App\Mail\Subscriptions\CanceledCauseNew($sub, $group);
-        };
-        if ($t == 'sub-extended') {
-            $cycle = \App\Models\SubscriptionCycle::find(12);
-            $group = \App\Enums\NotificationGroup::SUB_EXTENDED;
-            $group = \App\Enums\NotificationGroup::SUB_EXTENDED_INCOMPLETE;
-            $mail = new \App\Mail\Subscriptions\Extended($cycle, $group);
-        };
-        if ($t == 'sub-extend-failed') {
-            $sub = \App\Models\Subscription::find(13);
-            $mail = new \App\Mail\Subscriptions\ExtentionFailed($sub);
-        };
-        if ($t == 'sub-canceled-expired') {
-            $cycle = \App\Models\SubscriptionCycle::find(12);
-            $mail = new \App\Mail\Subscriptions\CanceledExpired($cycle);
-        };
-        if ($t == 'sub-incompleted-expired') {
-            $sub = \App\Models\Subscription::find(13);
-            $mail = new \App\Mail\Subscriptions\IncompletedExpired($sub);
-        };
-        if ($t == 'sub-incompleted-paid') {
-            $cycle = \App\Models\SubscriptionCycle::find(12);
-            $mail = new \App\Mail\Subscriptions\IncompletedPaid($cycle);
-        };
-        if ($t == 'sub-canceled') {
-            $sub = \App\Models\Subscription::find(13);
-            $mail = new \App\Mail\Subscriptions\Canceled($sub);
-        };
-        if ($t == 'sub-end-in-7-days') {
-            $cycle = \App\Models\SubscriptionCycle::find(12);
-            $group = \App\Enums\NotificationGroup::SUB_RENEW_NEXT_WEEK;
-            $group = \App\Enums\NotificationGroup::SUB_END_NEXT_WEEK;
-            $mail = new \App\Mail\Subscriptions\EndNextWeek($cycle, $group);
-        };
-        if ($t == 'sub-end-tomorrow') {
-            $cycle = \App\Models\SubscriptionCycle::find(12);
-            $group = \App\Enums\NotificationGroup::SUB_END_TOMORROW;
-            $group = \App\Enums\NotificationGroup::SUB_RENEW_TOMORROW;
-            $mail = new \App\Mail\Subscriptions\EndTomorrow($cycle, $group);
-        };
-        if ($t == 'daily-posts-views-for-non-reg') {
-            $user = User::find(14);
-            $count = 17;
-            $posts = Post::whereIn('id', [527, 526])->get();
-            $mail = new \App\Mail\DailyPostViewsForNonReg($user, $count, $posts);
-        };
-        if ($t == 'daily-contact-views-for-non-reg') {
-            $user = User::find(14);
-            $count = 17;
-            $mail = new \App\Mail\DailyContactViewsForNonReg($user, $count);
-        };
-        if ($t == 'daily-profile-views-for-non-reg') {
-            $user = User::find(14);
-            $count = 17;
-            $mail = new \App\Mail\DailyProfileViewsForNonReg($user, $count);
-        };
-        if ($t == 'weekly-posts-views-for-non-reg') {
-            $user = User::find(14);
-            $count = 42;
-            $posts = Post::whereIn('id', [527, 526])->get();
-            $mail = new \App\Mail\WeeklyPostViewsForNonReg($user, $count, $posts);
-        };
 
         // other emails test here...
 
