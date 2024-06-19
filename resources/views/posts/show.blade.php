@@ -315,7 +315,9 @@
                                                         <img src="{{$relPost->thumbnail()->url}}" class="lazyload" alt="{{$relPost->thumbnail()->alt}}" title="{{$relPost->thumbnail()->title}}" />
                                                     </a>
                                                     <div class="related-item__desc">
-                                                        <a href="{{route('games.show', $relPost->game)}}" class="related-item__subtitle">{{$relPost->game->name}}</a>
+                                                        @if ($relPost->game)
+                                                            <a href="{{route('games.show', $relPost->game)}}" class="related-item__subtitle">{{$relPost->game->name}}</a>
+                                                        @endif
                                                         <h3 class="relted-item__title">
                                                             <a href="{{route('posts.show', $relPost)}}">
                                                                 {{$relPost->title}}

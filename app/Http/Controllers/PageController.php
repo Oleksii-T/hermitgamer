@@ -20,7 +20,7 @@ class PageController extends Controller
         $latestReviews = (clone $q)->whereRelation('category', 'slug', 'reviews')->limit(3)->get();
         $latestGuides = (clone $q)->whereRelation('category', 'slug', 'guides')->limit(2)->get();
         $latestLists = (clone $q)->whereRelation('category', 'slug', 'lists')->limit(2)->get();
-        $latestNews = (clone $q)->whereRelation('category', 'slug', 'news')->limit(2)->get();
+        $latestNews = (clone $q)->whereRelation('category', 'slug', 'news')->limit(4)->get();
         $authors = Author::get(); 
 
         return view('index', compact('page', 'authors', 'latestReviews', 'latestGuides', 'latestNews', 'latestLists'));

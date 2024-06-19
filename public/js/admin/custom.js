@@ -7,7 +7,7 @@ window.SUMMERNOTE_DEFAULT_CONFIGS = {
         ['para', ['ul', 'ol','link']],
         ['insert', ['picture', 'table']],
         ['misc', ['undo', 'redo']],
-        ['admin', ['codeview', 'htmlformat', 'htmlminify']]
+        ['admin', ['codeview', 'htmlformat', 'htmlminify', 'insertlink']]
     ],
     buttons: {
         htmlformat: function(context) {
@@ -35,6 +35,76 @@ window.SUMMERNOTE_DEFAULT_CONFIGS = {
                     let minified = code.replace(/\t|\s{2,}/g, '');
                     context.code(minified);
                     showToast('Inner HTML minified!');
+                }
+            });
+            return button.render();
+        },
+        insertlink: function(context) {
+            var ui = $.summernote.ui;
+            var button = ui.button({
+                contents: '<i class="fa fa-link"/>',
+                tooltip: 'Insert link',
+                click: function() {
+                    let selectedText = context.invoke('editor.getSelectedText');
+                    let selectedLink = '';
+                    let useBlank = false;
+                    let useNofollow = false;
+                    swal.fire({
+                        title: 'Insert Link',
+                        html: `<div class="custom-link-insertion" style="text-align: left;">
+                            <div class="form-group">
+                                <label>Text to display</label>
+                                <input name="selected_text" type="text" class="form-control" value="${selectedText}">
+                            </div>
+                            <div class="form-group">
+                                <label>To what URL should this link go?</label>
+                                <input name="url_to_insert" type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="use_blank" type="checkbox" value="1">
+                                        Open in new window
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="use_nofollow" type="checkbox" value="1">
+                                        Make nofollow
+                                    </label>
+                                </div>
+                            </div>
+                        </div>`,
+                        showCancelButton: false,
+                        confirmButtonText: 'Insert Link',
+                        preConfirm: function () {
+                            let wraper = $('.custom-link-insertion');
+                            selectedText = wraper.find('[name="selected_text"]').val();
+                            selectedLink = wraper.find('[name="url_to_insert"]').val();
+                            useBlank = wraper.find('[name="use_blank"]').is(':checked');
+                            useNofollow = wraper.find('[name="use_nofollow"]').is(':checked');
+
+                            if (!selectedText || !selectedLink) {
+                                return Swal.showValidationMessage('Please fill the data');
+                            }
+                        },
+                    }).then((result) => {
+                        console.log(result); //! LOG
+                        if (result.value) {
+                            console.log('insert link 4'); //! LOG
+                            var node = document.createElement('a');
+                            node.href = selectedLink;
+                            node.textContent = selectedText;
+                            if (useBlank) {
+                                node.target="_blank";
+                            }
+                            if (useNofollow) {
+                                node.rel="nofollow";
+                            }
+                            context.invoke('editor.restoreRange');
+                            context.invoke('editor.insertNode', node);
+                        }
+                    });
                 }
             });
             return button.render();

@@ -407,8 +407,9 @@ return [
                 ],
                 [
                     'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js',
+                    'asset' => true,
+                    // 'location' => '//cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js',
+                    'location' => 'js/admin/summernote.js?v='.time(),
                 ],
             ],
         ],

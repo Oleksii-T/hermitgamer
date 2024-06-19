@@ -61,7 +61,7 @@
                                 <th>Title</th>
                                 <th>Category</th>
                                 <th>Author</th>
-                                <th>Views Stats <small>total/real/unique-real/bots</small></th>
+                                <th>Views <small>total/real/unique-real/bots</small></th>
                                 <th>Status</th>
                                 <th>Created_at</th>
                                 <th class="actions-column-2">Actions</th>

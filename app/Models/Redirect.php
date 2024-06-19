@@ -37,6 +37,8 @@ class Redirect extends Model
             cache()->forget($cKey);
         }
 
-        return cache()->remember($cKey, 60*60*24, fn () => self::all());
+        $redirect = self::where('is_active', true)->get();
+
+        return cache()->remember($cKey, 60*60*24, fn () => $redirect);
     }
 }

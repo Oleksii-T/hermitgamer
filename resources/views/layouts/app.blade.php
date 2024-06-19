@@ -126,13 +126,13 @@
                 <p class="footer__text">HermitGamer is an independent website about video games, providing reviews, guides, walkthroughs, and more!</p>
                 <ul class="socials footer__socials">
                     <li>
-                        <a href="#"><img src="{{asset('images/icons/facebook.svg')}}" alt="Facebook" title="facebook"></a>
+                        <a href="https://www.facebook.com/hermitgamers/" target="_blank"><img src="{{asset('images/icons/facebook.svg')}}" alt="Facebook" title="facebook"></a>
                     </li>
                     <li>
-                        <a href="#"><img src="{{asset('images/icons/instagram.svg')}}" alt="Instagram" title="instagram"></a>
+                        <a href="https://www.pinterest.com/hermitgamers/" target="_blank"><img src="{{asset('images/icons/pinterest.svg')}}" alt="Pinterest" title="pinterest"></a>
                     </li>
                     <li>
-                        <a href="#"><img src="{{asset('images/icons/twitter.svg')}}" alt="X (twitter)" title="X (twitter)"></a>
+                        <a href="https://x.com/hermitgamers" target="_blank"><img src="{{asset('images/icons/twitter.svg')}}" alt="X (twitter)" title="X (twitter)"></a>
                     </li>
                 </ul>
             </div>

@@ -55,7 +55,7 @@
                 @if ($latestNews->isNotEmpty())
                     <h2><span>{{$page->show('news:title')}}</span></h2>
                     {!!$page->show('news:text')!!}
-                    <ul class="reviews__list">
+                    <ul class="reviews__list" style="margin-bottom: 80px">
                         @foreach ($latestNews as $post)
                             <li>
                                 <div class="reviews-item">
@@ -63,7 +63,7 @@
                                         <img src="{{$post->thumbnail()->url}}" class="lazyload" alt="{{$post->thumbnail()->alt}}" title="{{$post->thumbnail()->title}}">
                                     </a>
                                     <div class="reviews-item__date">{{$post->created_at->format('M d, Y')}}</div>
-                                    <h3 class="reviews-item__title">
+                                    <h3 class="reviews-item__title" style="font-size: 20px">
                                         <a href="{{route('posts.show', $post)}}">{{$post->title}}</a>
                                     </h3>
                                 </div>

@@ -29,7 +29,16 @@ foreach (\App\Models\Redirect::getAll() as $r) {
             'hits' => $r->hits+1
         ]);
 
-        return redirect("$r->to", $r->code);
+        $extensions = ['webp', 'png', 'jpeg', 'jpg', 'svg'];
+        $extensions = array_map('preg_quote', $extensions);
+        $pattern = '/' . implode('|', $extensions) . '/';
+        $to = $r->to;
+
+        if (preg_match($pattern, $r->to) === 1) {
+            $to = rtrim(url(''), "/") . $to;
+        }
+
+        return redirect($to, $r->code);
     });
 }
 
